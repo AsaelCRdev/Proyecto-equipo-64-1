@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { MovieCard } from '../movie-card/movie-card';
-
+import { ReactiveFormsModule } from '@angular/forms';
 interface Movie {
   id: number;
   title: string;
@@ -25,14 +25,24 @@ interface Movie {
 @Component({
   selector: 'app-catalog',
   standalone: true,
-  imports: [CommonModule, FormsModule, MovieCard],
+  imports: [CommonModule, ReactiveFormsModule, MovieCard],
   templateUrl: './catalog.html',
-  styleUrls: ['./catalog.css']
+  styleUrls: ['./catalog.css'],
 })
 export class CatalogComponent implements OnInit {
-
+  searchControl = new FormControl('');
   searchText: string = '';
-  genres: string[] = ['Todos', 'Acción', 'Ciencia Ficción', 'Romance', 'Comedia', 'Terror', 'Drama', 'Aventura', 'Thriller'];
+  genres: string[] = [
+    'Todos',
+    'Acción',
+    'Ciencia Ficción',
+    'Romance',
+    'Comedia',
+    'Terror',
+    'Drama',
+    'Aventura',
+    'Thriller',
+  ];
   selectedGenre: string = 'Todos';
 
   movies: Movie[] = [
@@ -42,7 +52,7 @@ export class CatalogComponent implements OnInit {
       year: 2024,
       rating: 8.5,
       duration: '2h 15min',
-      imageUrl: 'https://images.example.com/accion-extrema.jpg', 
+      imageUrl: 'https://images.example.com/accion-extrema.jpg',
       genre: 'Acción',
     },
     {
@@ -68,22 +78,26 @@ export class CatalogComponent implements OnInit {
 
   filteredMovies: Movie[] = [];
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
     this.applyFilters();
+    this.searchControl.valueChanges.subscribe((value) => {
+      this.searchText = value!;
+      this.applyFilters();
+    });
   }
 
   applyFilters(): void {
     let filtered = this.movies;
 
     if (this.selectedGenre !== 'Todos') {
-      filtered = filtered.filter(movie => movie.genre === this.selectedGenre);
+      filtered = filtered.filter((movie) => movie.genre === this.selectedGenre);
     }
 
     if (this.searchText.trim()) {
       const lowerSearch = this.searchText.toLowerCase();
-      filtered = filtered.filter(movie => movie.title.toLowerCase().includes(lowerSearch));
+      filtered = filtered.filter((movie) => movie.title.toLowerCase().includes(lowerSearch));
     }
 
     this.filteredMovies = filtered;
@@ -98,4 +112,3 @@ export class CatalogComponent implements OnInit {
     this.applyFilters();
   }
 }
-
