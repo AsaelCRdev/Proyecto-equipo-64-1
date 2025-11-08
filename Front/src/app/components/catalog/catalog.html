@@ -5,34 +5,34 @@
   <input
     type="search"
     placeholder="Buscar películas..."
-    [(ngModel)]="searchText"
+    [formControl]="searchControl"
     (input)="onSearchChange()"
     class="search-input"
   />
 
   <!-- Lista de géneros -->
   <section class="genres-filter">
-    <button
-      *ngFor="let genre of genres"
-      [class.selected]="genre === selectedGenre"
-      (click)="onGenreSelect(genre)"
-      class="genre-btn"
-      type="button"
-    >
-      {{ genre }}
-    </button>
+    @for (genre of genres; track $index) {
+      <button
+        [class.selected]="genre === selectedGenre"
+        (click)="onGenreSelect(genre)"
+        class="genre-btn"
+        type="button"
+      >
+        {{ genre }}
+      </button>
+    }
   </section>
 
   <!-- Total de películas filtradas -->
   <section class="movies-count">
-    {{filteredMovies.length}} película{{ filteredMovies.length !== 1 ? 's' : '' }}
+    {{ filteredMovies.length }} película{{ filteredMovies.length !== 1 ? 's' : '' }}
   </section>
 
   <!-- Lista de tarjetas de películas -->
   <section class="movies-grid">
-    <app-movie-card
-      *ngFor="let movie of filteredMovies"
-      [movie]="movie"
-    ></app-movie-card>
+    @for (movie of filteredMovies; track $index) {
+      <app-movie-card [movie]="movie"></app-movie-card>
+    }
   </section>
 </section>

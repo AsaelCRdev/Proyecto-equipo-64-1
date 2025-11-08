@@ -1,14 +1,17 @@
 <nav class="navbar-container">
- 
   <div class="navbar-left">
     <i class="fas fa-film logo-icon"></i>
     <a routerLink="/" class="brand-name">MoviesGo</a>
   </div>
 
-  
   <ul class="navbar-menu">
     <li>
-      <a routerLink="/catalogo" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="menu-item active">
+      <a
+        routerLink="/catalogo"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="menu-item active"
+      >
         <i class="fas fa-home"></i> Catálogo
       </a>
     </li>
@@ -19,13 +22,13 @@
     </li>
   </ul>
 
-  
   <div class="navbar-right">
     <button class="cart-button" aria-label="Carrito de compras">
       <i class="fas fa-shopping-cart"></i>
     </button>
     <div class="user-avatar">
       D
+      <!-- TODO: Esto cambiarlo a que agarre la primera letra del nombre del usuario-->
     </div>
   </div>
 </nav>
