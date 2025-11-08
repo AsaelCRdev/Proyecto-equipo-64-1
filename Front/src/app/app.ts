@@ -1,11 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar';
-import { CatalogComponent } from './components/catalog/catalog';
+import { MyRentals } from './components/my-rentals/my-rentals';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent, CatalogComponent],
+  imports: [RouterOutlet, NavbarComponent,MyRentals],
   templateUrl: './app.html',
   styleUrls: ['./app.css'],    
   standalone: true             
