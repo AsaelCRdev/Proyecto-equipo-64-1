@@ -1,10 +1,10 @@
-package com.example.back;
+package com.backend.moviesgo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BackApplicationTests {
+class MoviesgoApplicationTests {
 
 	@Test
 	void contextLoads() {
