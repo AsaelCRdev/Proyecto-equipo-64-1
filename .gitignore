@@ -1,0 +1,81 @@
+### Front
+
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output
+Front/dist
+Front/tmp
+Front/out-tsc
+Front/bazel-out
+
+# Node
+Front/node_modules
+Front/npm-debug.log
+Front/yarn-error.log
+
+# IDEs and editors
+Front/.idea/
+Front/.project
+Front/.classpath
+Front/.c9/
+Front/*.launch
+Front/.settings/
+Front/*.sublime-workspace
+
+# Visual Studio Code
+Front/.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+Front/.history/*
+
+# Miscellaneous
+Front/.angular/cache
+Front/.sass-cache/
+Front/connect.lock
+Front/coverage
+Front/libpeerconnection.log
+Front/testem.log
+Front/typings
+Front/__screenshots__/
+
+# System files
+Front/.DS_Store
+Front/Thumbs.db
+
+
+### Back
+Back/HELP.md
+Back/target/
+Back/.mvn/wrapper/maven-wrapper.jar
+Back/src/main/**/target/
+Back/src/test/**/target/
+
+### STS ###
+Back/.apt_generated
+Back/.classpath
+Back/.factorypath
+Back/.project
+Back/.settings
+Back/.springBeans
+Back/.sts4-cache
+
+### IntelliJ IDEA ###
+Back/.idea
+Back/*.iws
+Back/*.iml
+Back/*.ipr
+
+### NetBeans ###
+Back/nbproject/private/
+Back/nbbuild/
+Back/dist/
+Back/nbdist/
+Back/.nb-gradle/
+Back/build/
+Back/**/src/main/**/build/
+Back/**/src/test/**/build/
+
+### VS Code ###
+Back/.vscode/
