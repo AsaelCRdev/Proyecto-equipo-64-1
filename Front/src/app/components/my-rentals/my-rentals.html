@@ -1,6 +1,6 @@
 <nav class="tabs">
   <!-- siempre visible -->
-  <button [class.active]="activeTab === 'alquilar'" (click)="selectTab('alquilar')">Alquilar</button>
+  <button [class.active]="activeTab === 'alquilar'" (click)="selectTab('alquilar')">Para Alquilar</button>
 
   <!-- solo para usuarios logueados -->
   <button *ngIf="(auth.isLoggedIn$ | async)" [class.active]="activeTab === 'activos'" (click)="selectTab('activos')">Activos</button>

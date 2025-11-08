@@ -11,15 +11,7 @@ interface Movie {
   duration: string;
   imageUrl: string;
   genre: string;
-}
-interface Movie {
-  id: number;
-  title: string;
-  year: number;
-  rating: number;
-  duration: string;
-  imageUrl: string;
-  genre: string;
+  price: number;
 }
 
 @Component({
@@ -44,6 +36,7 @@ export class CatalogComponent implements OnInit {
       duration: '2h 15min',
       imageUrl: 'https://lumiere-a.akamaihd.net/v1/images/image_17096efb.jpeg?region=0%2C0%2C540%2C810&width=320', 
       genre: 'Acción',
+      price:4.99
     },
     {
       id: 2,
@@ -53,6 +46,7 @@ export class CatalogComponent implements OnInit {
       duration: '2h 40min',
       imageUrl: 'https://m.media-amazon.com/images/S/pv-target-images/79194981293eabf6620ece96eb5a9c1fffa04d3374ae12986e0748800b37b9cf.jpg',
       genre: 'Ciencia Ficción',
+      price: 4.99
     },
     {
       id: 3,
@@ -62,6 +56,7 @@ export class CatalogComponent implements OnInit {
       duration: '1h 55min',
       imageUrl: 'https://m.media-amazon.com/images/S/pv-target-images/c6a2456c95a7794614959a861d952ae8934678fc6052bdbf0c1ebe0be03ae7f1.png',
       genre: 'Romance',
+      price: 4.99
     },
    
   ];

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export interface Movie {
@@ -9,6 +9,7 @@ export interface Movie {
   duration: string;
   imageUrl: string;
   genre: string;
+  price:number;
 }
 @Component({
   selector: 'app-movie-card',
@@ -18,5 +19,16 @@ export interface Movie {
   styleUrls: ['./movie-card.css']
 })
 export class MovieCard {
-  @Input() movie!: { title: string; imageUrl: string; rating: number; duration: string; year: number; };
+  @Input() movie!:Movie;
+
+  @Output() showDetails = new EventEmitter<Movie>();
+  @Output() addToCart = new EventEmitter<Movie>();
+
+  onDetailsClick():void{
+    this.showDetails.emit(this.movie);
+  }
+
+  onAddClick():void{
+    this.addToCart.emit(this.movie);
+  }
 }
