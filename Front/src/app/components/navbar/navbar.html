@@ -1,16 +1,29 @@
 <nav class="navbar-container">
- 
   <div class="navbar-left">
     <i class="fas fa-film logo-icon"></i>
     <a routerLink="/" class="brand-name">MoviesGo</a>
   </div>
-  
-  <div class="navbar-right">
+
+  <div *ngIf="!isLoggedIn" class="navbar-right">
+    <button class="login-btn" (click)="openAuth()">
+      <i class="fas fa-user"></i> Iniciar Sesión
+    </button>
+  </div>
+
+  <div *ngIf="isLoggedIn" class="navbar-right">
     <button class="cart-button" aria-label="Carrito de compras">
       <i class="fas fa-shopping-cart"></i>
     </button>
-    <div class="user-avatar">
-      D
-    </div>
+    <div class="user-avatar">{{ userInitial.charAt(0) }}</div>
+    <button class="logout-btn" (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i>
+    </button>
   </div>
 </nav>
+
+<!-- Para cuando se va a auntenticar -->
+<app-auth-dialog
+  *ngIf="showAuth"
+  (closeDialog)="onAuthClose()"
+  (loggedIn)="onLoggedIn()"
+></app-auth-dialog>

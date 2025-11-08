@@ -1,31 +1,28 @@
 <nav class="tabs">
+  <!-- siempre visible -->
   <button [class.active]="activeTab === 'alquilar'" (click)="selectTab('alquilar')">Alquilar</button>
-  <button [class.active]="activeTab === 'activos'" (click)="selectTab('activos')">Activos</button>
-  <button [class.active]="activeTab === 'historial'" (click)="selectTab('historial')">Historial</button>
+
+  <!-- solo para usuarios logueados -->
+  <button *ngIf="(auth.isLoggedIn$ | async)" [class.active]="activeTab === 'activos'" (click)="selectTab('activos')">Activos</button>
+  <button *ngIf="(auth.isLoggedIn$ | async)" [class.active]="activeTab === 'historial'" (click)="selectTab('historial')">Historial</button>
 </nav>
 
 <div *ngIf="activeTab === 'alquilar'">
   <app-catalog></app-catalog>
 </div>
 
-<div *ngIf="activeTab === 'activos'">
+<div *ngIf="activeTab === 'activos' && (auth.isLoggedIn$ | async)">
   <h2>Alquileres Activos</h2>
   <div *ngIf="activeRentals.length === 0">No tienes alquileres vigentes.</div>
   <div class="rentals-grid" *ngIf="activeRentals.length > 0">
-    <app-movie-card
-      *ngFor="let rent of activeRentals"
-      [movie]="rent.movie"
-    ></app-movie-card>
+    <app-movie-card *ngFor="let rent of activeRentals" [movie]="rent.movie"></app-movie-card>
   </div>
 </div>
 
-<div *ngIf="activeTab === 'historial'">
+<div *ngIf="activeTab === 'historial' && (auth.isLoggedIn$ | async)">
   <h2>Historial</h2>
   <div *ngIf="rentalHistory.length === 0">No tienes historial de alquileres.</div>
   <div class="rentals-grid" *ngIf="rentalHistory.length > 0">
-    <app-movie-card
-      *ngFor="let rent of rentalHistory"
-      [movie]="rent.movie"
-    ></app-movie-card>
+    <app-movie-card *ngFor="let rent of rentalHistory" [movie]="rent.movie"></app-movie-card>
   </div>
 </div>

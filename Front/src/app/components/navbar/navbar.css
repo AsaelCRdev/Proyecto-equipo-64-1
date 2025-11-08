@@ -91,6 +91,33 @@
   user-select: none;
   font-size: 1rem;
 }
+.login-btn, .logout-btn {
+  background-color: #0e0e26;
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Poppins', sans-serif;
+  transition: background-color 0.3s ease;
+}
+.login-btn:hover, .logout-btn:hover {
+  background-color: #1c1c3a;
+}
+.login-btn i {
+  font-size: 1.2rem;
+}
+/* Ajuste pequeño para alinear contenido en navbar-right */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 
 
 @media (max-width: 768px) {

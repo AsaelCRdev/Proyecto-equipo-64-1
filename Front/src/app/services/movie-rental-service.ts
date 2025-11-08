@@ -13,26 +13,26 @@ export class MovieRentalService {
    
     {
       movie: {
-        id: 1,
-        title: 'Acción Extrema',
-        year: 2024,
-        rating: 8.5,
-        duration: '2h 15min',
-        imageUrl: 'url-imagen1.jpg',
-        genre: 'Acción'
+       id: 1,
+       title: 'Avatar 3',
+       year: 2027,
+       rating: 8.5,
+       duration: '2h 15min',
+       imageUrl: 'https://lumiere-a.akamaihd.net/v1/images/image_17096efb.jpeg?region=0%2C0%2C540%2C810&width=320', 
+       genre: 'Acción',
       },
       rentDate: new Date('2024-07-10'),
       expireDate: new Date('2024-07-17')
     },
     {
       movie: {
-        id: 2,
-        title: 'Amor en París',
-        year: 2023,
-        rating: 7.8,
-        duration: '1h 55min',
-        imageUrl: 'url-imagen2.jpg',
-        genre: 'Romance'
+       id: 2,
+       title: 'Interestelar',
+       year: 2024,
+       rating: 9,
+       duration: '2h 40min',
+       imageUrl: 'https://m.media-amazon.com/images/S/pv-target-images/79194981293eabf6620ece96eb5a9c1fffa04d3374ae12986e0748800b37b9cf.jpg',
+       genre: 'Ciencia Ficción',
       },
       rentDate: new Date('2024-06-01'),
       expireDate: new Date('2024-06-08')

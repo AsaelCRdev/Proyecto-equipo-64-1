@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar';
 import { MyRentals } from './components/my-rentals/my-rentals';
 
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, NavbarComponent,MyRentals],

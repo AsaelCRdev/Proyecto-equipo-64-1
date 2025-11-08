@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CatalogComponent } from '../catalog/catalog';
 import { MovieRentalService, Rental } from '../../services/movie-rental-service';
 import { MovieCard } from '../movie-card/movie-card';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-my-rentals',
@@ -15,7 +16,9 @@ export class MyRentals {
   activeTab: 'alquilar' | 'activos' | 'historial' = 'alquilar';
   activeRentals: Rental[] = [];
   rentalHistory: Rental[] = [];
-  constructor(private rentalService: MovieRentalService) {}
+
+  
+  constructor(private rentalService: MovieRentalService,public auth:AuthService) {}
   ngOnInit() {
     this.loadRentals();
   }
