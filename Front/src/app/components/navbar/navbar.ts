@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthDialog } from '../auth-dialog/auth-dialog';
 import { AuthService } from '../../services/auth-service';
+import { CartService } from '../../services/cart-service';
 
 @Component({
   selector: 'app-navbar',
@@ -18,10 +19,15 @@ export class NavbarComponent implements OnInit {
   cartItemCount: number = 3;
   showAuth: boolean = false;
 
-  constructor(private auth:AuthService) { 
+  constructor(private auth:AuthService, private cartService:CartService) {
     this.auth.isLoggedIn$.subscribe(v => this.isLoggedIn = v)
   }
+
   ngOnInit(): void { }
+
+  toggleCart() {
+    this.cartService.toggle();
+  }
 
   openAuth(): void {
     this.showAuth = true;

@@ -5,7 +5,7 @@
   <input
     type="search"
     placeholder="Buscar películas..."
-    [formControl]="searchControl"
+    [(ngModel)]="searchText"
     (input)="onSearchChange()"
     class="search-input"
   />

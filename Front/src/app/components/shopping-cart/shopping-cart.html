@@ -1,1 +1,23 @@
-<p>shopping-cart works!</p>
+<div class="cart-overlay" [class.open]="(isOpen$ | async)" (click)="closeCarrito()"></div>
+
+<aside class="cart-panel" [class.open]="(isOpen$ | async)" role="dialog" aria-labelledby="cart-title">
+  <header>
+    <h2 id="cart-title">Tu carrito</h2>
+    <button (click)="closeCarrito()">Cerrar</button>
+  </header>
+
+  <div class="cart-items">
+    <p *ngIf="!cartItems || cartItems.length === 0">El carrito está vacío.</p>
+    <ul *ngIf="cartItems?.length">
+      <li *ngFor="let item of cartItems">
+        {{ item.name }} — {{ item.quantity }} x {{ item.price | currency }}
+        <button (click)="eliminarItem(item.id)">Eliminar</button>
+      </li>
+    </ul>
+  </div>
+
+  <footer>
+    <div>Total: {{ calcularTotal() | currency }}</div>
+    <button (click)="checkout()" [disabled]="!cartItems?.length">Pagar</button>
+  </footer>
+</aside>
