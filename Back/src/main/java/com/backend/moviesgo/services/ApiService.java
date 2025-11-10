@@ -2,15 +2,17 @@ package com.backend.moviesgo.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import com.backend.moviesgo.model.MovieDetail;
+import com.backend.moviesgo.model.OmdbSearchResponse;
+
 import org.springframework.beans.factory.annotation.Value;
 import reactor.core.publisher.Mono;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import java.util.Map;
 
 // WARNING: No menos de 3 caracteres para la consulta
 @Service
-class ApiService {
+public class ApiService {
   private final WebClient client;
   private final String apiKey;
 
@@ -24,7 +26,7 @@ class ApiService {
 
   }
 
-  public Mono<String> getMovieById(String id) {
+  public Mono<MovieDetail> getMovieById(String id) {
     return client.get()
         .uri(uriBuilder -> uriBuilder
             .queryParam("type", "movie")
@@ -34,17 +36,17 @@ class ApiService {
         .retrieve()
         .onStatus(HttpStatus.INTERNAL_SERVER_ERROR::equals,
             response -> response.bodyToMono(String.class).map(Exception::new))
-        .bodyToMono(String.class)
+        .bodyToMono(MovieDetail.class)
         .doOnError(error -> {
           System.err.println("[-] Error al consultar a la API: " + error.getMessage());
         });
   }
 
-  public Mono<String> getMoviesBySearch(String query, String page) {
+  public Mono<OmdbSearchResponse> getMoviesBySearch(String query, String page) {
     if (query == null || query.length() < 3) {
       return Mono.error(new IllegalArgumentException("La consulta debe tener al menos 3 caracteres."));
     }
-    respone = client.get()
+    Mono<OmdbSearchResponse> res = client.get()
         .uri(uriBuilder -> {
           uriBuilder.queryParam("s", query);
           if (page != null && !page.isBlank()) {
@@ -57,10 +59,11 @@ class ApiService {
         .retrieve()
         .onStatus(HttpStatus.INTERNAL_SERVER_ERROR::equals,
             response -> response.bodyToMono(String.class).map(Exception::new))
-        .bodyToMono(String.class)
+        .bodyToMono(OmdbSearchResponse.class)
         .doOnError(error -> {
           System.err.println("[-] Error al consultar a la API: " + error.getMessage());
         });
+    return res;
   }
 
 }

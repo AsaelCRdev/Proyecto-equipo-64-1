@@ -1,11 +1,12 @@
 package com.backend.moviesgo.model;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class OmdbSearchResponse {
-  public List<MovieSummary> Search;
+  public ArrayList<MovieSummary> Search;
   public String totalResults;
   public String Response;
+  public String Error;
 
   // Getters y setters
 }

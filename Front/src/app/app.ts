@@ -5,10 +5,10 @@ import { CatalogComponent } from './components/catalog/catalog';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent, CatalogComponent],
+  imports: [RouterOutlet, NavbarComponent],
   templateUrl: './app.html',
-  styleUrls: ['./app.css'],    
-  standalone: true             
+  styleUrls: ['./app.css'],
+  standalone: true,
 })
 export class App {
   protected readonly title = signal('Front');

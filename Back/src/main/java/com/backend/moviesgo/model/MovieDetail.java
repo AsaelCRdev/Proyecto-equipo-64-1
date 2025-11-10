@@ -1,6 +1,6 @@
 package com.backend.moviesgo.model;
 
-import java.util.List;
+import java.util.ArrayList;
 import com.backend.moviesgo.model.OmdbRating;
 
 public class MovieDetail {
@@ -18,7 +18,7 @@ public class MovieDetail {
   public String Country;
   public String Awards;
   public String Poster;
-  public List<OmdbRating> Ratings;
+  public ArrayList<OmdbRating> Ratings;
   public String Metascore;
   public String imdbRating;
   public String imdbVotes;

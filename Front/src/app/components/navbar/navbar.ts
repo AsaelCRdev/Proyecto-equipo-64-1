@@ -7,18 +7,17 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './navbar.html',
-  styleUrls: ['./navbar.css']
+  styleUrls: ['./navbar.css'],
 })
-
 export class NavbarComponent implements OnInit {
   userInitial: string = 'D';
   cartItemCount: number = 3;
   isUserLoggedIn: boolean = true;
-  
-  constructor() { }
-  ngOnInit(): void { }
+
+  constructor() {}
+  ngOnInit(): void {}
   logout(): void {
-    console.log('Cerrar sesión llamado');
     this.isUserLoggedIn = false;
   }
 }
+

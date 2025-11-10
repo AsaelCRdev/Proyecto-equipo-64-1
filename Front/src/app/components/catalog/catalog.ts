@@ -3,112 +3,69 @@ import { CommonModule } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { MovieCard } from '../movie-card/movie-card';
 import { ReactiveFormsModule } from '@angular/forms';
-interface Movie {
-  id: number;
-  title: string;
-  year: number;
-  rating: number;
-  duration: string;
-  imageUrl: string;
-  genre: string;
-}
-interface Movie {
-  id: number;
-  title: string;
-  year: number;
-  rating: number;
-  duration: string;
-  imageUrl: string;
-  genre: string;
-}
-
+import { ApiBackService } from '../../services/api-back.service';
+import { inject } from '@angular/core';
+import { Movie } from '../../model/Movie';
+import { RouterLink } from '@angular/router';
+import { WritableSignal, signal } from '@angular/core';
+import { debounceTime } from 'rxjs/operators';
 @Component({
   selector: 'app-catalog',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MovieCard],
+  imports: [CommonModule, ReactiveFormsModule, MovieCard, RouterLink],
   templateUrl: './catalog.html',
   styleUrls: ['./catalog.css'],
 })
 export class CatalogComponent implements OnInit {
   searchControl = new FormControl('');
   searchText: string = '';
-  genres: string[] = [
-    'Todos',
-    'Acción',
-    'Ciencia Ficción',
-    'Romance',
-    'Comedia',
-    'Terror',
-    'Drama',
-    'Aventura',
-    'Thriller',
-  ];
-  selectedGenre: string = 'Todos';
+  genres: string[] = [];
+  selectedGenre: string = 'All';
 
-  movies: Movie[] = [
-    {
-      id: 1,
-      title: 'Acción Extrema',
-      year: 2024,
-      rating: 8.5,
-      duration: '2h 15min',
-      imageUrl: 'https://images.example.com/accion-extrema.jpg',
-      genre: 'Acción',
-    },
-    {
-      id: 2,
-      title: 'Viaje Estelar',
-      year: 2024,
-      rating: 9,
-      duration: '2h 40min',
-      imageUrl: 'https://images.example.com/viaje-estelar.jpg',
-      genre: 'Ciencia Ficción',
-    },
-    {
-      id: 3,
-      title: 'Amor en París',
-      year: 2023,
-      rating: 7.8,
-      duration: '1h 55min',
-      imageUrl: 'https://images.example.com/amor-en-paris.jpg',
-      genre: 'Romance',
-    },
-    // Agrega más películas según necesites
-  ];
+  private apiBack: ApiBackService = inject(ApiBackService);
+  movies: WritableSignal<Movie[] | undefined> = signal(undefined);
 
   filteredMovies: Movie[] = [];
 
   constructor() {}
 
-  ngOnInit(): void {
-    this.applyFilters();
-    this.searchControl.valueChanges.subscribe((value) => {
-      this.searchText = value!;
-      this.applyFilters();
-    });
+  async ngOnInit(): Promise<void> {
+    this.genres = await this.apiBack.getFromBackAsT<string[]>('/getGenres');
+    this.movies.set(await this.apiBack.getFromBackAsT<Movie[]>('/getMovies'));
+    this.filteredMovies = this.movies() as Movie[];
+    this.searchControl.valueChanges
+      .pipe(debounceTime(300)) // espera 300ms después del último cambio
+      .subscribe((value) => {
+        this.searchText = encodeURIComponent(value!.toLocaleLowerCase());
+        this.applyFilters(); // o llamar al backend si querés
+      });
   }
 
   applyFilters(): void {
-    let filtered = this.movies;
+    let uri: string = '/getMovies?';
 
-    if (this.selectedGenre !== 'Todos') {
-      filtered = filtered.filter((movie) => movie.genre === this.selectedGenre);
+    if (this.searchText.trim() != '') {
+      uri += `s=${this.searchText}&`;
     }
-
-    if (this.searchText.trim()) {
-      const lowerSearch = this.searchText.toLowerCase();
-      filtered = filtered.filter((movie) => movie.title.toLowerCase().includes(lowerSearch));
+    const genre = encodeURIComponent(this.selectedGenre.toLowerCase());
+    if (genre.trim() != '') {
+      uri += `g=${genre}`;
     }
-
-    this.filteredMovies = filtered;
+    this.apiBack.getFromBackAsT<Movie[]>(uri).then((res) => {
+      this.movies.set(res);
+      this.filteredMovies = this.movies() as Movie[];
+    });
   }
 
-  onGenreSelect(genre: string): void {
+  onGenreSelect(genre: string, e: Event): void {
     this.selectedGenre = genre;
-    this.applyFilters();
-  }
-
-  onSearchChange(): void {
-    this.applyFilters();
+    this.apiBack
+      .getFromBackAsT<
+        Movie[]
+      >(`/getMovies?g=${encodeURIComponent(this.selectedGenre.toLocaleLowerCase())}`)
+      .then((res) => {
+        this.movies.set(res);
+        this.applyFilters();
+      });
   }
 }
