@@ -1,4 +1,11 @@
 <app-navbar></app-navbar>
-<app-my-rentals></app-my-rentals>
 
-<router-outlet></router-outlet>
+<!-- Esto es para mostrar la interfaz del admin -->
+<div *ngIf="auth.isAdmin$ | async; else normalApp">
+  <app-admin-panel></app-admin-panel>
+</div>
+
+<ng-template #normalApp>
+  <app-my-rentals></app-my-rentals>
+  <router-outlet></router-outlet>
+</ng-template>

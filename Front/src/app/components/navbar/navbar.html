@@ -11,7 +11,7 @@
   </div>
 
   <div *ngIf="isLoggedIn" class="navbar-right">
-    <button class="cart-button" aria-label="Carrito de compras">
+    <button *ngIf="!(auth.isAdmin$ | async)" class="cart-button" aria-label="Carrito de compras">
       <i class="fas fa-shopping-cart"></i>
     </button>
     <div class="user-avatar">{{ userInitial.charAt(0) }}</div>
