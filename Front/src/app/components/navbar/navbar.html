@@ -4,31 +4,26 @@
     <a routerLink="/" class="brand-name">MoviesGo</a>
   </div>
 
-  <ul class="navbar-menu">
-    <li>
-      <a
-        routerLink="/catalogo"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="menu-item active"
-      >
-        <i class="fas fa-home"></i> Catálogo
-      </a>
-    </li>
-    <li>
-      <a routerLink="/mis-alquileres" routerLinkActive="active" class="menu-item">
-        <i class="fas fa-list"></i> Mis Alquileres
-      </a>
-    </li>
-  </ul>
+  <div *ngIf="!isLoggedIn" class="navbar-right">
+    <button class="login-btn" (click)="openAuth()">
+      <i class="fas fa-user"></i> Iniciar Sesión
+    </button>
+  </div>
 
-  <div class="navbar-right">
+  <div *ngIf="isLoggedIn" class="navbar-right">
     <button class="cart-button" aria-label="Carrito de compras">
       <i class="fas fa-shopping-cart"></i>
     </button>
-    <div class="user-avatar">
-      D
-      <!-- TODO: Esto cambiarlo a que agarre la primera letra del nombre del usuario-->
-    </div>
+    <div class="user-avatar">{{ userInitial.charAt(0) }}</div>
+    <button class="logout-btn" (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i>
+    </button>
   </div>
 </nav>
+
+<!-- Para cuando se va a auntenticar -->
+<app-auth-dialog
+  *ngIf="showAuth"
+  (closeDialog)="onAuthClose()"
+  (loggedIn)="onLoggedIn()"
+></app-auth-dialog>

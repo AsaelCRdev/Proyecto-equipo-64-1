@@ -43,35 +43,6 @@
   font-size: 1.125rem;
 }
 
-/* Menú centrado */
-.navbar-menu {
-  list-style: none;
-  display: flex;
-  gap: 1.5rem;
-  margin: 0;
-  padding: 0;
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-
-.menu-item {
-  text-decoration: none;
-  color: #222;
-  font-weight: 500;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-}
-
-.menu-item i {
-  font-size: 1rem;
-}
 
 /* Estado  */
 .menu-item:active {
@@ -119,6 +90,33 @@
   justify-content: center;
   user-select: none;
   font-size: 1rem;
+}
+.login-btn, .logout-btn {
+  background-color: #0e0e26;
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Poppins', sans-serif;
+  transition: background-color 0.3s ease;
+}
+.login-btn:hover, .logout-btn:hover {
+  background-color: #1c1c3a;
+}
+.login-btn i {
+  font-size: 1.2rem;
+}
+/* Ajuste pequeño para alinear contenido en navbar-right */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 
