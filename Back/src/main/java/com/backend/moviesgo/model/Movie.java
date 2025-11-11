@@ -11,6 +11,7 @@ public class Movie {
   public String released;
   public String poster;
   public String plot;
+  public String price;
 
   public Movie(
       String imdbID,
@@ -29,6 +30,28 @@ public class Movie {
     this.released = released;
     this.poster = poster;
     this.plot = plot;
+
+  }
+
+  public Movie(
+      String imdbID,
+      String title,
+      String genre[],
+      ArrayList<String> reviews,
+      String rating,
+      String released,
+      String poster,
+      String plot,
+      String price) {
+    this.imdbID = imdbID;
+    this.title = title;
+    this.genre = genre;
+    this.reviews = reviews;
+    this.rating = rating;
+    this.released = released;
+    this.poster = poster;
+    this.plot = plot;
+    this.price = price;
 
   }
 }

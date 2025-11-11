@@ -14,7 +14,7 @@
     @for (genre of genres; track $index) {
       <button
         [class.selected]="genre === selectedGenre"
-        (click)="onGenreSelect(genre, $event)"
+        (click)="onGenreSelect(genre)"
         class="genre-btn"
         type="button"
       >

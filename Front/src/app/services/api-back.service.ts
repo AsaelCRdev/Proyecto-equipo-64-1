@@ -14,10 +14,10 @@ export class ApiBackService {
     const f = await fetch(this.api + uri);
     return await f.json();
   }
-  async getFromBackAsT<T>(uri: string) {
+  async getFromBackAsT<T>(uri: string): Promise<T | string> {
     const response = await this.fetchBack(uri);
     const asEnd = response as EndpointResponse;
 
-    return asEnd.value as T;
+    return asEnd.error ? (asEnd.value as string) : (asEnd.value as T);
   }
 }

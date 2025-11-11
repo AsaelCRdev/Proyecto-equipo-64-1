@@ -1,15 +1,18 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AsyncPipe } from '@angular/common';
 import { NavbarComponent } from './components/navbar/navbar';
-import { CatalogComponent } from './components/catalog/catalog';
+import { AdminPanel } from './components/admin-panel/admin-panel';
+import { AuthService } from './services/auth-service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent],
+  imports: [RouterOutlet, NavbarComponent, AdminPanel, AsyncPipe],
   templateUrl: './app.html',
   styleUrls: ['./app.css'],
   standalone: true,
 })
 export class App {
+  auth = inject(AuthService);
   protected readonly title = signal('Front');
 }

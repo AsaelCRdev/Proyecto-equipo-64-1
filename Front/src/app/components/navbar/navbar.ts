@@ -1,23 +1,41 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { inject, Component, OnInit } from '@angular/core';
+import { CommonModule, AsyncPipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { AuthDialog } from '../auth-dialog/auth-dialog';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, AuthDialog, AsyncPipe],
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.css'],
 })
 export class NavbarComponent implements OnInit {
+  isLoggedIn: boolean = false;
   userInitial: string = 'D';
   cartItemCount: number = 3;
-  isUserLoggedIn: boolean = true;
+  auth = inject(AuthService);
+  showAuth: boolean = false;
 
   constructor() {}
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.auth.isLoggedIn$.subscribe((v) => (this.isLoggedIn = v));
+  }
+
+  openAuth(): void {
+    this.showAuth = true;
+  }
+
+  onAuthClose(): void {
+    this.showAuth = false;
+  }
+
+  onLoggedIn(): void {
+    this.showAuth = false;
+  }
+
   logout(): void {
-    this.isUserLoggedIn = false;
+    this.auth.logout();
   }
 }
-

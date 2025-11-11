@@ -1,14 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, WritableSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl } from '@angular/forms';
 import { MovieCard } from '../movie-card/movie-card';
-import { ReactiveFormsModule } from '@angular/forms';
-import { ApiBackService } from '../../services/api-back.service';
-import { inject } from '@angular/core';
+import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { Movie } from '../../model/Movie';
 import { RouterLink } from '@angular/router';
-import { WritableSignal, signal } from '@angular/core';
 import { debounceTime } from 'rxjs/operators';
+import { MovieService } from '../../services/movie.service';
+
 @Component({
   selector: 'app-catalog',
   standalone: true,
@@ -22,7 +20,7 @@ export class CatalogComponent implements OnInit {
   genres: string[] = [];
   selectedGenre: string = 'All';
 
-  private apiBack: ApiBackService = inject(ApiBackService);
+  private movieService: MovieService = inject(MovieService);
   movies: WritableSignal<Movie[] | undefined> = signal(undefined);
 
   filteredMovies: Movie[] = [];
@@ -30,8 +28,8 @@ export class CatalogComponent implements OnInit {
   constructor() {}
 
   async ngOnInit(): Promise<void> {
-    this.genres = await this.apiBack.getFromBackAsT<string[]>('/getGenres');
-    this.movies.set(await this.apiBack.getFromBackAsT<Movie[]>('/getMovies'));
+    this.genres = (await this.movieService.getGenres()) as string[];
+    this.movies.set((await this.movieService.getMovies(undefined, undefined)) as Movie[]);
     this.filteredMovies = this.movies() as Movie[];
     this.searchControl.valueChanges
       .pipe(debounceTime(300)) // espera 300ms después del último cambio
@@ -42,30 +40,22 @@ export class CatalogComponent implements OnInit {
   }
 
   applyFilters(): void {
-    let uri: string = '/getMovies?';
-
-    if (this.searchText.trim() != '') {
-      uri += `s=${this.searchText}&`;
-    }
-    const genre = encodeURIComponent(this.selectedGenre.toLowerCase());
-    if (genre.trim() != '') {
-      uri += `g=${genre}`;
-    }
-    this.apiBack.getFromBackAsT<Movie[]>(uri).then((res) => {
-      this.movies.set(res);
-      this.filteredMovies = this.movies() as Movie[];
-    });
+    this.movieService
+      .getMovies(
+        this.searchText.trim() == '' ? undefined : this.searchText,
+        this.selectedGenre.trim() == '' ? undefined : this.selectedGenre,
+      )
+      .then((res) => {
+        this.movies.set(res as Movie[]);
+        this.filteredMovies = this.movies() as Movie[];
+      });
   }
 
-  onGenreSelect(genre: string, e: Event): void {
+  onGenreSelect(genre: string): void {
     this.selectedGenre = genre;
-    this.apiBack
-      .getFromBackAsT<
-        Movie[]
-      >(`/getMovies?g=${encodeURIComponent(this.selectedGenre.toLocaleLowerCase())}`)
-      .then((res) => {
-        this.movies.set(res);
-        this.applyFilters();
-      });
+    this.movieService.getMovies(undefined, this.selectedGenre).then((res) => {
+      this.movies.set(res as Movie[]);
+      this.applyFilters();
+    });
   }
 }

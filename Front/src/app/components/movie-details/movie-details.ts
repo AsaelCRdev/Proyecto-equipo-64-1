@@ -1,11 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject, signal, WritableSignal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ApiBackService } from '../../services/api-back.service';
-import { OnInit } from '@angular/core';
+import { MovieService } from '../../services/movie.service';
 import { Movie } from '../../model/Movie';
-import { inject } from '@angular/core';
-import { WritableSignal } from '@angular/core';
-import { signal } from '@angular/core';
 
 @Component({
   selector: 'app-movie-details',
@@ -15,14 +11,14 @@ import { signal } from '@angular/core';
 })
 export class MovieDetails implements OnInit {
   movie: WritableSignal<Movie | undefined> = signal(undefined);
-  private apiBack: ApiBackService = inject(ApiBackService);
+  private movieService: MovieService = inject(MovieService);
   route = inject(ActivatedRoute);
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(async (params) => {
       const id = params.get('id');
       if (id) {
-        this.movie.set(await this.apiBack.getFromBackAsT<Movie>(`/getMovies?id=${id}`));
+        this.movie.set((await this.movieService.getMovie(id)) as Movie);
       }
     });
   }
