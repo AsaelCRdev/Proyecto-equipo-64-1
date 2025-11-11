@@ -5,12 +5,12 @@ import { Movie } from '../../model/Movie';
 
 @Component({
   selector: 'app-movie-details',
-  imports: [],
   templateUrl: './movie-details.html',
   styleUrl: './movie-details.css',
 })
 export class MovieDetails implements OnInit {
   movie: WritableSignal<Movie | undefined> = signal(undefined);
+  status: string | undefined;
   private movieService: MovieService = inject(MovieService);
   route = inject(ActivatedRoute);
 
@@ -19,6 +19,7 @@ export class MovieDetails implements OnInit {
       const id = params.get('id');
       if (id) {
         this.movie.set((await this.movieService.getMovie(id)) as Movie);
+        this.status = parseInt(this.movie()!.stock) > 0 ? 'Disponible' : 'Agotado';
       }
     });
   }
