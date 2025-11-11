@@ -1,96 +1,62 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, WritableSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { MovieCard } from '../movie-card/movie-card';
-
-interface Movie {
-  id: number;
-  title: string;
-  year: number;
-  rating: number;
-  duration: string;
-  imageUrl: string;
-  genre: string;
-  price: number;
-}
+import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { Movie } from '../../model/Movie';
+import { RouterLink } from '@angular/router';
+import { debounceTime } from 'rxjs/operators';
+import { MovieService } from '../../services/movie.service';
 
 @Component({
   selector: 'app-catalog',
   standalone: true,
-  imports: [CommonModule, FormsModule, MovieCard],
+  imports: [CommonModule, ReactiveFormsModule, MovieCard, RouterLink],
   templateUrl: './catalog.html',
   styleUrls: ['./catalog.css']
 })
 export class CatalogComponent implements OnInit {
 
   searchText: string = '';
-  genres: string[] = ['Todos', 'Acción', 'Ciencia Ficción', 'Romance', 'Comedia', 'Terror', 'Drama', 'Aventura', 'Thriller'];
-  selectedGenre: string = 'Todos';
+  genres: string[] = [];
+  selectedGenre: string = 'All';
 
-  movies: Movie[] = [
-    {
-      id: 1,
-      title: 'Avatar 3',
-      year: 2027,
-      rating: 8.5,
-      duration: '2h 15min',
-      imageUrl: 'https://lumiere-a.akamaihd.net/v1/images/image_17096efb.jpeg?region=0%2C0%2C540%2C810&width=320', 
-      genre: 'Acción',
-      price:4.99
-    },
-    {
-      id: 2,
-      title: 'Interestelar',
-      year: 2024,
-      rating: 9,
-      duration: '2h 40min',
-      imageUrl: 'https://m.media-amazon.com/images/S/pv-target-images/79194981293eabf6620ece96eb5a9c1fffa04d3374ae12986e0748800b37b9cf.jpg',
-      genre: 'Ciencia Ficción',
-      price: 4.99
-    },
-    {
-      id: 3,
-      title: 'Amor, París y cine',
-      year: 2023,
-      rating: 7.8,
-      duration: '1h 55min',
-      imageUrl: 'https://m.media-amazon.com/images/S/pv-target-images/c6a2456c95a7794614959a861d952ae8934678fc6052bdbf0c1ebe0be03ae7f1.png',
-      genre: 'Romance',
-      price: 4.99
-    },
-   
-  ];
+  private movieService: MovieService = inject(MovieService);
+  movies: WritableSignal<Movie[] | undefined> = signal(undefined);
 
   filteredMovies: Movie[] = [];
 
   constructor() { }
 
-  ngOnInit(): void {
-    this.applyFilters();
+  async ngOnInit(): Promise<void> {
+    this.genres = (await this.movieService.getGenres()) as string[];
+    this.movies.set((await this.movieService.getMovies(undefined, undefined)) as Movie[]);
+    this.filteredMovies = this.movies() as Movie[];
+    this.searchControl.valueChanges
+      .pipe(debounceTime(300)) // espera 300ms después del último cambio
+      .subscribe((value) => {
+        this.searchText = encodeURIComponent(value!.toLocaleLowerCase());
+        this.applyFilters(); // o llamar al backend si querés
+      });
   }
 
   applyFilters(): void {
-    let filtered = this.movies;
-
-    if (this.selectedGenre !== 'Todos') {
-      filtered = filtered.filter(movie => movie.genre === this.selectedGenre);
-    }
-
-    if (this.searchText.trim()) {
-      const lowerSearch = this.searchText.toLowerCase();
-      filtered = filtered.filter(movie => movie.title.toLowerCase().includes(lowerSearch));
-    }
-
-    this.filteredMovies = filtered;
+    this.movieService
+      .getMovies(
+        this.searchText.trim() == '' ? undefined : this.searchText,
+        this.selectedGenre.trim() == '' ? undefined : this.selectedGenre,
+      )
+      .then((res) => {
+        this.movies.set(res as Movie[]);
+        this.filteredMovies = this.movies() as Movie[];
+      });
   }
 
   onGenreSelect(genre: string): void {
     this.selectedGenre = genre;
-    this.applyFilters();
-  }
-
-  onSearchChange(): void {
-    this.applyFilters();
+    this.movieService.getMovies(undefined, this.selectedGenre).then((res) => {
+      this.movies.set(res as Movie[]);
+      this.applyFilters();
+    });
   }
 }
 

@@ -5,10 +5,11 @@ import { MovieRentalService, Rental } from '../../services/movie-rental-service'
 import { MovieCard } from '../movie-card/movie-card';
 import { AuthService } from '../../services/auth-service';
 
+import { AsyncPipe } from '@angular/common';
 @Component({
   selector: 'app-my-rentals',
   standalone: true,
-  imports: [CommonModule, CatalogComponent,MovieCard],
+  imports: [AsyncPipe, CommonModule, CatalogComponent, MovieCard],
   templateUrl: './my-rentals.html',
   styleUrls: ['./my-rentals.css'],
 })
@@ -17,8 +18,10 @@ export class MyRentals {
   activeRentals: Rental[] = [];
   rentalHistory: Rental[] = [];
 
-  
-  constructor(private rentalService: MovieRentalService,public auth:AuthService) {}
+  constructor(
+    private rentalService: MovieRentalService,
+    public auth: AuthService,
+  ) {}
   ngOnInit() {
     this.loadRentals();
   }

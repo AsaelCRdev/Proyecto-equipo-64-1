@@ -1,17 +1,19 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { NavbarComponent } from './components/navbar/navbar';
-import { MyRentals } from './components/my-rentals/my-rentals';
+import { AdminPanel } from './components/admin-panel/admin-panel';
+import { AuthService } from './services/auth-service';
 import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, RouterOutlet, NavbarComponent, MyRentals, ShoppingCartComponent],
+  imports: [RouterOutlet, NavbarComponent, AdminPanel, AsyncPipe, ShoppingCartComponent],
   templateUrl: './app.html',
   styleUrls: ['./app.css'],
-  standalone: true
+  standalone: true,
 })
 export class App {
+  auth = inject(AuthService);
   protected readonly title = signal('Front');
 }

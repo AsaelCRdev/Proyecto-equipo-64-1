@@ -1,25 +1,13 @@
-import { Component, EventEmitter, Input, Output, HostListener } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Movie } from '../../model/Movie';
 import { CartService } from '../../services/cart-service';
-import { AuthService } from '../../services/auth-service';
-
-export interface Movie {
-  id: number;
-  title: string;
-  year: number;
-  rating: number;
-  duration: string;
-  imageUrl: string;
-  genre: string;
-  price: number;
-}
-
 @Component({
   selector: 'app-movie-card',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './movie-card.html',
-  styleUrls: ['./movie-card.css']
+  styleUrls: ['./movie-card.css'],
 })
 
 export class MovieCard {

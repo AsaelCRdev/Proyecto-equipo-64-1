@@ -1,0 +1,234 @@
+<div class="admin-layout">
+  <aside class="sidebar">
+    <ul class="menu">
+      <li
+        class="menu-item"
+        [class.active]="activeSection === 'compradores'"
+        (click)="setSection('compradores')"
+      >
+        Compradores
+      </li>
+      <li
+        class="menu-item"
+        [class.active]="activeSection === 'alquileres'"
+        (click)="setSection('alquileres')"
+      >
+        Alquileres
+      </li>
+      <li
+        class="menu-item"
+        [class.active]="activeSection === 'peliculas'"
+        (click)="setSection('peliculas')"
+      >
+        Películas
+      </li>
+      <li
+        class="menu-item"
+        [class.active]="activeSection === 'reseñas'"
+        (click)="setSection('reseñas')"
+      >
+        Reseñas
+      </li>
+    </ul>
+  </aside>
+
+  <main class="content">
+    <!-- Compradores -->
+    @if (activeSection === 'compradores') {
+      <section class="table-section">
+        <header class="content-header">
+          <h2>Gestión de Compradores</h2>
+          <button class="add-btn">+ Agregar Comprador</button>
+        </header>
+        <div class="table-wrap">
+          <input class="search" placeholder="Buscar compradores..." />
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Dirección</th>
+                <th>Teléfono</th>
+                <th>Fecha Registro</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for(b of buyers;track $index){
+
+                <tr >
+                  <td>{{ b.id }}</td>
+                  <td>{{ b.name }}</td>
+                  <td>{{ b.email }}</td>
+                  <td>{{ b.address }}</td>
+                  <td>{{ b.phone }}</td>
+                  <td>{{ b.registered }}</td>
+                  <td class="actions">
+                    <button (click)="edit(b)" title="Editar" class="edit-btn">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button (click)="remove(b)" title="Eliminar" class="delete-btn">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+    }
+
+    <!-- Alquileres -->
+    @if (activeSection === 'alquileres') {
+      <section class="table-section">
+        <header class="content-header">
+          <h2>Gestión de Alquileres</h2>
+        </header>
+        <div class="table-wrap">
+          <input class="search" placeholder="Buscar Alquileres..." />
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Email</th>
+                <th>Película</th>
+                <th>Fecha Alquiler</th>
+                <th>Fecha Devolución</th>
+                <th>Precio</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for(r of rentals;track $index){
+
+                <tr >
+                  <td>{{ r.id }}</td>
+                  <td>{{ r.buyer }}</td>
+                  <td>{{ r.email }}</td>
+                  <td>{{ r.movie }}</td>
+                  <td>{{ r.rentDate }}</td>
+                  <td>{{ r.returnDate }}</td>
+                  <td>{{ r.price }}</td>
+                  <td>
+                    <span class="badge" [class.active]="r.status === 'Activo'">{{ r.status }}</span>
+                  </td>
+                  <td class="actions">
+                    <button (click)="edit(r)" title="Editar" class="edit-btn">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button (click)="remove(r)" title="Eliminar" class="delete-btn">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+    }
+
+    @if (activeSection === 'peliculas') {
+      <section class="table-section">
+        <header class="content-header">
+          <h2>Gestión de Películas</h2>
+          <button class="add-btn">+ Agregar Película</button>
+        </header>
+        <div class="table-wrap">
+          <input class="search" placeholder="Buscar películas..." />
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Género</th>
+                <th>Año</th>
+                <th>Duración</th>
+                <th>Rating</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for(m of movies; track $index){
+
+                <tr >
+                  <td>{{ m.id }}</td>
+                  <td>{{ m.title }}</td>
+                  <td>
+                    <span class="genre-badge">{{ m.genre }}</span>
+                  </td>
+                  <td>{{ m.year }}</td>
+                  <td>{{ m.duration }}</td>
+                  <td>★ {{ m.rating }}</td>
+                  <td>{{ m.price }}</td>
+                  <td>
+                    <span class="badge stock">{{ m.stock }}</span>
+                  </td>
+                  <td class="actions">
+                    <button (click)="edit(m)" title="Editar" class="edit-btn">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button (click)="remove(m)" title="Eliminar" class="delete-btn">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <!-- Películas -->
+    }
+
+    @if (activeSection === 'reseñas') {}
+    <section class="table-section">
+      <header class="content-header">
+        <h2>Gestión de Reseñas</h2>
+      </header>
+      <div class="table-wrap">
+        <input class="search" placeholder="Buscar reseñas..." />
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Usuario</th>
+              <th>Película</th>
+              <th>Rating</th>
+              <th>Reseña</th>
+              <th>Fecha</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (rv of reviews; track $index) {
+              <tr>
+                <td>{{ rv.id }}</td>
+                <td>{{ rv.user }}</td>
+                <td>{{ rv.movie }}</td>
+                <td>★ {{ rv.rating }}</td>
+                <td>{{ rv.text }}</td>
+                <td>{{ rv.date }}</td>
+                <td class="actions">
+                  <button (click)="edit(rv)" title="Editar" class="edit-btn">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button (click)="remove(rv)" title="Eliminar" class="delete-btn">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <!-- Reseñas -->
+  </main>
+</div>

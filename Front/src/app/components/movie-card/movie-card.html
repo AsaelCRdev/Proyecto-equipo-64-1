@@ -1,22 +1,21 @@
 <div class="movie-card">
-  <img [src]="movie.imageUrl" [alt]="movie.title" class="movie-image" />
+  <img [src]="movie.poster" [alt]="movie.title" class="movie-image" />
   <div class="movie-info">
     <h3 class="movie-title">{{ movie.title }}</h3>
 
     <div class="movie-meta">
-      <span class="movie-rating">
-        <i class="fas fa-star"></i> {{ movie.rating }}
-      </span>
-      <span class="movie-duration">{{ movie.duration }} </span>
-      <span class="movie-year">{{ movie.year }}</span>
+      <span class="movie-rating"> <i class="fas fa-star"></i> {{ movie.rating }} </span>
+      <!-- <span class="movie-duration">{{ movie.duration }}</span> -->
+      <span class="movie-year">{{ movie.released }}</span>
     </div>
 
     <p class="movie-description">
-      Una emocionante aventura llena de acción y adrenalina que te mantendrá al borde de tu asiento...
+      {{ movie.plot }}
     </p>
 
     <div class="movie-footer">
-      <span class="movie-price">${{ movie.price }}</span>
+      <!-- FIXME: -->
+      <!-- <span class="movie-price">${{ movie.price }}</span> -->
       <div class="movie-buttons">
         <button class="details-btn">Detalles</button>
         <button class="add-btn">+</button>

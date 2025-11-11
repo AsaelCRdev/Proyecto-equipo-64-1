@@ -1,35 +1,57 @@
 .movie-card {
-  background: white;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   display: flex;
   flex-wrap: nowrap;
+  min-height: 33vh;
+
+  max-height: 33vh;
+  max-width: 11vw;
 }
 
 .movie-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 20px rgb(0 0 0 / 0.15);
 }
+.movie-card:hover .movie-info {
+  animation: slideLeft 0.3s forwards;
+}
 
 /* Ajustamos imagen para ocupar 40% de alto y 30% de ancho */
 .movie-image {
-  width: 30%;
-  height: auto;
-  object-fit: cover;
-  border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
+  position: absolute;
+  border-radius: 12px;
+  min-height: 33vh;
+
+  max-height: 33vh;
+  max-width: 11vw;
 }
 
 /* Movie info como columna flex, ocupa resto del espacio */
 .movie-info {
+  background: white;
+  position: relative;
+  z-index: 1;
   flex: 1;
   padding: 1rem 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  transform: translateX(11vw);
+}
+@keyframes slideLeft {
+  from {
+    transform: translateX(11vw);
+  }
+  to {
+    transform: translateX(1vw);
+  }
 }
 
 /* Descripción con altura y truncado de texto */
