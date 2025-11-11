@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MovieSelectDialog, MovieItem } from '../movie-select-dialog/movie-select-dialog';
+import { MovieConfigDialog } from '../movie-config-dialog/movie-config-dialog';
+
 interface Buyer{
   id:string;
   name:string;
@@ -39,12 +42,18 @@ interface Review {
 
 @Component({
   selector: 'app-admin-panel',
-  imports: [CommonModule],
-  templateUrl: './admin-panel.html',
-  styleUrl: './admin-panel.css',
+  standalone: true,                        
+  imports: [CommonModule, MovieSelectDialog, MovieConfigDialog], 
+  templateUrl: './admin-panel.html',  
+  styleUrls: ['./admin-panel.css'],          
 })
 export class AdminPanel {
   activeSection:'compradores'|'alquileres'|'peliculas'|'reseñas' = 'compradores';
+
+  // modales / selección
+  showSelect: boolean = false;
+  showConfig: boolean = false;
+  selectedMovie: MovieItem | null = null; 
 
   buyers:Buyer[] = [
     {id: "1", name: 'Carlos Martínez', email: 'carlos@email.com', address: 'Av de las mercedes,edif:el Pinar,Caracas', phone: '+58 04243389531', registered: '14/1/2025'},
@@ -69,6 +78,41 @@ export class AdminPanel {
 
   setSection(section: 'compradores' | 'alquileres' | 'peliculas' | 'reseñas') {
     this.activeSection = section;
+  }
+
+  // abrir selector
+  openSelect() {
+    this.showSelect = true;
+  }
+
+  // Este evento es para añadir la pelicula seleccionada
+  onSelectMovie(movie: MovieItem) {
+    this.selectedMovie = movie;
+    this.showSelect = false;
+    this.showConfig = true;
+  }
+
+  // recibir payload del diálogo de configuración y añadir al catálogo (o actualizar)
+  onAddToCatalog(payload: { movie: MovieItem; stock: number; price: number }) {
+    const title = payload.movie.title;
+    const exists = this.movies.find(m => m.title === title);
+    if (!exists) {
+      this.movies.push({
+        id: this.movies.length + 1,
+        title,
+        genre: payload.movie.genre,
+        year: payload.movie.year ?? new Date().getFullYear(),    // <-- default
+        duration: payload.movie.duration ?? '',
+        rating: payload.movie.rating ?? 0,     
+        price: payload.price,
+        stock: payload.stock
+      });
+    } else {
+      exists.price = payload.price;
+      exists.stock = payload.stock;
+    }
+    this.showConfig = false;
+    this.selectedMovie = null;
   }
 
   edit(item: any) { console.log('editar', item); }

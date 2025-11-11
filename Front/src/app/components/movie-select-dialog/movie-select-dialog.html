@@ -1,0 +1,16 @@
+<div class="overlay">
+  <div class="dialog large">
+    <button class="close-btn" (click)="onClose()">×</button>
+    <h3>Selecciona una Película</h3>
+    <input type="search" placeholder="Buscar por título o género..." [(ngModel)]="query" class="search" />
+    <div class="grid">
+      <button class="card" *ngFor="let m of filtered" (click)="onSelect(m)">
+        <img [src]="m.imageUrl" alt="{{m.title}}" />
+        <div class="meta">
+          <div class="title">{{m.title}}</div>
+          <div class="sub">{{m.genre}} ★ {{m.rating}}</div>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>

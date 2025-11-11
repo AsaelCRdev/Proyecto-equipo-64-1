@@ -13,8 +13,9 @@
     <section *ngIf="activeSection === 'compradores'" class="table-section">
       <header class="content-header">
         <h2>Gestión de Compradores</h2>
-        <button class="add-btn">+ Agregar Comprador</button>
+       <button class="add-btn" >+ Agregar usuario</button> 
       </header>
+
       <div class="table-wrap">
         <input class="search" placeholder="Buscar compradores..." />
         <table class="data-table">
@@ -74,8 +75,22 @@
     <section *ngIf="activeSection === 'peliculas'" class="table-section">
       <header class="content-header">
         <h2>Gestión de Películas</h2>
-        <button class="add-btn">+ Agregar Película</button>
+        <button class="add-btn" (click)="openSelect()">+ Agregar Película</button>
       </header>
+
+      <app-movie-select-dialog
+        *ngIf="showSelect"
+        (close)="showSelect = false"
+        (select)="onSelectMovie($event)"
+      ></app-movie-select-dialog>
+
+      <app-movie-config-dialog
+        *ngIf="showConfig && selectedMovie"
+        [movie]="selectedMovie"
+        (close)="showConfig = false"
+        (add)="onAddToCatalog($event)"
+      ></app-movie-config-dialog>
+      
       <div class="table-wrap">
         <input class="search" placeholder="Buscar películas..." />
         <table class="data-table">

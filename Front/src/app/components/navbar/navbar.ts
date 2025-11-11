@@ -18,25 +18,16 @@ export class NavbarComponent implements OnInit {
   cartItemCount: number = 3;
   showAuth: boolean = false;
 
-  constructor(private auth: AuthService) {
+   constructor(public auth: AuthService) {
     this.auth.isLoggedIn$.subscribe(v => this.isLoggedIn = v);
   }
   ngOnInit(): void { }
 
-  openAuth(): void {
-    this.showAuth = true;
-  }
+  openAuth(): void { this.showAuth = true; }
 
-  onAuthClose(): void {
-    this.showAuth = false;
-  }
+  onAuthClose(): void { this.showAuth = false; }
 
-  onLoggedIn(): void {
-   
-    this.showAuth = false;
-  }
+  onLoggedIn(): void { this.showAuth = false; }
 
-  logout(): void {
-    this.auth.logout();
-  }
+  logout(): void { this.auth.logout(); }
 }
