@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.backend.moviesgo.model.MovieDetail;
+import com.backend.moviesgo.model.OmdbRating;
 import com.backend.moviesgo.model.OmdbSearchResponse;
 
 import org.springframework.beans.factory.annotation.Value;

@@ -22,16 +22,16 @@ export class AuthDialog {
     phone: [''],
   });
   isLoginMode: boolean = true;
-  email: string = '';
-  password: string = '';
-  direction: string = '';
-  phone: string = '';
   onSubmit(): void {
     // credenciales admin fijas solicitadas para acceder
     const adminEmail = 'admin@MoviesGo.com';
     const adminPassword = 'Movies20betheOne*';
 
-    if (this.email === adminEmail && this.password === adminPassword) {
+    if (
+      this.authForm.get('email')?.value === adminEmail &&
+      this.authForm.get('password')?.value === adminPassword
+    ) {
+      console.log('Soy admin');
       this.auth.loginAsAdmin();
     } else {
       // login de para usuario normal

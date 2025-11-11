@@ -12,6 +12,10 @@ public class Movie {
   public String poster;
   public String plot;
   public String price;
+  public String stock;
+
+  public Movie() {
+  }
 
   public Movie(
       String imdbID,
@@ -42,7 +46,8 @@ public class Movie {
       String released,
       String poster,
       String plot,
-      String price) {
+      String price,
+      String stock) {
     this.imdbID = imdbID;
     this.title = title;
     this.genre = genre;
@@ -52,6 +57,15 @@ public class Movie {
     this.poster = poster;
     this.plot = plot;
     this.price = price;
+    this.stock = stock;
 
   }
 }
+// Error cargando productos: Cannot construct instance of
+// `com.backend.moviesgo.model.Movie` (no Creators, like default constructor,
+// exist): cannot deserialize from Object value (no delegate- or property-based
+// Creator)
+// at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION`
+// disabled); line: 2, column: 3] (through reference chain:
+// java.util.ArrayList[0])
+// []

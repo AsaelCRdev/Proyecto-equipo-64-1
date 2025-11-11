@@ -40,26 +40,26 @@
       <!-- Recordarme sólo visible en Iniciar Sesión -->
       @if (isLoginMode) {
         <!-- Campo Dirección sólo visible en Crear Cuenta -->
-        <!-- <div> -->
-        <!--   <label for="direccion">Dirección</label> -->
-        <!--   <input -->
-        <!--     type="text" -->
-        <!--     id="direccion" -->
-        <!--     name="direccion" -->
-        <!--     placeholder="Tu dirección" -->
-        <!--     formControlName="direction" -->
-        <!--     required -->
-        <!--   /> -->
-        <!--   <label for="phone">Telefono</label> -->
-        <!--   <input -->
-        <!--     type="text" -->
-        <!--     id="phone" -->
-        <!--     name="phone" -->
-        <!--     placeholder="Tu Telefono" -->
-        <!--     formControlName="phone" -->
-        <!--     required -->
-        <!--   /> -->
-        <!-- </div> -->
+        <div>
+          <label for="direccion">Dirección</label>
+          <input
+            type="text"
+            id="direccion"
+            name="direccion"
+            placeholder="Tu dirección"
+            formControlName="direction"
+            required
+          />
+          <label for="phone">Telefono</label>
+          <input
+            type="text"
+            id="phone"
+            name="phone"
+            placeholder="Tu Telefono"
+            formControlName="phone"
+            required
+          />
+        </div>
 
         <div class="options-row">
           <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>

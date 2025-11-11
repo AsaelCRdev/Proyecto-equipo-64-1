@@ -1,13 +1,16 @@
 package com.backend.moviesgo.controller;
 
+import com.backend.moviesgo.model.OmdbSearchResponse;
 import com.backend.moviesgo.controller.ApiController;
 import com.backend.moviesgo.model.MovieCatalog;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
+import reactor.core.publisher.Mono;
 import com.backend.moviesgo.model.Movie;
 import com.backend.moviesgo.model.EndpointResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @CrossOrigin(origins = "*")
@@ -17,8 +20,8 @@ public class MovieController {
   private final ApiController api;
   private MovieCatalog catalog;
 
-  public MovieController() {
-    this.api = new ApiController();
+  public MovieController(@Value("${omdb.endpoint}") String endpointUrl, @Value("${omdb.api-key}") String apiKey) {
+    this.api = new ApiController(endpointUrl, apiKey);
     this.catalog = new MovieCatalog();
   }
 
