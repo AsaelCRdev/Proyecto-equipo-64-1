@@ -2,10 +2,11 @@ import { Component, OnInit, inject, signal, WritableSignal } from '@angular/core
 import { ActivatedRoute } from '@angular/router';
 import { MovieService } from '../../services/movie.service';
 import { Movie } from '../../model/Movie';
+import { ReviewsSectionComponent } from '../reviews-section/reviews-section';
 
 @Component({
   selector: 'app-movie-details',
-  imports: [],
+  imports: [ReviewsSectionComponent],
   templateUrl: './movie-details.html',
   styleUrl: './movie-details.css',
 })
