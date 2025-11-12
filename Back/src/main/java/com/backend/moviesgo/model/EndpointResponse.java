@@ -9,4 +9,7 @@ public class EndpointResponse {
     this.error = error;
   }
 
+  public EndpointResponse() {
+  }
+
 }

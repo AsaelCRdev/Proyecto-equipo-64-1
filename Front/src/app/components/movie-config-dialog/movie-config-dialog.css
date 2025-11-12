@@ -1,0 +1,78 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1300;
+}
+.dialog {
+  width: 600px;
+  background: #fff;
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  box-shadow: 0 20px 50px rgba(2, 6, 23, 0.4);
+  position: relative;
+}
+.close-btn {
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+.card-info {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.card-info img {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.info .title {
+  font-weight: 700;
+}
+.form-row {
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+}
+.form-row label {
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+  color: #374151;
+}
+.form-row input {
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+.btn {
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  cursor: pointer;
+}
+.btn.primary {
+  background: #060812;
+  color: #fff;
+  border: none;
+}
+.submit-btn:disabled {
+  background: #4a4a72;
+  cursor: not-allowed;
+}

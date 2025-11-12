@@ -15,4 +15,5 @@ export interface Movie {
   poster: string;
   plot: string;
   price: string;
+  stock: string;
 }
