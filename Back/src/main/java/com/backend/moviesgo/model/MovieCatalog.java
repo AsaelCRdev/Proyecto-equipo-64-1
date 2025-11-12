@@ -16,8 +16,7 @@ public class MovieCatalog {
   public JsonService<Movie> json = new JsonService<>("src/main/java/com/backend/moviesgo/json/movies.json",
       Movie.class);
 
-  public MovieCatalog() {
-    // TODO: Deberia cargar del JSON
+  public void refresh() {
     this.catalog = new HashSet<Movie>(this.json.cargar());
     for (Movie mov : this.catalog) {
       for (String genre : mov.genre) {
@@ -26,6 +25,12 @@ public class MovieCatalog {
       }
     }
     genres.add("All");
+
+  }
+
+  public MovieCatalog() {
+    // TODO: Deberia cargar del JSON
+    this.refresh();
   }
 
   public ArrayList<Movie> getMovies() {
@@ -58,6 +63,14 @@ public class MovieCatalog {
     return this.catalog.stream()
         .filter(mv -> Arrays.stream(mv.genre).anyMatch(g -> g.equalsIgnoreCase(genre)))
         .collect(Collectors.toCollection(ArrayList::new));
+  }
+
+  public boolean addMovie(Movie mv) {
+    boolean res = this.catalog.add(mv);
+    if (res)
+      this.json.guardar(new ArrayList<Movie>(this.catalog));
+
+    return res;
   }
 
   public Movie getMovieById(String id) {

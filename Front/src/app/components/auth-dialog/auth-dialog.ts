@@ -18,7 +18,7 @@ export class AuthDialog {
   authForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required],
-    direccion: [''],
+    direction: [''],
     phone: [''],
   });
   isLoginMode: boolean = true;
@@ -31,7 +31,6 @@ export class AuthDialog {
       this.authForm.get('email')?.value === adminEmail &&
       this.authForm.get('password')?.value === adminPassword
     ) {
-      console.log('Soy admin');
       this.auth.loginAsAdmin();
     } else {
       // login de para usuario normal

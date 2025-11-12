@@ -40,6 +40,11 @@
       <!-- Recordarme sólo visible en Iniciar Sesión -->
       @if (isLoginMode) {
         <!-- Campo Dirección sólo visible en Crear Cuenta -->
+
+        <div class="options-row">
+          <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+        </div>
+      } @else {
         <div>
           <label for="direccion">Dirección</label>
           <input
@@ -59,10 +64,6 @@
             formControlName="phone"
             required
           />
-        </div>
-
-        <div class="options-row">
-          <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
         </div>
       }
 

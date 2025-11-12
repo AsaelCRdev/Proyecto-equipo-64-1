@@ -55,9 +55,8 @@
               </tr>
             </thead>
             <tbody>
-              @for(b of buyers;track $index){
-
-                <tr >
+              @for (b of buyers; track $index) {
+                <tr>
                   <td>{{ b.id }}</td>
                   <td>{{ b.name }}</td>
                   <td>{{ b.email }}</td>
@@ -103,9 +102,8 @@
               </tr>
             </thead>
             <tbody>
-              @for(r of rentals;track $index){
-
-                <tr >
+              @for (r of rentals; track $index) {
+                <tr>
                   <td>{{ r.id }}</td>
                   <td>{{ r.buyer }}</td>
                   <td>{{ r.email }}</td>
@@ -136,8 +134,25 @@
       <section class="table-section">
         <header class="content-header">
           <h2>Gestión de Películas</h2>
-          <button class="add-btn">+ Agregar Película</button>
+          <button class="add-btn" (click)="openSelect()">+ Agregar Película</button>
         </header>
+
+        @if (showSelect) {
+          <app-movie-select-dialog
+            (close)="showSelect = false"
+            (select)="onSelectMovie($event)"
+          ></app-movie-select-dialog>
+        }
+
+        @if (showConfig && selectedMovie) {
+          <app-movie-config-dialog
+            [movie]="selectedMovie"
+            (close)="showConfig = false"
+            (add)="onAddToCatalog($event)"
+            (selectOtherMovie)="showSelect = true"
+          ></app-movie-config-dialog>
+        }
+
         <div class="table-wrap">
           <input class="search" placeholder="Buscar películas..." />
           <table class="data-table">
@@ -145,26 +160,24 @@
               <tr>
                 <th>ID</th>
                 <th>Título</th>
-                <th>Género</th>
+                <th>Géneros</th>
                 <th>Año</th>
-                <th>Duración</th>
                 <th>Rating</th>
-                <th>Precio</th>
                 <th>Stock</th>
+                <th>Precio</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
-              @for(m of movies; track $index){
-
-                <tr >
-                  <td>{{ m.id }}</td>
+              @for (m of movies; track $index) {
+                <tr>
+                  <td>{{ m.imdbID }}</td>
                   <td>{{ m.title }}</td>
                   <td>
                     <span class="genre-badge">{{ m.genre }}</span>
                   </td>
-                  <td>{{ m.year }}</td>
-                  <td>{{ m.duration }}</td>
+                  <td>{{ m.released }}</td>
+                  <!-- <td>{{ m.duration }}</td> -->
                   <td>★ {{ m.rating }}</td>
                   <td>{{ m.price }}</td>
                   <td>

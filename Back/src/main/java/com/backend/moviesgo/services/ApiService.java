@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.backend.moviesgo.model.MovieDetail;
-import com.backend.moviesgo.model.OmdbRating;
 import com.backend.moviesgo.model.OmdbSearchResponse;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -44,9 +43,10 @@ public class ApiService {
   }
 
   public Mono<OmdbSearchResponse> getMoviesBySearch(String query, String page) {
-    if (query == null || query.length() < 3) {
-      return Mono.error(new IllegalArgumentException("La consulta debe tener al menos 3 caracteres."));
-    }
+    // if (query == null || query.length() < 3) {
+    // return Mono.error(new IllegalArgumentException("La consulta debe tener al
+    // menos 3 caracteres."));
+    // }
     Mono<OmdbSearchResponse> res = client.get()
         .uri(uriBuilder -> {
           uriBuilder.queryParam("s", query);

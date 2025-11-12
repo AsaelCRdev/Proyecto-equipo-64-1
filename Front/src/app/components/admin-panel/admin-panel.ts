@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { MovieConfigDialog } from '../movie-config-dialog/movie-config-dialog';
+import { MovieSelectDialog } from '../movie-select-dialog/movie-select-dialog';
+import { MovieService } from '../../services/movie.service';
+import { Movie } from '../../model/Movie';
+
 interface Buyer {
   id: string;
   name: string;
@@ -6,16 +11,6 @@ interface Buyer {
   address: string;
   phone: string;
   registered: string;
-}
-interface Movie {
-  id: number;
-  title: string;
-  genre: string;
-  year: number;
-  duration: string;
-  rating: number;
-  price: number;
-  stock: number;
 }
 interface Rental {
   id: number;
@@ -39,11 +34,17 @@ interface Review {
 @Component({
   selector: 'app-admin-panel',
   templateUrl: './admin-panel.html',
+  imports: [MovieSelectDialog, MovieConfigDialog],
   standalone: true,
   styleUrl: './admin-panel.css',
 })
-export class AdminPanel {
+export class AdminPanel implements OnInit {
+  movieService = inject(MovieService);
   activeSection: 'compradores' | 'alquileres' | 'peliculas' | 'reseñas' = 'compradores';
+
+  showSelect = false;
+  showConfig = false;
+  selectedMovie: Movie | undefined = undefined;
 
   buyers: Buyer[] = [
     {
@@ -64,29 +65,7 @@ export class AdminPanel {
     },
   ];
 
-  movies: Movie[] = [
-    {
-      id: 1,
-      title: 'Acción Extrema',
-      genre: 'Acción',
-      year: 2024,
-      duration: '2h 15min',
-      rating: 8.5,
-      price: 4.99,
-      stock: 15,
-    },
-    {
-      id: 2,
-      title: 'Viaje Estelar',
-      genre: 'Ciencia Ficción',
-      year: 2024,
-      duration: '2h 40min',
-      rating: 9,
-      price: 5.99,
-      stock: 10,
-    },
-  ];
-
+  movies: Movie[] = [];
   rentals: Rental[] = [
     {
       id: 1,
@@ -109,7 +88,6 @@ export class AdminPanel {
       status: 'Activo',
     },
   ];
-
   reviews: Review[] = [
     {
       id: 1,
@@ -128,6 +106,40 @@ export class AdminPanel {
       date: '3/11/2025',
     },
   ];
+
+  ngOnInit(): void {
+    this.movieService.getMovies().then((mv) => {
+      if (mv != null) this.movies = mv;
+    });
+  }
+  // abrir selector
+  openSelect() {
+    this.showSelect = true;
+  }
+  onSelectMovie(movie: Movie) {
+    this.selectedMovie = movie;
+    this.showSelect = false;
+    this.showConfig = true;
+  }
+
+  // recibir payload del diálogo de configuración y añadir al catálogo (o actualizar)
+  onAddToCatalog(payload: { movie: Movie; stock: number; price: number }) {
+    this.movieService.addMovie(
+      encodeURIComponent(payload.movie.imdbID.toLowerCase()),
+      encodeURIComponent(payload.stock),
+      encodeURIComponent(payload.price),
+    );
+    setTimeout(() => {
+      this.movieService.getMovies().then((mv) => {
+        if (mv != null) {
+          this.movies = mv;
+          console.log(this.movies);
+        }
+      });
+    }, 1000);
+    this.showConfig = false;
+    this.selectedMovie = undefined;
+  }
 
   setSection(section: 'compradores' | 'alquileres' | 'peliculas' | 'reseñas') {
     this.activeSection = section;
