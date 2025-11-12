@@ -12,10 +12,9 @@ import { MovieService } from '../../services/movie.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, MovieCard, RouterLink],
   templateUrl: './catalog.html',
-  styleUrls: ['./catalog.css']
+  styleUrls: ['./catalog.css'],
 })
 export class CatalogComponent implements OnInit {
-
   searchText: string = '';
   genres: string[] = [];
   selectedGenre: string = 'All';
@@ -24,30 +23,32 @@ export class CatalogComponent implements OnInit {
   movies: WritableSignal<Movie[] | undefined> = signal(undefined);
 
   filteredMovies: Movie[] = [];
+  searchControl: FormControl = new FormControl('');
 
-  constructor() { }
+  constructor() {}
 
   async ngOnInit(): Promise<void> {
     this.genres = (await this.movieService.getGenres()) as string[];
     this.movies.set((await this.movieService.getMovies(undefined, undefined)) as Movie[]);
-    this.filteredMovies = this.movies() as Movie[];
+    this.filteredMovies = (this.movies() ?? []) as Movie[];
+
     this.searchControl.valueChanges
-      .pipe(debounceTime(300)) // espera 300ms después del último cambio
+      .pipe(debounceTime(300))
       .subscribe((value) => {
-        this.searchText = encodeURIComponent(value!.toLocaleLowerCase());
-        this.applyFilters(); // o llamar al backend si querés
+        this.searchText = encodeURIComponent((value ?? '').toString().toLocaleLowerCase());
+        this.applyFilters();
       });
   }
 
   applyFilters(): void {
     this.movieService
       .getMovies(
-        this.searchText.trim() == '' ? undefined : this.searchText,
-        this.selectedGenre.trim() == '' ? undefined : this.selectedGenre,
+        this.searchText.trim() === '' ? undefined : this.searchText,
+        this.selectedGenre.trim() === '' ? undefined : this.selectedGenre
       )
       .then((res) => {
         this.movies.set(res as Movie[]);
-        this.filteredMovies = this.movies() as Movie[];
+        this.filteredMovies = (res ?? []) as Movie[];
       });
   }
 
@@ -55,8 +56,7 @@ export class CatalogComponent implements OnInit {
     this.selectedGenre = genre;
     this.movieService.getMovies(undefined, this.selectedGenre).then((res) => {
       this.movies.set(res as Movie[]);
-      this.applyFilters();
+      this.filteredMovies = (res ?? []) as Movie[];
     });
   }
 }
-

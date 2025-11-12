@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 export interface CartItem {
-  id: any;
+  id: string;
   name: string;
   price?: number;
   quantity: number;
@@ -22,7 +22,7 @@ export class CartService {
   isOpen$ = this.isOpenSubject.asObservable();
 
   private getTotalItems(): number {
-    return this.itemsSubject.value.reduce((sum, i) => sum + (i.quantity || 0), 0);
+    return this.itemsSubject.value.length;
   }
 
   isFull(): boolean {
@@ -33,38 +33,60 @@ export class CartService {
     return Math.max(0, this.MAX_ITEMS - this.getTotalItems());
   }
 
+  private resolveId(item: Partial<CartItem>): string | null {
+    const anyItem = item as any;
+    const rawCandidates = [
+      anyItem.id,
+      anyItem.imdbID,
+      anyItem.movieId,
+      anyItem.movie?.imdbID,
+      anyItem.movie?.id
+    ];
+    const raw = rawCandidates.find(r => r !== undefined && r !== null && String(r).trim() !== '');
+    const normalized = raw == null ? '' : String(raw).trim();
+    return normalized === '' ? null : normalized;
+  }
+
   addItem(item: Partial<CartItem>): boolean {
-    const desired = Math.max(1, item.quantity ?? 1);
-    const currentTotal = this.getTotalItems();
-
-    if (currentTotal + desired > this.MAX_ITEMS) {
-      alert('No se pueden añadir más ítems al carrito. Límite de 5 alquileres alcanzado.');
-      return false;
-    }
-
     const current = [...this.itemsSubject.value];
-    const existing = current.find(i => i.id === item.id);
-    if (existing) {
-      alert('Este alquiler ya está en el carrito.');
+    const normalizedId = this.resolveId(item);
+
+    if (normalizedId == null) {
+      console.error('CartService.addItem: película sin identificador válido', item);
+      alert('Error interno: la película no tiene identificador válido. Revisa la consola para más detalles.');
       return false;
-    } else {
-      const toAdd: CartItem = {
-        id: item.id,
-        name: item.name ?? '',
-        price: item.price ?? 0,
-        quantity: desired,
-        ...item
-      };
-      current.push(toAdd);
     }
 
+    const existing = current.find(i => i.id === normalizedId);
+
+    if (existing) {
+      alert('Solo se permite 1 alquiler por película.');
+      return false;
+    }
+
+    if (current.length >= this.MAX_ITEMS) {
+      alert('No se pueden añadir más ítems al carrito. Límite de 5 alquileres distintos alcanzado.');
+      return false;
+    }
+
+    const toAddItem: CartItem = {
+      ...(item as any),
+      id: normalizedId,
+      name: item.name ?? '',
+      price: item.price ?? 0,
+      quantity: 1
+    };
+
+    current.push(toAddItem);
     this.itemsSubject.next(current);
     this.open();
+
+    console.log('CartService.addItem: añadido', { id: normalizedId, currentCount: current.length });
     return true;
   }
 
   removeItem(id: any) {
-    const next = this.itemsSubject.value.filter(i => i.id !== id);
+    const next = this.itemsSubject.value.filter(i => i.id !== String(id));
     this.itemsSubject.next(next);
   }
 

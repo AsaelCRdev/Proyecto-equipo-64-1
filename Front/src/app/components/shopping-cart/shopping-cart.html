@@ -7,13 +7,20 @@
   </header>
 
   <div class="cart-items">
-    <p *ngIf="!cartItems || cartItems.length === 0">El carrito está vacío.</p>
-    <ul *ngIf="cartItems?.length">
-      <li *ngFor="let item of cartItems">
-        {{ item.name }} — {{ item.quantity }} x {{ item.price | currency }}
-        <button (click)="eliminarItem(item.id)">Eliminar</button>
-      </li>
-    </ul>
+    @if (!cartItems || cartItems.length === 0) {
+      <p>El carrito está vacío.</p>
+    }
+
+    @if (cartItems && cartItems.length) {
+      <ul>
+        @for (item of cartItems; track item.id) {
+          <li>
+            {{ item.name }} — {{ item.quantity }} x {{ item.price | currency }}
+            <button (click)="eliminarItem(item.id)">Eliminar</button>
+          </li>
+        }
+      </ul>
+    }
   </div>
 
   <footer>
