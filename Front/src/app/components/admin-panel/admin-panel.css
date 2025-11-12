@@ -1,0 +1,104 @@
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  font-family: Poppins, sans-serif;
+}
+.sidebar {
+  width: 220px;
+  background: #0f1724;
+  color: #fff;
+  padding: 1.25rem;
+  box-sizing: border-box;
+}
+.brand {
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.menu-item {
+  padding: 0.6rem 0.5rem;
+  cursor: pointer;
+  color: #cbd5e1;
+}
+.menu-item.active {
+  background: #111827;
+  color: #fff;
+  border-radius: 6px;
+}
+.logout {
+  margin-top: 2rem;
+  color: #f87171;
+  cursor: pointer;
+}
+
+.content {
+  flex: 1;
+  padding: 1.5rem;
+  background: #f8fafc;
+}
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.add-btn {
+  background: #0f1724;
+  color: white;
+  border: none;
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.table-wrap {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.06);
+}
+.search {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.data-table th,
+.data-table td {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid #eef2f6;
+}
+
+.badge.active {
+  background: #0f1724;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+}
+
+.edit-btn,
+.delete-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  font-size: 1.1rem;
+  color: #333;
+  transition: color 0.3s ease;
+}
+.edit-btn:hover {
+  color: #1f57ff;
+}
+.delete-btn:hover {
+  color: #dc3545;
+}

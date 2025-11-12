@@ -1,0 +1,110 @@
+.cart-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 200ms ease;
+  z-index: 1000;
+  pointer-events: none;
+}
+.cart-overlay.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Panel mejorado: gap del borde, ancho responsivo, esquinas y layout */
+.cart-panel {
+  position: fixed;
+  top: 16px;
+  right: 16px; /* pequeño gap desde el borde */
+  width: clamp(300px, 32vw, 420px);
+  height: calc(100vh - 32px);
+  background: #fff;
+  transform: translateX(110%); /* fuera de pantalla */
+  transition: transform 320ms cubic-bezier(.22,.9,.36,1), box-shadow 200ms;
+  z-index: 1001;
+  box-shadow: -12px 8px 40px rgba(0,0,0,0.18);
+  border-radius: 10px 0 0 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 16px;
+  min-width: 280px;
+}
+
+/* Al abrir */
+.cart-panel.open {
+  transform: translateX(0);
+}
+
+/* Header (title + cerrar) */
+.cart-panel header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  flex: 0 0 auto;
+}
+
+/* Contenido desplazable */
+.cart-panel .cart-content {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+
+/* Items dentro del panel */
+.cart-panel .cart-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 8px;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.02);
+  margin-bottom: 10px;
+}
+
+/* Footer fijo al final */
+.cart-panel footer {
+  flex: 0 0 auto;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Botones más visibles */
+.cart-panel button {
+  background: #0b66ff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.cart-panel button.secondary {
+  background: #f1f1f1;
+  color: #222;
+}
+
+/* Responsive: en móviles ocupar casi toda la pantalla */
+@media (max-width: 640px) {
+  .cart-overlay { background: rgba(0,0,0,0.6); }
+  .cart-panel {
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    transform: translateX(100%);
+  }
+  .cart-panel.open { transform: translateX(0); }
+}

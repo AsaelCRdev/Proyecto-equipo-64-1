@@ -1,114 +1,62 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, WritableSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl } from '@angular/forms';
 import { MovieCard } from '../movie-card/movie-card';
-import { ReactiveFormsModule } from '@angular/forms';
-interface Movie {
-  id: number;
-  title: string;
-  year: number;
-  rating: number;
-  duration: string;
-  imageUrl: string;
-  genre: string;
-}
-interface Movie {
-  id: number;
-  title: string;
-  year: number;
-  rating: number;
-  duration: string;
-  imageUrl: string;
-  genre: string;
-}
+import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { Movie } from '../../model/Movie';
+import { RouterLink } from '@angular/router';
+import { debounceTime } from 'rxjs/operators';
+import { MovieService } from '../../services/movie.service';
 
 @Component({
   selector: 'app-catalog',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MovieCard],
+  imports: [CommonModule, ReactiveFormsModule, MovieCard, RouterLink],
   templateUrl: './catalog.html',
   styleUrls: ['./catalog.css'],
 })
 export class CatalogComponent implements OnInit {
-  searchControl = new FormControl('');
   searchText: string = '';
-  genres: string[] = [
-    'Todos',
-    'Acción',
-    'Ciencia Ficción',
-    'Romance',
-    'Comedia',
-    'Terror',
-    'Drama',
-    'Aventura',
-    'Thriller',
-  ];
-  selectedGenre: string = 'Todos';
+  genres: string[] = [];
+  selectedGenre: string = 'All';
 
-  movies: Movie[] = [
-    {
-      id: 1,
-      title: 'Acción Extrema',
-      year: 2024,
-      rating: 8.5,
-      duration: '2h 15min',
-      imageUrl: 'https://images.example.com/accion-extrema.jpg',
-      genre: 'Acción',
-    },
-    {
-      id: 2,
-      title: 'Viaje Estelar',
-      year: 2024,
-      rating: 9,
-      duration: '2h 40min',
-      imageUrl: 'https://images.example.com/viaje-estelar.jpg',
-      genre: 'Ciencia Ficción',
-    },
-    {
-      id: 3,
-      title: 'Amor en París',
-      year: 2023,
-      rating: 7.8,
-      duration: '1h 55min',
-      imageUrl: 'https://images.example.com/amor-en-paris.jpg',
-      genre: 'Romance',
-    },
-    // Agrega más películas según necesites
-  ];
+  private movieService: MovieService = inject(MovieService);
+  movies: WritableSignal<Movie[] | undefined> = signal(undefined);
 
   filteredMovies: Movie[] = [];
+  searchControl: FormControl = new FormControl('');
 
   constructor() {}
 
-  ngOnInit(): void {
-    this.applyFilters();
-    this.searchControl.valueChanges.subscribe((value) => {
-      this.searchText = value!;
-      this.applyFilters();
-    });
+  async ngOnInit(): Promise<void> {
+    this.genres = (await this.movieService.getGenres()) as string[];
+    this.movies.set((await this.movieService.getMovies(undefined, undefined)) as Movie[]);
+    this.filteredMovies = (this.movies() ?? []) as Movie[];
+
+    this.searchControl.valueChanges
+      .pipe(debounceTime(300))
+      .subscribe((value) => {
+        this.searchText = encodeURIComponent((value ?? '').toString().toLocaleLowerCase());
+        this.applyFilters();
+      });
   }
 
   applyFilters(): void {
-    let filtered = this.movies;
-
-    if (this.selectedGenre !== 'Todos') {
-      filtered = filtered.filter((movie) => movie.genre === this.selectedGenre);
-    }
-
-    if (this.searchText.trim()) {
-      const lowerSearch = this.searchText.toLowerCase();
-      filtered = filtered.filter((movie) => movie.title.toLowerCase().includes(lowerSearch));
-    }
-
-    this.filteredMovies = filtered;
+    this.movieService
+      .getMovies(
+        this.searchText.trim() === '' ? undefined : this.searchText,
+        this.selectedGenre.trim() === '' ? undefined : this.selectedGenre
+      )
+      .then((res) => {
+        this.movies.set(res as Movie[]);
+        this.filteredMovies = (res ?? []) as Movie[];
+      });
   }
 
   onGenreSelect(genre: string): void {
     this.selectedGenre = genre;
-    this.applyFilters();
-  }
-
-  onSearchChange(): void {
-    this.applyFilters();
+    this.movieService.getMovies(undefined, this.selectedGenre).then((res) => {
+      this.movies.set(res as Movie[]);
+      this.filteredMovies = (res ?? []) as Movie[];
+    });
   }
 }
