@@ -16,7 +16,7 @@
         @for (item of cartItems; track item.movieId) {
           <li>
             {{ item.movieTitle ?? '' }} — {{ item.days }} x {{ item.price | currency }}
-            <button (click)="eliminarItem(item.movieId)">Eliminar</button>
+            <!-- <button (click)="eliminarItem(item.movieId)">Eliminar</button> -->
           </li>
         }
       </ul>
