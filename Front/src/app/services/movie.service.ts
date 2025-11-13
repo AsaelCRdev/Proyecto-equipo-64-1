@@ -1,6 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { ApiBackService } from './api-back.service';
+import { ApiBackService, EndpointResponse } from './api-back.service';
 import { Movie } from '../model/Movie';
+import { Review } from '../model/Review';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -37,6 +39,28 @@ export class MovieService {
     return typeof res === 'string' ? null : res;
   }
 
+  async addReview(id: string, userId: string, message: string, rating: string): Promise<boolean> {
+    let uri = '/addReview?';
+    if (id.trim() == '') return false;
+    uri += `id=${id}`;
+    if (userId.trim() == '') return false;
+    uri += `&u=${userId}`;
+    if (message.trim() == '') return false;
+    uri += `&m=${message}`;
+    if (rating.trim() == '') return false;
+    uri += `&r=${rating}`;
+    return (
+      ((await this.endpoint.getFromBackAsT<string>(uri, 'POST')) as string).toLowerCase() ===
+      'succes'
+    );
+  }
+  async getAllReviews(id?: string | undefined): Promise<Review[]> {
+    let uri = '/getAllReviews';
+    if (id && id.trim() != '') uri += `?id=${id}`;
+    const res = await this.endpoint.getFromBackAsT<Review[]>(uri);
+    console.log(res);
+    return Array.isArray(res) ? res : [];
+  }
   async getMovies(
     search?: string | undefined,
     genre?: string | undefined,

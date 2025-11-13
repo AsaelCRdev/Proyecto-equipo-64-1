@@ -5,11 +5,12 @@
 // public String released;
 // public String poster;
 // public String plot;
+import { Review } from '../model/Review';
 export interface Movie {
   imdbID: string;
   title: string;
   genre: string[];
-  reviews: string[];
+  reviews: Review[];
   rating: number;
   released: string;
   poster: string;

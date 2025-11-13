@@ -18,6 +18,8 @@ import com.backend.moviesgo.model.Movie;
 import com.backend.moviesgo.model.EndpointResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import com.backend.moviesgo.model.Review;
+import com.backend.moviesgo.model.Buyer;
 
 @CrossOrigin(origins = "*")
 
@@ -25,10 +27,42 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 public class MovieController {
   private final ApiController api;
   private MovieCatalog catalog;
+  private BuyerController buyerController;
 
-  public MovieController(@Value("${omdb.endpoint}") String endpointUrl, @Value("${omdb.api-key}") String apiKey) {
+  public MovieController(@Value("${omdb.endpoint}") String endpointUrl, @Value("${omdb.api-key}") String apiKey,
+      BuyerController buyerController) {
     this.api = new ApiController(endpointUrl, apiKey);
     this.catalog = new MovieCatalog();
+    this.buyerController = buyerController;
+  }
+
+  @GetMapping("/getAllReviews")
+  public EndpointResponse getAllReviews(@RequestParam(value = "id", required = false) String id) {
+    if (id != null && id.trim() != "") {
+      ArrayList<Review> r = this.catalog.getReviewById(id);
+      return new EndpointResponse(r == null ? "Movie not found" : r, r == null);
+    }
+
+    return new EndpointResponse(this.catalog.getAllReviews(), false);
+  }
+
+  @PostMapping("/addReview")
+  public EndpointResponse addReview(@RequestParam(value = "id", required = true) String id,
+      @RequestParam(value = "u", required = true) String userId,
+      @RequestParam(value = "m", required = true) String message,
+      @RequestParam(value = "r", required = true) String rating) {
+
+    System.out.println("Id de usuario");
+    System.out.println(id);
+    Buyer validAuthor = this.buyerController.users.getBuyerById(userId);
+    System.out.println("validAuthor");
+    System.out.println(validAuthor);
+    if (validAuthor == null)
+      return new EndpointResponse("Buyer not found", true);
+    Review r = new Review(userId, validAuthor.name, message, rating);
+
+    return this.catalog.addReview(id, r) ? new EndpointResponse("Succes", false)
+        : new EndpointResponse("Invalid id or u or review or rating", true);
   }
 
   @PostMapping("/addMovie")

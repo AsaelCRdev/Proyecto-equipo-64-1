@@ -17,27 +17,57 @@ export class AuthDialog {
   fb = inject(FormBuilder);
   authForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required],
-    direction: [''],
-    phone: [''],
+    password: ['', [Validators.required]],
+    name: ['', Validators.required],
+    direction: ['', Validators.required],
+    phone: ['', Validators.required],
   });
   isLoginMode: boolean = true;
+  isFormValid() {
+    if (this.isLoginMode) {
+      return this.authForm.get('email')?.valid && this.authForm.get('password')?.valid;
+    } else {
+      return (
+        this.authForm.get('email')?.valid &&
+        this.authForm.get('password')?.valid &&
+        this.authForm.get('name')?.valid &&
+        this.authForm.get('direction')?.valid &&
+        this.authForm.get('phone')?.valid
+      );
+    }
+  }
   onSubmit(): void {
     // credenciales admin fijas solicitadas para acceder
-    const adminEmail = 'admin@MoviesGo.com';
-    const adminPassword = 'Movies20betheOne*';
-
-    if (
-      this.authForm.get('email')?.value === adminEmail &&
-      this.authForm.get('password')?.value === adminPassword
-    ) {
-      this.auth.loginAsAdmin();
+    if (this.isLoginMode) {
+      this.auth
+        .logIn(
+          encodeURIComponent(this.authForm.get('email')?.value.trim()),
+          encodeURIComponent(this.authForm.get('password')?.value.trim()),
+        )
+        .then((r) => {
+          if (r) {
+            this.loggedIn.emit();
+            this.closeDialog.emit();
+          }
+        });
     } else {
-      // login de para usuario normal
-      this.auth.loginUser();
+      this.auth
+        .createAccount(
+          this.authForm.get('email')?.value,
+          this.authForm.get('password')?.value,
+          this.authForm.get('name')?.value,
+          this.authForm.get('direction')?.value,
+          this.authForm.get('phone')?.value,
+        )
+        .then((r) => {
+          if (r) {
+            this.loggedIn.emit();
+            this.closeDialog.emit();
+          } else {
+            alert('Email ya registrado!');
+          }
+        });
     }
-    this.loggedIn.emit();
-    this.closeDialog.emit();
   }
 
   onClose(): void {

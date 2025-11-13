@@ -37,19 +37,17 @@ export class CatalogComponent implements OnInit {
     this.movies.set((await this.movieService.getMovies(undefined, undefined)) as Movie[]);
     this.filteredMovies = (this.movies() ?? []) as Movie[];
 
-    this.searchControl.valueChanges
-      .pipe(debounceTime(300))
-      .subscribe((value) => {
-        this.searchText = encodeURIComponent((value ?? '').toString().toLocaleLowerCase());
-        this.applyFilters();
-      });
+    this.searchControl.valueChanges.pipe(debounceTime(300)).subscribe((value) => {
+      this.searchText = encodeURIComponent((value ?? '').toString().toLocaleLowerCase());
+      this.applyFilters();
+    });
   }
 
   applyFilters(): void {
     this.movieService
       .getMovies(
         this.searchText.trim() === '' ? undefined : this.searchText,
-        this.selectedGenre.trim() === '' ? undefined : this.selectedGenre
+        this.selectedGenre.trim() === '' ? undefined : this.selectedGenre,
       )
       .then((res) => {
         this.movies.set(res as Movie[]);

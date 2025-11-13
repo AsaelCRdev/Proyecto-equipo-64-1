@@ -32,16 +32,17 @@
   <section class="movies-grid">
     @for (movie of filteredMovies; track $index) {
       <a [routerLink]="['/movie', movie.imdbID]">
-        <app-movie-card [movie]="movie" (showRentalModal)="onShowRentalModal($event)"></app-movie-card>
+        <app-movie-card
+          [movie]="movie"
+          (showRentalModal)="onShowRentalModal($event)"
+        ></app-movie-card>
       </a>
     }
   </section>
 
   <!-- Modal de Alquiler -->
   @if (showRentalModal) {
-    <app-alquiler-dias
-      [movie]="selectedMovieForRental"
-      (close)="onCloseRentalModal()">
+    <app-alquiler-dias [movie]="selectedMovieForRental" (close)="onCloseRentalModal()">
     </app-alquiler-dias>
   }
 </section>

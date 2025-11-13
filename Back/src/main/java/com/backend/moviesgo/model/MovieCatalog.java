@@ -33,6 +33,17 @@ public class MovieCatalog {
     this.refresh();
   }
 
+  public ArrayList<Review> getReviewById(String id) {
+    return new ArrayList<Review>(
+        ((Movie) this.catalog.stream().filter(m -> m.imdbID.equals(id)).findFirst().orElse(null)).reviews);
+  }
+
+  public List<ReviewExtended> getAllReviews() {
+    return this.catalog.stream()
+        .flatMap(m -> m.reviews.stream().map(r -> new ReviewExtended(r, m.title)))
+        .collect(Collectors.toList());
+  }
+
   public ArrayList<Movie> getMovies() {
     return new ArrayList<>(this.catalog);
   }
@@ -81,5 +92,18 @@ public class MovieCatalog {
       }
     }
     return null;
+  }
+
+  public boolean addReview(String movieId, Review r) {
+    for (Movie m : this.catalog) {
+      if (m.imdbID.equals(movieId)) {
+        boolean value = m.reviews.add(r);
+        this.json.guardar(new ArrayList<Movie>(this.catalog));
+        this.refresh();
+        return value;
+      }
+    }
+    return false;
+
   }
 }

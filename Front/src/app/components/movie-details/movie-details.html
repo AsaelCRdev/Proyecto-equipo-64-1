@@ -12,5 +12,8 @@
   <span>{{ movie()?.plot }}</span>
   <br />
   <span>Status: {{ status }}</span>
-  <app-reviews-section [movieId]="movie()?.imdbID"></app-reviews-section>
+  <app-reviews-section
+    [movieId]="movie()?.imdbID"
+    [reviews]="movie()?.reviews"
+  ></app-reviews-section>
 </article>
