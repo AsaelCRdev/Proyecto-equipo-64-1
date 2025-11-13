@@ -76,14 +76,6 @@ export class MovieCard {
       return;
     }
 
-    this.cartService.addItem({
-      id: movieId,
-      name: this.getMovieName(),
-      price: this.getMoviePrice(),
-      quantity: 1,
-      movie: this.movie,
-    });
-
     this.addToCart.emit(this.movie);
   }
 
