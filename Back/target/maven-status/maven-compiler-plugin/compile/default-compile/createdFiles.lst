@@ -1,0 +1,12 @@
+com\backend\moviesgo\controller\MovieController.class
+com\backend\moviesgo\controller\ApiController.class
+com\backend\moviesgo\model\MovieCatalog.class
+com\backend\moviesgo\MoviesgoApplication.class
+com\backend\moviesgo\model\OmdbSearchResponse.class
+com\backend\moviesgo\model\Movie.class
+com\backend\moviesgo\model\OmdbRating.class
+com\backend\moviesgo\services\ApiService.class
+com\backend\moviesgo\model\MovieSummary.class
+com\backend\moviesgo\model\EndpointResponse.class
+com\backend\moviesgo\model\MovieDetail.class
+com\backend\moviesgo\services\JsonService.class
