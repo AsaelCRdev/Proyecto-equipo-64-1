@@ -9,23 +9,24 @@
     <div class="error">{{ error }}</div>
   }
 
-  @if (reviews.length === 0 && !loading) {
+  @if (reviews?.length === 0 && !loading) {
     <div>
       <p>No hay comentarios todavía. Sé el primero en comentar.</p>
     </div>
   }
 
-  @if (reviews.length > 0) {
+  @if (reviews && reviews.length > 0) {
     <ul class="reviews-list">
-      @for (r of reviews; track r.id) {
+      @for (r of reviews; track r.authorId) {
         <li class="review">
           <div class="meta">
-            <strong>{{ r.userName }}</strong>
-            @if (r.createdAt) {
-              <span class="date"> · {{ r.createdAt | date:'short' }}</span>
-            }
+            <strong>{{ r.author }}</strong>
+            <!-- @if (r.createdAt) { -->
+            <!--   <span class="date"> · {{ r.createdAt | date:'short' }}</span> -->
+            <!-- } -->
           </div>
-          <p class="comment">{{ r.comment }}</p>
+          <strong>Rating: {{ r.rating }}/5</strong>
+          <p class="comment">{{ r.message }}</p>
         </li>
       }
     </ul>

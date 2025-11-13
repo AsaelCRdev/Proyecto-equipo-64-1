@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Movie } from '../../model/Movie';
 import { CartService } from '../../services/cart-service';
 import { AuthService } from '../../services/auth-service';
+import { AlquilerDiasComponent } from '../Time-Rental/Time-Rental';
 
 @Component({
   selector: 'app-movie-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, AlquilerDiasComponent],
   templateUrl: './movie-card.html',
   styleUrls: ['./movie-card.css'],
 })
@@ -16,9 +17,11 @@ export class MovieCard {
 
   @Output() showDetails = new EventEmitter<Movie | any>();
   @Output() addToCart = new EventEmitter<Movie | any>();
+  @Output() showRentalModal = new EventEmitter<Movie | any>();
 
   private cartService = inject(CartService);
   private auth = inject(AuthService);
+  showRental: boolean = false;
 
   constructor() {}
 
@@ -32,9 +35,9 @@ export class MovieCard {
       m?.movieId,
       m?._id,
       m?.movie?.imdbID,
-      m?.movie?.id
+      m?.movie?.id,
     ];
-    const raw = candidates.find(c => c !== undefined && c !== null && String(c).trim() !== '');
+    const raw = candidates.find((c) => c !== undefined && c !== null && String(c).trim() !== '');
     return raw == null ? '' : String(raw).trim();
   }
 
@@ -51,8 +54,19 @@ export class MovieCard {
   onDetailsClick(): void {
     this.showDetails.emit(this.movie);
   }
+  closeRental(): void {
+    this.showRental = false;
+  }
 
   onAddClick(): void {
+    // Validar sesión antes de emitir para abrir el modal
+    if (!this.isLoggedInSync()) {
+      alert('Por favor inicia sesión para agregar alquileres al carrito.');
+      return;
+    }
+
+    // Emitir al padre para que abra el modal de selección de días
+    this.showRentalModal.emit(this.movie);
     if (!this.movie) return;
 
     const movieId = this.getMovieId();
@@ -61,14 +75,6 @@ export class MovieCard {
       alert('No se puede añadir la película: id inválido.');
       return;
     }
-
-    this.cartService.addItem({
-      id: movieId,
-      name: this.getMovieName(),
-      price: this.getMoviePrice(),
-      quantity: 1,
-      movie: this.movie,
-    });
 
     this.addToCart.emit(this.movie);
   }
@@ -92,6 +98,14 @@ export class MovieCard {
     const target = event.target as HTMLElement;
 
     if (target.closest('.add-btn')) {
+      // Evitar que el clic en el botón '+' propague al enlace padre y navegue
+      try {
+        event.preventDefault();
+      } catch (e) {}
+      try {
+        event.stopPropagation();
+      } catch (e) {}
+
       if (this.isLoggedInSync()) {
         this.onAddClick();
         return;

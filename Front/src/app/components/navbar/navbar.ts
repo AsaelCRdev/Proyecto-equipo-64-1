@@ -15,9 +15,9 @@ import { CartService } from '../../services/cart-service';
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   isLoggedIn: boolean = false;
-  userInitial: string = 'D';
   cartItemCount: number = 0;
   auth = inject(AuthService);
+
   cartService = inject(CartService);
   private subs = new Subscription();
   showAuth: boolean = false;
@@ -40,7 +40,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
             // caso genérico
             this.cartItemCount = 0;
           }
-        })
+        }),
       );
     } else {
       // fallback: si el servicio expone un método sincronico para obtener items

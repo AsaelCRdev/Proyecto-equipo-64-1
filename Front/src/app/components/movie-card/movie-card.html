@@ -18,8 +18,15 @@
       <!-- <span class="movie-price">${{ movie.price }}</span> -->
       <div class="movie-buttons">
         <button class="details-btn">Detalles</button>
-        <button class="add-btn">+</button>
+        <button
+          class="add-btn"
+          (click)="onAddClick(); $event.stopPropagation(); $event.preventDefault()"
+        >
+          +
+        </button>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Modal ahora lo maneja el componente padre (catalog) -->

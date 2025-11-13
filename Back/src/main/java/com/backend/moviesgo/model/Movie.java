@@ -1,13 +1,14 @@
 package com.backend.moviesgo.model;
 
-import java.util.ArrayList;
 import java.util.Objects;
+import java.util.HashSet;
+import com.backend.moviesgo.model.Review;
 
 public class Movie {
   public String imdbID;
   public String title;
   public String genre[];
-  public ArrayList<String> reviews; // TODO: Cambiar a objeto reviews
+  public HashSet<Review> reviews; // TODO: Cambiar a objeto reviews
   public String rating;
   public String released;
   public String poster;
@@ -22,7 +23,7 @@ public class Movie {
       String imdbID,
       String title,
       String genre[],
-      ArrayList<String> reviews,
+      HashSet<Review> reviews,
       String rating,
       String released,
       String poster,
@@ -42,7 +43,7 @@ public class Movie {
       String imdbID,
       String title,
       String genre[],
-      ArrayList<String> reviews,
+      HashSet<Review> reviews,
       String rating,
       String released,
       String poster,
@@ -67,7 +68,7 @@ public class Movie {
     this.imdbID = mv.imdbID;
     this.title = mv.Title;
     this.genre = mv.Genre.split(",\\s*");
-    this.reviews = new ArrayList<String>();
+    this.reviews = new HashSet<Review>();
     this.rating = mv.imdbRating;
     this.released = mv.Released;
     this.poster = mv.Poster;
@@ -81,7 +82,7 @@ public class Movie {
 
     this.imdbID = mv.imdbID;
     this.title = mv.Title;
-    this.reviews = new ArrayList<String>();
+    this.reviews = new HashSet<Review>();
     this.poster = mv.Poster;
     this.price = "0";
     this.stock = "0";
@@ -103,11 +104,3 @@ public class Movie {
     return Objects.hash(imdbID);
   }
 }
-// Error cargando productos: Cannot construct instance of
-// `com.backend.moviesgo.model.Movie` (no Creators, like default constructor,
-// exist): cannot deserialize from Object value (no delegate- or property-based
-// Creator)
-// at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION`
-// disabled); line: 2, column: 3] (through reference chain:
-// java.util.ArrayList[0])
-// []

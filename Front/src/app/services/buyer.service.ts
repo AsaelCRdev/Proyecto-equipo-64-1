@@ -1,0 +1,37 @@
+import { Injectable, inject } from '@angular/core';
+import { ApiBackService } from './api-back.service';
+import { Buyer } from '../model/Buyer';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class BuyerService {
+  api = inject(ApiBackService);
+
+  async createAccount(
+    email: string,
+    pass: string,
+    name: string,
+    address: string,
+    phone: string,
+  ): Promise<boolean> {
+    const res = (await this.api.getFromBackAsT<string>(
+      `/addBuyer?email=${email}&password=${pass}&name=${name}&address=${address}&phone=${phone}`,
+      'POST',
+    )) as string;
+    if (res.toLowerCase() === 'succes') {
+      return true;
+    }
+    return false;
+  }
+  async getBuyers(id?: string | undefined): Promise<Buyer[]> {
+    let uriBuilder = '/getBuyers';
+    if (id && id.trim() != '') {
+      uriBuilder += `?id=${id}`;
+    }
+    const res = await this.api.getFromBackAsT<Buyer[]>(uriBuilder);
+    console.log('/getBuyers');
+    console.log(res);
+    return Array.isArray(res) ? res : [];
+  }
+}
