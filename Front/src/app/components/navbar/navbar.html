@@ -16,7 +16,7 @@
         <button class="cart-button" aria-label="Carrito de compras">
           <i class="fas fa-shopping-cart"></i>
         </button>
-        <div class="user-avatar">{{ userInitial.charAt(0) }}</div>
+        <div class="user-avatar">{{ auth.buyer?.name?.charAt(0) }}</div>
       }
       <button class="logout-btn" [routerLink]="['/']" (click)="logout()">
         <i class="fas fa-sign-out-alt"></i>

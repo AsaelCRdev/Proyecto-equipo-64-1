@@ -46,6 +46,15 @@
         </div>
       } @else {
         <div>
+          <label for="name">Nombre</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Carlos"
+            formControlName="name"
+            required
+          />
           <label for="direccion">Dirección</label>
           <input
             type="text"
@@ -67,7 +76,7 @@
         </div>
       }
 
-      <button class="submit-btn" [disabled]="authForm.invalid" type="submit">
+      <button class="submit-btn" [disabled]="!isFormValid()" type="submit">
         {{ isLoginMode ? 'Iniciar Sesión' : 'Crear Cuenta' }}
       </button>
     </form>

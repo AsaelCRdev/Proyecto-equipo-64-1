@@ -3,15 +3,10 @@ import { MovieConfigDialog } from '../movie-config-dialog/movie-config-dialog';
 import { MovieSelectDialog } from '../movie-select-dialog/movie-select-dialog';
 import { MovieService } from '../../services/movie.service';
 import { Movie } from '../../model/Movie';
+import { BuyerService } from '../../services/buyer.service';
+import { Buyer } from '../../model/Buyer';
+import { Review } from '../../model/Review';
 
-interface Buyer {
-  id: string;
-  name: string;
-  email: string;
-  address: string;
-  phone: string;
-  registered: string;
-}
 interface Rental {
   id: number;
   buyer: string;
@@ -21,14 +16,6 @@ interface Rental {
   returnDate: string;
   price: number;
   status: 'Activo' | 'Inactivo';
-}
-interface Review {
-  id: number;
-  user: string;
-  movie: string;
-  rating: string;
-  text: string;
-  date: string;
 }
 
 @Component({
@@ -45,25 +32,9 @@ export class AdminPanel implements OnInit {
   showSelect = false;
   showConfig = false;
   selectedMovie: Movie | undefined = undefined;
+  buyerService = inject(BuyerService);
 
-  buyers: Buyer[] = [
-    {
-      id: '1',
-      name: 'Carlos Martínez',
-      email: 'carlos@email.com',
-      address: 'Av de las mercedes,edif:el Pinar,Caracas',
-      phone: '+58 04243389531',
-      registered: '14/1/2025',
-    },
-    {
-      id: '2',
-      name: 'Jose Lopez',
-      email: 'antilopez@email.com',
-      address: 'La Taona,residencias el valle,Miranda',
-      phone: '+58 04123312342',
-      registered: '1/10/2025',
-    },
-  ];
+  buyers: Buyer[] | undefined = undefined;
 
   movies: Movie[] = [];
   rentals: Rental[] = [
@@ -81,6 +52,7 @@ export class AdminPanel implements OnInit {
       id: 2,
       buyer: 'Ana López',
       email: 'ana@email.com',
+
       movie: 'El Enigma',
       rentDate: '2/11/2025',
       returnDate: '9/11/2025',
@@ -88,28 +60,17 @@ export class AdminPanel implements OnInit {
       status: 'Activo',
     },
   ];
-  reviews: Review[] = [
-    {
-      id: 1,
-      user: 'Carlos Martínez',
-      movie: 'Acción Extrema',
-      rating: '5/5',
-      text: '¡Increíble película!',
-      date: '1/11/2025',
-    },
-    {
-      id: 2,
-      user: 'Laura García',
-      movie: 'Acción Extrema',
-      rating: '4/5',
-      text: 'Muy entretenida.',
-      date: '3/11/2025',
-    },
-  ];
+  reviews: Review[] | undefined = undefined;
 
   ngOnInit(): void {
     this.movieService.getMovies().then((mv) => {
       if (mv != null) this.movies = mv;
+    });
+    this.buyerService.getBuyers().then((b) => {
+      this.buyers = b;
+    });
+    this.movieService.getAllReviews().then((r) => {
+      this.reviews = r;
     });
   }
   // abrir selector

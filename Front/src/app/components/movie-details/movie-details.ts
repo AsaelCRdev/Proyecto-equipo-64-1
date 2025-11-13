@@ -22,6 +22,7 @@ export class MovieDetails implements OnInit {
       if (id) {
         this.movie.set((await this.movieService.getMovie(id)) as Movie);
         this.status = parseInt(this.movie()!.stock) > 0 ? 'Disponible' : 'Agotado';
+        console.log(this.movie()?.reviews);
       }
     });
   }

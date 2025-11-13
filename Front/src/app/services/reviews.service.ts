@@ -39,7 +39,9 @@ export class ReviewsService {
 
   private ensureSubject(movieId: string): BehaviorSubject<Review[]> {
     if (!this.subjects.has(movieId)) {
-      const list = (this.data[movieId] ?? []).slice().sort((a, b) => (b.createdAt > a.createdAt ? 1 : -1));
+      const list = (this.data[movieId] ?? [])
+        .slice()
+        .sort((a, b) => (b.createdAt > a.createdAt ? 1 : -1));
       this.subjects.set(movieId, new BehaviorSubject<Review[]>(list));
     }
     return this.subjects.get(movieId)!;

@@ -50,7 +50,6 @@
                 <th>Email</th>
                 <th>Dirección</th>
                 <th>Teléfono</th>
-                <th>Fecha Registro</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -62,7 +61,6 @@
                   <td>{{ b.email }}</td>
                   <td>{{ b.address }}</td>
                   <td>{{ b.phone }}</td>
-                  <td>{{ b.registered }}</td>
                   <td class="actions">
                     <button (click)="edit(b)" title="Editar" class="edit-btn">
                       <i class="fas fa-edit"></i>
@@ -215,19 +213,20 @@
               <th>Película</th>
               <th>Rating</th>
               <th>Reseña</th>
-              <th>Fecha</th>
+              <!-- <th>Fecha</th> -->
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             @for (rv of reviews; track $index) {
               <tr>
-                <td>{{ rv.id }}</td>
-                <td>{{ rv.user }}</td>
+                <td>{{ rv.authorId }}</td>
+                <td>{{ rv.author }}</td>
                 <td>{{ rv.movie }}</td>
+
                 <td>★ {{ rv.rating }}</td>
-                <td>{{ rv.text }}</td>
-                <td>{{ rv.date }}</td>
+                <td>{{ rv.message }}</td>
+                <!-- <td>{{ rv.date }}</td> -->
                 <td class="actions">
                   <button (click)="edit(rv)" title="Editar" class="edit-btn">
                     <i class="fas fa-edit"></i>
