@@ -20,13 +20,13 @@
         >
           <i class="fas fa-shopping-cart"></i>
         </button>
-        <div class="user-avatar">{{ auth.buyer?.name?.charAt(0) }}</div>
+        <a [routerLink]="['/account', auth.buyer?.id]">
+          <div class="user-avatar">{{ auth.buyer?.name?.charAt(0) }}</div>
+        </a>
       }
       <button class="logout-btn" [routerLink]="['/']" (click)="logout()">
         <i class="fas fa-sign-out-alt"></i>
       </button>
-
-      <!-- >>>>>>> origin/Adriangel -->
     </div>
   }
   <!-- Para cuando se va a auntenticar -->

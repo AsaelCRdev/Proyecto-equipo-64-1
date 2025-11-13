@@ -6,17 +6,8 @@ import { Movie } from '../../model/Movie';
 import { BuyerService } from '../../services/buyer.service';
 import { Buyer } from '../../model/Buyer';
 import { Review } from '../../model/Review';
+import { MovieRental } from '../../model/MovieRental';
 
-interface Rental {
-  id: number;
-  buyer: string;
-  email: string;
-  movie: string;
-  rentDate: string;
-  returnDate: string;
-  price: number;
-  status: 'Activo' | 'Inactivo';
-}
 @Component({
   selector: 'app-admin-panel',
   templateUrl: './admin-panel.html',
@@ -36,37 +27,18 @@ export class AdminPanel implements OnInit {
   buyers: Buyer[] | undefined = undefined;
 
   movies: Movie[] = [];
-  rentals: Rental[] = [
-    {
-      id: 1,
-      buyer: 'Carlos Martínez',
-      email: 'carlos@email.com',
-      movie: 'Viaje Estelar',
-      rentDate: '31/10/2025',
-      returnDate: '7/11/2025',
-      price: 5.99,
-      status: 'Activo',
-    },
-    {
-      id: 2,
-      buyer: 'Ana López',
-      email: 'ana@email.com',
-
-      movie: 'El Enigma',
-      rentDate: '2/11/2025',
-      returnDate: '9/11/2025',
-      price: 4.99,
-      status: 'Activo',
-    },
-  ];
+  rentals: MovieRental[] = [];
   reviews: Review[] | undefined = undefined;
 
   ngOnInit(): void {
+    this.buyerService.getAllRented().then((v) => {
+      if (v != null) this.rentals = v;
+    });
     this.movieService.getMovies().then((mv) => {
       if (mv != null) this.movies = mv;
     });
     this.buyerService.getBuyers().then((b) => {
-      this.buyers = b;
+      this.buyers = b as Buyer[];
     });
     this.movieService.getAllReviews().then((r) => {
       this.reviews = r;

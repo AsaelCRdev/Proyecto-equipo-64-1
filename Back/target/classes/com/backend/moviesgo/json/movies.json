@@ -107,14 +107,7 @@
     "imdbID": "tt0119654",
     "title": "Men in Black",
     "genre": ["Action", "Adventure", "Comedy"],
-    "reviews": [
-      {
-        "author": "admin",
-        "authorId": "0",
-        "message": "pelicula de mierda",
-        "rating": "4"
-      }
-    ],
+    "reviews": [],
     "rating": "7.3",
     "released": "02 Jul 1997",
     "poster": "https://m.media-amazon.com/images/M/MV5BZmQ0YTdhYzEtMjIxZC00MGFiLTlmNjktZmFlOWE2M2QxOTRhXkEyXkFqcGc@._V1_SX300.jpg",
@@ -135,4 +128,3 @@
     "stock": "10"
   }
 ]
-

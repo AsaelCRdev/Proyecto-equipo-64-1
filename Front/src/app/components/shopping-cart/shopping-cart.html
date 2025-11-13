@@ -1,6 +1,6 @@
-<div class="cart-overlay" [class.open]="(isOpen$ | async)" (click)="closeCarrito()"></div>
+<div class="cart-overlay" [class.open]="isOpen$ | async" (click)="closeCarrito()"></div>
 
-<aside class="cart-panel" [class.open]="(isOpen$ | async)" role="dialog" aria-labelledby="cart-title">
+<aside class="cart-panel" [class.open]="isOpen$ | async" role="dialog" aria-labelledby="cart-title">
   <header>
     <h2 id="cart-title">Tu carrito</h2>
     <button (click)="closeCarrito()">Cerrar</button>
@@ -13,10 +13,10 @@
 
     @if (cartItems && cartItems.length) {
       <ul>
-        @for (item of cartItems; track item.id) {
+        @for (item of cartItems; track item.movieId) {
           <li>
-            {{ item.name }} — {{ item.quantity }} x {{ item.price | currency }}
-            <button (click)="eliminarItem(item.id)">Eliminar</button>
+            {{ item.movieTitle ?? '' }} — {{ item.days }} x {{ item.price | currency }}
+            <button (click)="eliminarItem(item.movieId)">Eliminar</button>
           </li>
         }
       </ul>
@@ -24,7 +24,6 @@
   </div>
 
   <footer>
-    <div>Total: {{ calcularTotal() | currency }}</div>
     <button (click)="checkout()" [disabled]="!cartItems?.length">Pagar</button>
   </footer>
 </aside>

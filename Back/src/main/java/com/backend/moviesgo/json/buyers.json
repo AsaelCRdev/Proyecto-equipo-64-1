@@ -1,39 +1,41 @@
-[
-  {
-    "id": "2",
-    "name": "jenry",
-    "email": "mail12@mail.com",
-    "password": "123",
-    "address": "lagunita",
-    "phone": "04243534921",
-    "cart": {
-      "movies": []
-    },
-    "rentedMovies": []
+[ {
+  "id" : "2",
+  "name" : "jenry",
+  "email" : "mail12@mail.com",
+  "password" : "123",
+  "address" : "lagunita",
+  "phone" : "04243534921",
+  "cart" : {
+    "movies" : [ ]
   },
-  {
-    "id": "3",
-    "name": "martin",
-    "email": "mail123@mail.com",
-    "password": "123",
-    "address": "lagunita",
-    "phone": "04243534921",
-    "cart": {
-      "movies": []
-    },
-    "rentedMovies": []
+  "rentedMovies" : [ {
+    "movieTitle" : "Vico C: La vida del filosofo",
+    "movieId" : "tt5860550",
+    "startDate" : "Sat Nov 29 2025 20:00:00 GMT-0400 (hora de Venezuela)",
+    "endDate" : "Wed Nov 12 2025 20:00:00 GMT-0400 (hora de Venezuela)",
+    "price" : "1700",
+    "days" : "17"
+  } ]
+}, {
+  "id" : "3",
+  "name" : "martin",
+  "email" : "mail123@mail.com",
+  "password" : "123",
+  "address" : "lagunita",
+  "phone" : "04243534921",
+  "cart" : {
+    "movies" : [ ]
   },
-  {
-    "id": "4",
-    "name": "carlos",
-    "email": "mailprueba@mail.com",
-    "password": "123",
-    "address": "junquito",
-    "phone": "0424555555",
-    "cart": {
-      "movies": []
-    },
-    "rentedMovies": []
-  }
-]
-
+  "rentedMovies" : [ ]
+}, {
+  "id" : "4",
+  "name" : "carlos",
+  "email" : "mailprueba@mail.com",
+  "password" : "123",
+  "address" : "junquito",
+  "phone" : "0424555555",
+  "cart" : {
+    "movies" : [ ]
+  },
+  "rentedMovies" : [ ]
+} ]

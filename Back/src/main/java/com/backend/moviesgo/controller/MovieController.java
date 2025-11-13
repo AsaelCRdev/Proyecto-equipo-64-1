@@ -3,7 +3,6 @@ package com.backend.moviesgo.controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.backend.moviesgo.model.OmdbSearchResponse;
 import com.backend.moviesgo.controller.ApiController;
-import com.backend.moviesgo.model.MovieCatalog;
 import com.backend.moviesgo.model.MovieDetail;
 import com.backend.moviesgo.model.MovieSummary;
 
@@ -16,24 +15,29 @@ import java.util.List;
 import reactor.core.publisher.Mono;
 import com.backend.moviesgo.model.Movie;
 import com.backend.moviesgo.model.EndpointResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import com.backend.moviesgo.model.Review;
 import com.backend.moviesgo.model.Buyer;
+import com.backend.moviesgo.services.CatalogService;
 
 @CrossOrigin(origins = "*")
 
 @RestController
 public class MovieController {
   private final ApiController api;
-  private MovieCatalog catalog;
+  private CatalogService catalog;
   private BuyerController buyerController;
 
+  @Autowired
   public MovieController(@Value("${omdb.endpoint}") String endpointUrl, @Value("${omdb.api-key}") String apiKey,
-      BuyerController buyerController) {
+      BuyerController buyerController, CatalogService catalog) {
     this.api = new ApiController(endpointUrl, apiKey);
-    this.catalog = new MovieCatalog();
+    this.catalog = new CatalogService();
     this.buyerController = buyerController;
+    this.catalog = catalog;
   }
 
   @GetMapping("/getAllReviews")

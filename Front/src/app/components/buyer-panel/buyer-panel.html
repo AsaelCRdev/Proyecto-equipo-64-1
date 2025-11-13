@@ -1,0 +1,13 @@
+<h2>Mi perfil</h2>
+<div>Nombre: {{ buyer.name }}</div>
+<div>email: {{ buyer.email }}</div>
+<div>Telefono: {{ buyer.phone }}</div>
+<div>Direccion: {{ buyer.address }}</div>
+<div>
+  <span>Alquileres</span>
+  @for (rental of buyer.rentedMovies; track $index) {
+    <div>{{ rental.movieTitle }}</div>
+    <div>{{ rental.startDate }} - {{ rental.endDate }}</div>
+    <div>{{ rental.price }}$</div>
+  }
+</div>
