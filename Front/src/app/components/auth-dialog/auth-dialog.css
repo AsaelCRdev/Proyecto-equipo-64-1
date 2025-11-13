@@ -1,0 +1,162 @@
+/* Fondo semi-transparente */
+.overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Contenedor principal */
+.dialog {
+  background: linear-gradient(135deg, #5a2de3, #9647ee);
+  border-radius: 12px;
+  width: 420px;
+  padding: 1.5rem 2rem 2rem 2rem;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+  box-shadow: 0 12px 40px rgb(46 20 145 / 0.6);
+}
+
+/* Botón cerrar */
+.close-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  color: white;
+  cursor: pointer;
+}
+
+.dialog-icon {
+  font-size: 2rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Header */
+header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+header h1 {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1.6rem;
+}
+header p {
+  font-size: 0.9rem;
+  opacity: 0.85;
+  margin-top: 0.2rem;
+}
+
+
+/* Navegación tabs */
+.tab-nav {
+  display: flex;
+  background: white;
+  border-radius: 30px;
+  margin-bottom: 1.25rem;
+  overflow: hidden;
+}
+
+.tab-nav button {
+  flex: 1;
+  padding: 0.6rem 0;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: #6c6c6c;
+  font-size: 1rem;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.tab-nav button.active {
+  background: #fff;
+  color: #5a2de3;
+}
+
+/* Formulario */
+.auth-form label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.auth-form input[type="email"],
+.auth-form input[type="password"],
+.auth-form input[type="text"] {
+  width: 100%;
+  border-radius: 6px;
+  border: none;
+  padding: 0.6rem 1rem;
+  margin-top: 0.3rem;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+
+/* Para inputs */
+.auth-form input:focus {
+  outline: none;
+  box-shadow: 0 0 3px #fff;
+}
+
+/* Fila opciones checkbox y link */
+.options-row {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.options-row label {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.options-row input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+.forgot-password {
+  color: #a3a3ff;
+  text-decoration: none;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+/* Botón enviar */
+.submit-btn {
+  margin-top: 1.3rem;
+  width: 100%;
+  padding: 0.75rem 0;
+  background: #060812;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:disabled {
+  background: #4a4a72;
+  cursor: not-allowed;
+}
+
+.submit-btn:not(:disabled):hover {
+  background: #0c0c1a;
+}

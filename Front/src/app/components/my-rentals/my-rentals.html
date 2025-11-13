@@ -1,1 +1,50 @@
-<p>my-rentals works!</p>
+<nav class="tabs">
+  <!-- siempre visible -->
+  <button [class.active]="activeTab === 'alquilar'" (click)="selectTab('alquilar')">
+    Para Alquilar
+  </button>
+
+  <!-- solo para usuarios logueados -->
+  @if (auth.isLoggedIn$ | async) {
+    <button [class.active]="activeTab === 'activos'" (click)="selectTab('activos')">Activos</button>
+    <button [class.active]="activeTab === 'historial'" (click)="selectTab('historial')">
+      Historial
+    </button>
+  }
+</nav>
+
+@if (activeTab === 'alquilar') {
+  <div>
+    <app-catalog></app-catalog>
+  </div>
+}
+
+@if (activeTab === 'activos' && (auth.isLoggedIn$ | async)) {
+  <div>
+    <h2>Alquileres Activos</h2>
+    @if (activeRentals.length === 0) {
+      <div>No tienes alquileres vigentes.</div>
+    } @else {
+      <div class="rentals-grid">
+        @for (rent of activeRentals; track $index) {
+          <app-movie-card [movie]="rent.movie"></app-movie-card>
+        }
+      </div>
+    }
+  </div>
+}
+
+@if (activeTab === 'historial' && (auth.isLoggedIn$ | async)) {
+  <div>
+    <h2>Historial</h2>
+    @if (rentalHistory.length === 0) {
+      <div>No tienes historial de alquileres.</div>
+    } @else {
+      <div class="rentals-grid">
+        @for (rent of rentalHistory; track $index) {
+          <app-movie-card [movie]="rent.movie"></app-movie-card>
+        }
+      </div>
+    }
+  </div>
+}

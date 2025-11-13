@@ -1,0 +1,39 @@
+[
+  {
+    "id": "2",
+    "name": "jenry",
+    "email": "mail12@mail.com",
+    "password": "123",
+    "address": "lagunita",
+    "phone": "04243534921",
+    "cart": {
+      "movies": []
+    },
+    "rentedMovies": []
+  },
+  {
+    "id": "3",
+    "name": "martin",
+    "email": "mail123@mail.com",
+    "password": "123",
+    "address": "lagunita",
+    "phone": "04243534921",
+    "cart": {
+      "movies": []
+    },
+    "rentedMovies": []
+  },
+  {
+    "id": "4",
+    "name": "carlos",
+    "email": "mailprueba@mail.com",
+    "password": "123",
+    "address": "junquito",
+    "phone": "0424555555",
+    "cart": {
+      "movies": []
+    },
+    "rentedMovies": []
+  }
+]
+

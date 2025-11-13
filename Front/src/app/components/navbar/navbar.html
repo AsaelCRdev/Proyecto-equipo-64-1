@@ -4,31 +4,33 @@
     <a routerLink="/" class="brand-name">MoviesGo</a>
   </div>
 
-  <ul class="navbar-menu">
-    <li>
-      <a
-        routerLink="/catalogo"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="menu-item active"
-      >
-        <i class="fas fa-home"></i> Catálogo
-      </a>
-    </li>
-    <li>
-      <a routerLink="/mis-alquileres" routerLinkActive="active" class="menu-item">
-        <i class="fas fa-list"></i> Mis Alquileres
-      </a>
-    </li>
-  </ul>
-
-  <div class="navbar-right">
-    <button class="cart-button" aria-label="Carrito de compras">
-      <i class="fas fa-shopping-cart"></i>
-    </button>
-    <div class="user-avatar">
-      D
-      <!-- TODO: Esto cambiarlo a que agarre la primera letra del nombre del usuario-->
+  @if (!isLoggedIn) {
+    <div class="navbar-right">
+      <button class="login-btn" (click)="openAuth()">
+        <i class="fas fa-user"></i> Iniciar Sesión
+      </button>
     </div>
-  </div>
+  } @else {
+    <div class="navbar-right">
+      @if (!(auth.isAdmin$ | async)) {
+        <button
+          class="cart-button"
+          aria-label="Carrito de compras"
+          (click)="toggleCart(); $event.stopPropagation(); $event.preventDefault()"
+        >
+          <i class="fas fa-shopping-cart"></i>
+        </button>
+        <div class="user-avatar">{{ auth.buyer?.name?.charAt(0) }}</div>
+      }
+      <button class="logout-btn" [routerLink]="['/']" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+
+      <!-- >>>>>>> origin/Adriangel -->
+    </div>
+  }
+  <!-- Para cuando se va a auntenticar -->
+  @if (showAuth) {
+    <app-auth-dialog (closeDialog)="onAuthClose()" (loggedIn)="onLoggedIn()"></app-auth-dialog>
+  }
 </nav>
