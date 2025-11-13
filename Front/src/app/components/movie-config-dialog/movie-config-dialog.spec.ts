@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ShoppingCartComponent } from './shopping-cart';
+import { MovieConfigDialog } from './movie-config-dialog';
 
-describe('ShoppingCart', () => {
-  let component: ShoppingCartComponent;
-  let fixture: ComponentFixture<ShoppingCartComponent>;
+describe('MovieConfigDialog', () => {
+  let component: MovieConfigDialog;
+  let fixture: ComponentFixture<MovieConfigDialog>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ShoppingCartComponent]
+      imports: [MovieConfigDialog]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ShoppingCartComponent);
+    fixture = TestBed.createComponent(MovieConfigDialog);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

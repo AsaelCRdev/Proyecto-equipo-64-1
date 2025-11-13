@@ -1,0 +1,16 @@
+<article>
+  <img [src]="movie()?.poster" />
+  <h2>{{ movie()?.title }}</h2>
+  <span> {{ movie()?.genre }}</span>
+  <span>Rating: {{ movie()?.rating }}</span>
+  <br />
+  <span>Release date: {{ movie()?.released }}</span>
+  <br />
+  <br />
+  <span>{{ movie()?.price }}$</span>
+  <h4>Plot</h4>
+  <span>{{ movie()?.plot }}</span>
+  <br />
+  <span>Status: {{ status }}</span>
+  <app-reviews-section [movieId]="movie()?.imdbID"></app-reviews-section>
+</article>

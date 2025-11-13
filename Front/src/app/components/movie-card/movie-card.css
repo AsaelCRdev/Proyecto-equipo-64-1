@@ -1,52 +1,123 @@
 .movie-card {
-  background: white;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   display: flex;
-  flex-direction: column;
+  flex-wrap: nowrap;
+  min-height: 33vh;
+
+  max-height: 33vh;
+  max-width: 11vw;
 }
 
 .movie-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 20px rgb(0 0 0 / 0.15);
 }
+.movie-card:hover .movie-info {
+  animation: slideLeft 0.3s forwards;
+}
 
+/* Ajustamos imagen para ocupar 40% de alto y 30% de ancho */
 .movie-image {
-  width: 100%;
-  height: 320px;
-  object-fit: cover;
+  position: absolute;
+  border-radius: 12px;
+  min-height: 33vh;
+
+  max-height: 33vh;
+  max-width: 11vw;
 }
 
+/* Movie info como columna flex, ocupa resto del espacio */
 .movie-info {
-  padding: 0.75rem 1rem;
-}
-
-.movie-title {
-  font-size: 1rem;
-  font-weight: 600;
-  margin: 0 0 0.5rem 0;
-}
-
-.movie-meta {
+  background: white;
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  padding: 1rem 1.5rem;
   display: flex;
-  align-items: center;
-  gap: 1rem;
-  font-size: 0.85rem;
+  flex-direction: column;
+  justify-content: space-between;
+
+  transform: translateX(11vw);
+}
+@keyframes slideLeft {
+  from {
+    transform: translateX(11vw);
+  }
+  to {
+    transform: translateX(1vw);
+  }
+}
+
+/* Descripción con altura y truncado de texto */
+.movie-description {
+  font-size: 0.9rem;
   color: #555;
+  line-height: 1.3;
+  max-height: 3.9em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0.5rem 0 1rem 0;
 }
 
-.movie-rating i {
-  color: #f5c518; /* color amarillo estrellas */
-  margin-right: 0.3rem;
+/* Footer con precio y botones alineados */
+.movie-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.movie-year {
-  background: #ebebeb;
+/* Precio en azul */
+.movie-price {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #1f57ff;
+}
+
+/* Botones "Detalles" y "+" */
+.movie-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Botón detalles */
+.details-btn {
+  background-color: #f1f2f5;
+  border: none;
   border-radius: 8px;
-  padding: 2px 8px;
   font-weight: 600;
-  color: #888;
+  padding: 0.45rem 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.details-btn:hover {
+  background-color: #d9dbdd;
+}
+
+/* Botón añadir */
+.add-btn {
+  width: 36px;
+  height: 36px;
+  background-color: #060812;
+  color: white;
+  font-weight: 700;
+  font-size: 1.3rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+  transition: background-color 0.3s ease;
+}
+
+.add-btn:hover {
+  background-color: #134af1;
 }
