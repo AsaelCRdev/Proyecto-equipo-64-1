@@ -7,6 +7,7 @@ import { MovieService } from '../../services/movie.service';
 @Component({
   selector: 'app-movie-select-dialog',
   imports: [ReactiveFormsModule],
+  standalone: true,
   templateUrl: './movie-select-dialog.html',
   styleUrl: './movie-select-dialog.css',
 })
