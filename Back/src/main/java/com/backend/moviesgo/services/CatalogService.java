@@ -1,5 +1,5 @@
 
-package com.backend.moviesgo.model;
+package com.backend.moviesgo.services;
 
 import java.util.List;
 import com.backend.moviesgo.model.Movie;
@@ -8,9 +8,14 @@ import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
-import com.backend.moviesgo.services.JsonService;
 
-public class MovieCatalog {
+import org.springframework.stereotype.Service;
+
+import com.backend.moviesgo.model.Review;
+import com.backend.moviesgo.model.ReviewExtended;
+
+@Service
+public class CatalogService {
   public Set<Movie> catalog = new HashSet<>();
   public Set<String> genres = new HashSet<>();
   public JsonService<Movie> json = new JsonService<>("src/main/java/com/backend/moviesgo/json/movies.json",
@@ -28,7 +33,7 @@ public class MovieCatalog {
 
   }
 
-  public MovieCatalog() {
+  public CatalogService() {
     // TODO: Deberia cargar del JSON
     this.refresh();
   }

@@ -3,10 +3,12 @@ package com.backend.moviesgo.model;
 import java.util.Objects;
 
 public class MovieRental {
-  String movieId;
-  String startDate;
-  String endDate;
-  String price;
+  public String movieTitle;
+  public String movieId;
+  public String startDate;
+  public String endDate;
+  public String price;
+  public String days;
 
   @Override
   public boolean equals(Object o) {

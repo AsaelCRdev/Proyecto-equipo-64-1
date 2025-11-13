@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { ApiBackService } from './api-back.service';
 import { Buyer } from '../model/Buyer';
+import { MovieRental } from '../model/MovieRental';
 
 @Injectable({
   providedIn: 'root',
@@ -8,6 +9,13 @@ import { Buyer } from '../model/Buyer';
 export class BuyerService {
   api = inject(ApiBackService);
 
+  async getAllRented(): Promise<MovieRental[]> {
+    const uriBuilder = `/getAllRented`;
+    const res = await this.api.getFromBackAsT<MovieRental[]>(uriBuilder, 'GET');
+    console.log('Respuesta getAllRented:', res);
+
+    return Array.isArray(res) ? res : [];
+  }
   async createAccount(
     email: string,
     pass: string,
@@ -24,10 +32,15 @@ export class BuyerService {
     }
     return false;
   }
-  async getBuyers(id?: string | undefined): Promise<Buyer[]> {
+  async getBuyers(id?: string | undefined): Promise<Buyer[] | Buyer> {
     let uriBuilder = '/getBuyers';
     if (id && id.trim() != '') {
       uriBuilder += `?id=${id}`;
+      const res = await this.api.getFromBackAsT<Buyer>(uriBuilder);
+      console.log('/getBuyers');
+      console.log(res);
+
+      return res as Buyer;
     }
     const res = await this.api.getFromBackAsT<Buyer[]>(uriBuilder);
     console.log('/getBuyers');

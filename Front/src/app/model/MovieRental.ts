@@ -1,6 +1,8 @@
 export interface MovieRental {
+  movieTitle?: string;
   movieId: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   price: string;
+  days: string;
 }
