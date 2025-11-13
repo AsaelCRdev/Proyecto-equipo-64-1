@@ -4,6 +4,7 @@ import { Movie } from '../../model/Movie';
 import { CartService } from '../../services/cart-service';
 import { AuthService } from '../../services/auth-service';
 import { AlquilerDiasComponent } from '../Time-Rental/Time-Rental';
+import { MovieRental } from '../../model/MovieRental';
 
 @Component({
   selector: 'app-movie-card',

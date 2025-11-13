@@ -2,71 +2,120 @@
   <div class="modal">
     <div class="modal-header">
       <h3>Seleccionar Días de Alquiler</h3>
-      <span class="close-btn" (click)="onCancel(); $event.stopPropagation(); $event.preventDefault()">×</span>
+      <span
+        class="close-btn"
+        (click)="onCancel(); $event.stopPropagation(); $event.preventDefault()"
+        >×</span
+      >
     </div>
-    <p class="subtitle">Haz clic en los días del calendario para seleccionar el período de alquiler</p>
+    <p class="subtitle">
+      Haz clic en los días del calendario para seleccionar el período de alquiler
+    </p>
 
-    <div class="modal-content"> <!-- agregar que tome en cuenta la pelicula seleccionada, que no permita seleccionar días no disponibles y hacer el modal de detalles, si no inicio sesion no dejar usar alquiler-->
+    <div class="modal-content">
+      <!-- agregar que tome en cuenta la pelicula seleccionada, que no permita seleccionar días no disponibles y hacer el modal de detalles, si no inicio sesion no dejar usar alquiler-->
       <!-- Left Panel - Movie Details -->
       <div class="left-panel" (click)="$event.stopPropagation()">
-        <img [src]="movie?.poster || 'https://astrodr.com/images/cosmos-navegacion-nasa-pacifico_38618-615.jpg'" [alt]="movie?.title || 'Poster'" />
+        <img
+          [src]="
+            movie?.poster ||
+            'https://astrodr.com/images/cosmos-navegacion-nasa-pacifico_38618-615.jpg'
+          "
+          [alt]="movie?.title || 'Poster'"
+        />
         <h4>{{ movie?.title || 'Título desconocido' }}</h4>
         <small class="category">{{ movie?.genre || 'Sin categoría' }}</small>
         <div class="rating-year">
           <span class="star">★ {{ movie?.rating ?? 'N/A' }}</span>
-          <span>{{ movie?.released || movie?.year || '' }}</span>
+          <span>{{ movie?.released || '' }}</span>
         </div>
         <p class="description">
-          {{ movie?.plot || movie?.description || 'Sin descripción disponible.' }}
+          {{ movie?.plot || 'Sin descripción disponible.' }}
         </p>
 
         <div class="disponibilidad">
           <h5>Disponibilidad</h5>
           <p>
             <strong>Stock:</strong>
-            <span class="stock-badge" [title]="(movie?.stock || '0') + ' copias'">{{ movie?.stock ?? '0' }} copias</span>
+            <span class="stock-badge" [title]="(movie?.stock || '0') + ' copias'"
+              >{{ movie?.stock ?? '0' }} copias</span
+            >
           </p>
-          <p><strong>Precio por día</strong> <span class="price-day">${{ (movie?.price ?? basePricePerDay).toFixed ? (movie?.price ?? basePricePerDay).toFixed(2) : (movie?.price ?? basePricePerDay) }}</span></p>
+          <p>
+            <strong>Precio por día </strong>
+            <span class="price-day">${{ pricePerDay.toFixed(2) }}</span>
+          </p>
         </div>
       </div>
 
       <!-- Right Panel - Calendario -->
       <div class="right-panel">
         <div class="month-selector">
-          <button (click)="previousMonth()" aria-label="Mes Anterior" [disabled]="!canGoToPreviousMonth()">&lt;</button>
-          <span><i class="calendar-icon"></i> {{ months[currentMonthIndex] }} {{ currentYear }}</span>
+          <button
+            (click)="previousMonth()"
+            aria-label="Mes Anterior"
+            [disabled]="!canGoToPreviousMonth()"
+          >
+            &lt;
+          </button>
+          <span
+            ><i class="calendar-icon"></i> {{ months[currentMonthIndex] }} {{ currentYear }}</span
+          >
           <button (click)="nextMonth()" aria-label="Mes Siguiente">&gt;</button>
         </div>
 
         <!-- Toast visual -->
-        <div *ngIf="toastMessage" class="toast-message">
-          {{ toastMessage }}
-        </div>
+        @if (toastMessage) {
+          <div class="toast-message">
+            {{ toastMessage }}
+          </div>
+        }
 
         <table class="calendar">
           <thead>
             <tr>
-              <th>Dom</th><th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th>
+              <th>Dom</th>
+              <th>Lun</th>
+              <th>Mar</th>
+              <th>Mié</th>
+              <th>Jue</th>
+              <th>Vie</th>
+              <th>Sáb</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let week of getWeeks()">
-              <td *ngFor="let day of week" [class.available]="day?.available" [class.selected]="day?.selected"
-                  [class.today]="isToday(day?.day)" [class.not-available]="!day?.available" (click)="day && toggleDaySelection(day)">
-                {{ day?.day || '' }}
-              </td>
-            </tr>
+            @for (week of getWeeks(); track $index) {
+              <tr>
+                @for (day of week; track $index) {
+                  <td
+                    [class.available]="day?.available"
+                    [class.selected]="day?.selected"
+                    [class.today]="isToday(day?.day)"
+                    [class.not-available]="!day?.available"
+                    (click)="day && toggleDaySelection(day)"
+                  >
+                    {{ day?.day || '' }}
+                  </td>
+                }
+              </tr>
+            }
           </tbody>
         </table>
 
-       
-
-        <hr/>
+        <hr />
 
         <div class="actions">
-          <button class="btn-cancel" (click)="onCancel(); $event.stopPropagation(); $event.preventDefault()">Cancelar</button>
-          <button class="btn-cart" (click)="onAddToCart(); $event.stopPropagation(); $event.preventDefault()">
-            Agregar al Carrito ({{ selectedDays.size }} días - ${{ priceTotal.toFixed(2) }})
+          <button
+            class="btn-cancel"
+            (click)="onCancel(); $event.stopPropagation(); $event.preventDefault()"
+          >
+            Cancelar
+          </button>
+          <button
+            class="btn-cart"
+            (click)="onAddToCart(); $event.stopPropagation(); $event.preventDefault()"
+          >
+            Agregar al Carrito ({{ getSelectedRange() }} días - ${{ priceTotal.toFixed(2) }})
           </button>
         </div>
       </div>

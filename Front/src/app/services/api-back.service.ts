@@ -18,6 +18,7 @@ export class ApiBackService {
   async getFromBackAsT<T>(uri: string, method: string = 'GET'): Promise<T | string> {
     const response = await this.fetchBack(uri, method);
     const asEnd = response as EndpointResponse;
+    console.log(asEnd);
     return asEnd.error ? (asEnd.value as string) : (asEnd.value as T);
   }
 }

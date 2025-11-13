@@ -28,7 +28,7 @@ export class CatalogComponent implements OnInit {
   searchControl: FormControl = new FormControl('');
 
   showRentalModal: boolean = false;
-  selectedMovieForRental: any = null;
+  selectedMovieForRental: Movie | undefined = undefined;
 
   constructor() {}
 
@@ -66,11 +66,13 @@ export class CatalogComponent implements OnInit {
   onShowRentalModal(movie: Movie | any): void {
     // si hay control de sesión, podría validarse aquí; por ahora abrimos modal
     this.selectedMovieForRental = movie;
+    console.log(this.selectedMovieForRental);
+    console.log(movie);
     this.showRentalModal = true;
   }
 
   onCloseRentalModal(): void {
     this.showRentalModal = false;
-    this.selectedMovieForRental = null;
+    this.selectedMovieForRental = undefined;
   }
 }

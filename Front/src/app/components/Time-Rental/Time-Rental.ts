@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Output, Input, inject } from '@angular/core';
+import { Component, EventEmitter, Output, Input, inject, OnInit } from '@angular/core';
+import { Movie } from '../../model/Movie';
 import { CommonModule } from '@angular/common';
 import { CartService } from '../../services/cart-service';
 
@@ -16,8 +17,8 @@ interface Day {
   templateUrl: './Time-Rental.html',
   styleUrls: ['./Time-Rental.css'],
 })
-export class AlquilerDiasComponent {
-  @Input() movie: any = null;
+export class AlquilerDiasComponent implements OnInit {
+  @Input() movie: Movie | undefined = undefined;
   @Output() close = new EventEmitter<void>();
 
   private cartService = inject(CartService);
@@ -26,14 +27,23 @@ export class AlquilerDiasComponent {
   currentYear: number = new Date().getFullYear();
   currentMonthIndex: number = new Date().getMonth(); // 0-based index
   months = [
-    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre',
   ];
 
   days: Day[] = [];
   maxDays: number = 30; // se recalcula en generateDays()
-  pricePerDay: number = 2;
-  basePricePerDay: number = 5.99;
+  pricePerDay: number = 0;
   // Guardar fechas seleccionadas como strings ISO (YYYY-MM-DD) para distinguir meses/años
   selectedDays: Set<string> = new Set<string>();
 
@@ -46,11 +56,40 @@ export class AlquilerDiasComponent {
   readonly systemYear: number = new Date().getFullYear();
   readonly systemMonthIndex: number = new Date().getMonth();
 
-  constructor() {
+  ngOnInit(): void {
+    if (this.movie) {
+      console.log('Película recibida:', this.movie.title);
+      console.log('Precio:', parseFloat(this.movie.price ?? '0'));
+      this.pricePerDay = parseFloat(this.movie?.price ?? '0');
+    }
     this.generateDays();
   }
+  constructor() {}
 
+  getSelectedRange(): number {
+    if (this.selectedDays.size < 2) return 0;
 
+    const dates = Array.from(this.selectedDays).map((dateStr) => new Date(dateStr));
+    const minDate = new Date(Math.min(...dates.map((d) => d.getTime())));
+    const maxDate = new Date(Math.max(...dates.map((d) => d.getTime())));
+
+    const diffMs = maxDate.getTime() - minDate.getTime();
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    return diffDays;
+  }
+  getRangeToDay(day: Day): number {
+    if (this.selectedDays.size !== 1 || !day.dateStr) return 0;
+
+    const selectedDateStr = Array.from(this.selectedDays)[0];
+    const selectedDate = new Date(selectedDateStr);
+    const targetDate = new Date(day.dateStr);
+
+    const diffMs = Math.abs(targetDate.getTime() - selectedDate.getTime());
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    return diffDays;
+  }
   generateDays() {
     this.days = [];
     // calcular días reales del mes actual mostrado
@@ -99,11 +138,13 @@ export class AlquilerDiasComponent {
       // deseleccionar
       day.selected = false;
       this.selectedDays.delete(dateStr);
+    } else if (this.selectedDays.size >= 2) {
+      this.showToast('Solo puedes seleccionar la fecha de inicio y fin!');
     } else {
       // comprobar límite
-      const MAX_SELECTION = 30;
-      if (this.selectedDays.size >= MAX_SELECTION) {
-        this.showToast(`No puedes seleccionar más de ${MAX_SELECTION} días.`);
+      const MAX_DAYS = 30;
+      if (this.getRangeToDay(day) >= MAX_DAYS) {
+        this.showToast(`No puedes seleccionar más de ${MAX_DAYS} días.`);
         return;
       }
 
@@ -139,15 +180,14 @@ export class AlquilerDiasComponent {
       this.showToast('Por favor selecciona al menos un día.');
       return;
     }
-    const movieId = (this.movie && (this.movie.id || this.movie.imdbID || this.movie._id)) ? (this.movie.id || this.movie.imdbID || this.movie._id) : null;
+    const dates = Array.from(this.selectedDays).map((dateStr) => new Date(dateStr));
+    const movieId = this.movie && this.movie.imdbID ? this.movie.imdbID : null;
     const added = this.cartService.addItem({
-      id: movieId,
-      name: this.movie?.title ?? this.movie?.name ?? 'Desconocido',
-      price: this.priceTotal,
-      quantity: 1,
-      movie: this.movie,
-      rentalDays: Array.from(this.selectedDays),
-      totalDays: this.selectedDays.size
+      movieId: movieId ?? '',
+      price: this.priceTotal.toString(),
+      days: this.getSelectedRange().toString(),
+      startDate: new Date(Math.max(...dates.map((d) => d.getTime()))).toString(),
+      endDate: new Date(Math.min(...dates.map((d) => d.getTime()))).toString(),
     });
 
     if (added) {
@@ -160,7 +200,7 @@ export class AlquilerDiasComponent {
   }
 
   get priceTotal(): number {
-    return this.basePricePerDay + this.pricePerDay * this.selectedDays.size;
+    return this.pricePerDay * this.getSelectedRange();
   }
 
   // Accept a possibly undefined day coming from the template (day?.day)
@@ -228,5 +268,4 @@ export class AlquilerDiasComponent {
 
     return weeks;
   }
-  
 }

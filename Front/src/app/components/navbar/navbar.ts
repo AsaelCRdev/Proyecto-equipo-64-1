@@ -5,11 +5,12 @@ import { Subscription } from 'rxjs';
 import { AuthDialog } from '../auth-dialog/auth-dialog';
 import { AuthService } from '../../services/auth-service';
 import { CartService } from '../../services/cart-service';
+import { BuyerPanel } from '../buyer-panel/buyer-panel';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterModule, AuthDialog],
+  imports: [CommonModule, RouterModule, AuthDialog, BuyerPanel],
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.css'],
 })
