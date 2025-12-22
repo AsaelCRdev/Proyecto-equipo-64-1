@@ -61,10 +61,7 @@ export class MovieService {
     console.log(res);
     return Array.isArray(res) ? res : [];
   }
-  async getMovies(
-    search?: string | undefined,
-    genre?: string | undefined,
-  ): Promise<Movie[] | null> {
+  async getMovies(search?: string | undefined,      genre?: string | undefined,): Promise<Movie[] | null> {
     let uri: string = '/getMovies?';
     if (search && search.trim() != '') {
       uri += `s=${search}&`;

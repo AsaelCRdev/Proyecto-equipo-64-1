@@ -38,4 +38,15 @@
     "movies" : [ ]
   },
   "rentedMovies" : [ ]
+}, {
+  "id" : "4",
+  "name" : "carlos",
+  "email" : "tumama@gmail.com",
+  "password" : "tumama",
+  "address" : "tu direccion",
+  "phone" : "04125829021",
+  "cart" : {
+    "movies" : [ ]
+  },
+  "rentedMovies" : [ ]
 } ]
