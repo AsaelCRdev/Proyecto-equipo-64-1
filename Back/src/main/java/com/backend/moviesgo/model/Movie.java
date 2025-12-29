@@ -2,7 +2,6 @@ package com.backend.moviesgo.model;
 
 import java.util.Objects;
 import java.util.HashSet;
-import com.backend.moviesgo.model.Review;
 
 public class Movie {
   public String imdbID;

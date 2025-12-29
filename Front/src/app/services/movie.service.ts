@@ -61,7 +61,7 @@ export class MovieService {
     console.log(res);
     return Array.isArray(res) ? res : [];
   }
-  async getMovies(search?: string | undefined,      genre?: string | undefined,): Promise<Movie[] | null> {
+  async getMovies(search?: string | undefined, genre?: string | undefined,): Promise<Movie[] | null> {
     let uri: string = '/getMovies?';
     if (search && search.trim() != '') {
       uri += `s=${search}&`;
@@ -72,4 +72,20 @@ export class MovieService {
     const res: Movie[] | string = await this.endpoint.getFromBackAsT<Movie[]>(uri);
     return typeof res === 'string' ? null : res;
   }
+
+
+
+  //actualizar pelicula
+  async updateMovie(id: String, movie: Movie): Promise< boolean | null > {
+      const res = await this.endpoint.postToBack<boolean>(`/updateMovie?id=${id}`, movie);
+      return typeof res === 'string' ? null: res;
+  } 
+
+  //eliminar pelicual
+  async deleteMovie(id: String): Promise<boolean | null> {
+    let uri = '/deleteMovie?id=' + id;
+    const res = await this.endpoint.getFromBackAsT<boolean>(uri, 'DELETE');
+    return typeof res === 'string' ? null: res;
+  }
+
 }

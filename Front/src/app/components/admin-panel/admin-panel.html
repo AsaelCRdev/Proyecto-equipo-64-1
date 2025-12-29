@@ -54,7 +54,7 @@
               </tr>
             </thead>
             <tbody>
-              @for (b of buyers; track $index) {
+              @for (b of buyers; track $index) { 
                 <tr>
                   <td>{{ b.id }}</td>
                   <td>{{ b.name }}</td>
@@ -62,12 +62,12 @@
                   <td>{{ b.address }}</td>
                   <td>{{ b.phone }}</td>
                   <td class="actions">
-                    <button (click)="edit(b)" title="Editar" class="edit-btn">
+                    <!-- <button (click)="edit(b)" title="Editar" class="edit-btn">
                       <i class="fas fa-edit"></i>
                     </button>
                     <button (click)="remove(b)" title="Eliminar" class="delete-btn">
                       <i class="fas fa-trash-alt"></i>
-                    </button>
+                    </button> -->
                   </td>
                 </tr>
               }
@@ -81,7 +81,7 @@
     @if (activeSection === 'alquileres') {
       <section class="table-section">
         <header class="content-header">
-          <h2>Gestión de Alquileres</h2>
+          <h2>Gestión de Alquileres</h2> 
         </header>
         <div class="table-wrap">
           <input class="search" placeholder="Buscar Alquileres..." />
@@ -103,14 +103,14 @@
                   <td>{{ r.movieTitle }}</td>
                   <td>{{ r.startDate }}</td>
                   <td>{{ r.endDate }}</td>
-                  <td>{{ r.price }}</td>
+                  <td>{{ r.price }}</td> 
                   <td class="actions">
-                    <button (click)="edit(r)" title="Editar" class="edit-btn">
+                    <!-- <button (click)="edit(r)" title="Editar" class="edit-btn">
                       <i class="fas fa-edit"></i>
                     </button>
                     <button (click)="remove(r)" title="Eliminar" class="delete-btn">
-                      <i class="fas fa-trash-alt"></i>
-                    </button>
+                      <i class="fas fa-trash-alt"></i> 
+                    </button> -->
                   </td>
                 </tr>
               }
@@ -143,6 +143,40 @@
           ></app-movie-config-dialog>
         }
 
+        <!-- para editar peli-->
+        @if(isEditing && selectedMovie){
+            <div class="edit-modal">
+              <div class="edit-form">
+                <h3>editar pelicula</h3>
+                <form (ngSubmit)="saveMovie()">
+
+                  <input 
+                  [value]="selectedMovie.price" 
+                  (input)="selectedMovie.price = $event.target.value"
+                  name="price"
+                  type="number"
+                  placeholder="precio" 
+                  required>
+
+                  <input 
+                    [value]="selectedMovie.stock" 
+                    (input)="selectedMovie.stock = $event.target.value"
+                    name="stock" 
+                    type="number" 
+                    placeholder="stock" 
+                    required>
+                    
+                  <div class="form-actions">
+                    <button type="submit" class="btn-save">guardar</button>
+                    <button type="button" class="btn-cancel" (click)="cancelEdit()">cancelar</button>
+                  </div>  
+                </form>
+              </div>
+            </div>        
+        }
+
+
+
         <div class="table-wrap">
           <input class="search" placeholder="Buscar películas..." />
           <table class="data-table">
@@ -159,7 +193,7 @@
               </tr>
             </thead>
             <tbody>
-              @for (m of movies; track $index) {
+              @for (m of movies; track $index) { 
                 <tr>
                   <td>{{ m.imdbID }}</td>
                   <td>{{ m.title }}</td>
@@ -219,12 +253,12 @@
                 <td>{{ rv.message }}</td>
                 <!-- <td>{{ rv.date }}</td> -->
                 <td class="actions">
-                  <button (click)="edit(rv)" title="Editar" class="edit-btn">
+                  <!-- <button (click)="edit(rv)"> title="Editar" class="edit-btn">
                     <i class="fas fa-edit"></i>
                   </button>
                   <button (click)="remove(rv)" title="Eliminar" class="delete-btn">
                     <i class="fas fa-trash-alt"></i>
-                  </button>
+                  </button> -->
                 </td>
               </tr>
             }

@@ -1,6 +1,8 @@
 package com.backend.moviesgo.controller;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import com.backend.moviesgo.model.OmdbSearchResponse;
 import com.backend.moviesgo.controller.ApiController;
 import com.backend.moviesgo.model.MovieDetail;
@@ -18,10 +20,14 @@ import com.backend.moviesgo.model.EndpointResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+
 import com.backend.moviesgo.model.Review;
 import com.backend.moviesgo.model.Buyer;
 import com.backend.moviesgo.services.CatalogService;
+import com.backend.moviesgo.services.MovieService;
 
 @CrossOrigin(origins = "*")
 
@@ -31,13 +37,16 @@ public class MovieController {
   private CatalogService catalog;
   private BuyerController buyerController;
 
+  private MovieService movieService;
+
   @Autowired
   public MovieController(@Value("${omdb.endpoint}") String endpointUrl, @Value("${omdb.api-key}") String apiKey,
-      BuyerController buyerController, CatalogService catalog) {
+      BuyerController buyerController, CatalogService catalog, MovieService movieService) {
     this.api = new ApiController(endpointUrl, apiKey);
     this.catalog = new CatalogService();
     this.buyerController = buyerController;
     this.catalog = catalog;
+    this.movieService = movieService;
   }
 
   @GetMapping("/getAllReviews")
@@ -73,6 +82,7 @@ public class MovieController {
   public EndpointResponse addMovie(@RequestParam(value = "id", required = true) String id,
       @RequestParam(value = "st", required = true) String stock,
       @RequestParam(value = "p", required = true) String price) {
+
     EndpointResponse res = this.api.getMovieById(id).block();
     if (res.error)
       return res;
@@ -80,7 +90,7 @@ public class MovieController {
         ? new EndpointResponse("Succes", false)
         : new EndpointResponse("Movie already added", true);
 
-  }
+  } 
 
   @GetMapping("/getMoviesAvailables")
   public Mono<EndpointResponse> getMoviesAvailables(@RequestParam(value = "s", required = true) String search,
@@ -135,5 +145,34 @@ public class MovieController {
     return new EndpointResponse(this.catalog.getMovies(), false);
 
   }
+
+
+
+
+  
+  //modifica pelicual
+  @PostMapping("/updateMovie")
+  public EndpointResponse updateMovie(@RequestParam String id, @RequestBody Movie movie){
+    try{
+      movieService.updateMovie(id, movie);
+      return new EndpointResponse("succes", false);
+    }
+    catch(Exception e){
+      return new EndpointResponse(e.getMessage(), true);
+    }
+  }
+
+  //elimina pelicula
+  @DeleteMapping("/deleteMovie")
+  public EndpointResponse deleteMovie(@RequestParam String id){
+    try{
+      movieService.deleteMovie(id);
+      return new EndpointResponse("succes", false);
+    }
+    catch(Exception e){
+       return new EndpointResponse(e.getMessage(), true);
+    }
+  }
+
 
 }

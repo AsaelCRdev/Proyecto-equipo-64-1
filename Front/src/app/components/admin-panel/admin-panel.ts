@@ -7,11 +7,12 @@ import { BuyerService } from '../../services/buyer.service';
 import { Buyer } from '../../model/Buyer';
 import { Review } from '../../model/Review';
 import { MovieRental } from '../../model/MovieRental';
+import { ɵInternalFormsSharedModule } from "@angular/forms";
 
 @Component({
   selector: 'app-admin-panel',
   templateUrl: './admin-panel.html',
-  imports: [MovieSelectDialog, MovieConfigDialog],
+  imports: [MovieSelectDialog, MovieConfigDialog, ɵInternalFormsSharedModule],
   standalone: true,
   styleUrl: './admin-panel.css',
 })
@@ -29,6 +30,8 @@ export class AdminPanel implements OnInit {
   movies: Movie[] = [];
   rentals: MovieRental[] = [];
   reviews: Review[] | undefined = undefined;
+
+isEditing = false;
 
   ngOnInit(): void {
     this.buyerService.getAllRented().then((v) => {
@@ -77,10 +80,34 @@ export class AdminPanel implements OnInit {
     this.activeSection = section;
   }
 
-  edit(item: any) {
-    console.log('editar', item);
+  edit(movie: Movie) {
+    this.selectedMovie = { ...movie};
+    this.isEditing = true;
   }
-  remove(item: any) {
-    console.log('eliminar', item);
+
+  async saveMovie() {
+    if(!this.selectedMovie) return;
+    const result = await this.movieService.updateMovie(this.selectedMovie.imdbID, this.selectedMovie);
+    if(result){
+      this.movies = this.movies.map(m => m.imdbID ===
+        this.selectedMovie!.imdbID ? this.selectedMovie! : m);
+        this.isEditing = false;
+        this.selectedMovie = undefined;
+        alert('Actualizado');
+    }
+  }
+
+  async remove(movie: Movie){
+      if(!confirm('¿seguro?')) return;
+      const result = await this.movieService.deleteMovie(movie.imdbID);
+      if(result){
+        this.movies = this.movies.filter(m => m.imdbID !== movie.imdbID);
+        alert('Eliminado');
+      }
+  }
+
+  cancelEdit(){
+    this.isEditing = false;
+    this.selectedMovie = undefined;
   }
 }

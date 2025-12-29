@@ -21,4 +21,18 @@ export class ApiBackService {
     console.log(asEnd);
     return asEnd.error ? (asEnd.value as string) : (asEnd.value as T);
   }
+
+
+
+  async postToBack<T>(uri: String, body: any): Promise<T | string>{
+      const f = await fetch(this.api + uri, {
+        method: 'POSt',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const response = await f.json();
+      const asEnd = response as EndpointResponse;
+      return asEnd.error ? (asEnd.value as string) : (asEnd.value as T);
+
+  }
 }
