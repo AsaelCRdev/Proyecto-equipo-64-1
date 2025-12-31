@@ -7,33 +7,33 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.backend.moviesgo.model.Movie;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class MovieService {
-    private ObjectMapper ObjectMapper = new ObjectMapper();
+     String h;
+      public JsonService<Movie> json = new JsonService<>("Back\\src\\main\\java\\com\\backend\\moviesgo\\json\\movies.json",
+      Movie.class);
 
-    private final JsonService<Movie> jsonService;
-
-    public MovieService() {
-        this.jsonService = new JsonService <>(
-            "C:\\Users\\jenry\\Downloads\\ProyectoSoftware\\Proyecto-equipo-64-1\\Back\\src\\main\\java\\com\\backend\\moviesgo\\services\\JsonService.java", Movie.class
-        );
-    }
-
+      
     public Movie updateMovie(String id, Movie newData) throws IOException{
 
-        List<Movie> movies = jsonService.cargar();
+        List<Movie> movies = json.cargar();
+
+        
+        for(Movie m: movies){
+            h=m.imdbID;
+            System.out.println("ID JSON: [" + m.imdbID + "]");
+        }
+        System.out.println("ID recibido: [" + id + "]"); 
 
         Movie existingMovie = movies.stream()
-        .filter(m -> m.imdbID.equals(id))
+        .filter(m -> m.imdbID.equalsIgnoreCase(id))
         .findFirst()
-        .orElseThrow(() -> new RuntimeException("pelicula no encontrada"));
+        .orElseThrow(() -> new RuntimeException("pelicula no ENCONTRADA, id dado : " + id + " ID encontrado : " + h));
 
-        existingMovie.stock  = newData.stock;
-        existingMovie.price  = newData.price;
-        
-        jsonService.guardar(movies);
+        if(newData.stock!=null) existingMovie.stock  = newData.stock;
+        if(newData.price!=null) existingMovie.price  = newData.price;
+        json.guardar(movies);
 
         return existingMovie;
 
@@ -45,7 +45,7 @@ public class MovieService {
     
 
     public void deleteMovie(String id) throws IOException{
-        List <Movie> movies = jsonService.cargar();
+        List <Movie> movies = json.cargar();
 
         boolean exists = movies.stream()
                     .anyMatch(m -> m.imdbID.equals(id));
@@ -58,6 +58,6 @@ public class MovieService {
                 .filter(m -> !m.imdbID.equals(id))
                 .collect(Collectors.toList());
 
-        jsonService.guardar(movies);
+        json.guardar(movies);
     }
 }

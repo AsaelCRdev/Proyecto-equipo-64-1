@@ -8,11 +8,12 @@ import { Buyer } from '../../model/Buyer';
 import { Review } from '../../model/Review';
 import { MovieRental } from '../../model/MovieRental';
 import { ɵInternalFormsSharedModule } from "@angular/forms";
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-admin-panel',
   templateUrl: './admin-panel.html',
-  imports: [MovieSelectDialog, MovieConfigDialog, ɵInternalFormsSharedModule],
+  imports: [MovieSelectDialog, MovieConfigDialog, ɵInternalFormsSharedModule, FormsModule],
   standalone: true,
   styleUrl: './admin-panel.css',
 })
@@ -87,15 +88,14 @@ isEditing = false;
 
   async saveMovie() {
     if(!this.selectedMovie) return;
-    const result = await this.movieService.updateMovie(this.selectedMovie.imdbID, this.selectedMovie);
-    if(result){
-      this.movies = this.movies.map(m => m.imdbID ===
-        this.selectedMovie!.imdbID ? this.selectedMovie! : m);
+        const updateMovie = await this.movieService.updateMovie(this.selectedMovie.imdbID, this.selectedMovie);
+        if(updateMovie){
+            this.movies = this.movies.map(m=>m.imdbID === updateMovie.imdbID ? updateMovie : m);
+        }
         this.isEditing = false;
         this.selectedMovie = undefined;
         alert('Actualizado');
-    }
-  }
+  } 
 
   async remove(movie: Movie){
       if(!confirm('¿seguro?')) return;

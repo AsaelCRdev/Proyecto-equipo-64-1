@@ -152,9 +152,8 @@
 
                   <input 
                   [value]="selectedMovie.price" 
-                  (input)="selectedMovie.price = $event.target.value"
+                  (input)="selectedMovie.price = $event.target.value" 
                   name="price"
-                  type="number"
                   placeholder="precio" 
                   required>
 
@@ -162,7 +161,6 @@
                     [value]="selectedMovie.stock" 
                     (input)="selectedMovie.stock = $event.target.value"
                     name="stock" 
-                    type="number" 
                     placeholder="stock" 
                     required>
                     

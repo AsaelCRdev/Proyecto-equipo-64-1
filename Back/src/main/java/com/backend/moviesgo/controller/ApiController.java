@@ -23,7 +23,7 @@ public class ApiController {
       return new EndpointResponse(r, false);
     });
 
-  }
+  } 
 
   public Mono<EndpointResponse> getMovieBySearch(String s, String page) {
     Mono<OmdbSearchResponse> res = this.api.getMoviesBySearch(s, page);

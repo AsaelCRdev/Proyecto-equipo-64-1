@@ -76,10 +76,14 @@ export class MovieService {
 
 
   //actualizar pelicula
-  async updateMovie(id: String, movie: Movie): Promise< boolean | null > {
-      const res = await this.endpoint.postToBack<boolean>(`/updateMovie?id=${id}`, movie);
-      return typeof res === 'string' ? null: res;
-  } 
+  async updateMovie(id: string, movie: Movie): Promise< Movie | null > {
+      const res = await this.endpoint.postToBack<Movie>(`/updateMovie?id=${id}`, movie);
+        if (typeof res === 'string') {
+          console.error('error:', res);  
+          return null;
+        }
+        return res as Movie;
+  }
 
   //eliminar pelicual
   async deleteMovie(id: String): Promise<boolean | null> {

@@ -37,7 +37,21 @@
   "cart" : {
     "movies" : [ ]
   },
-  "rentedMovies" : [ ]
+  "rentedMovies" : [ {
+    "movieTitle" : "Bride of Chucky",
+    "movieId" : "tt0144120",
+    "startDate" : "Fri Jan 23 2026 20:00:00 GMT-0400 (hora de Venezuela)",
+    "endDate" : "Fri Jan 23 2026 20:00:00 GMT-0400 (hora de Venezuela)",
+    "price" : "0",
+    "days" : "0"
+  }, {
+    "movieTitle" : "American History X",
+    "movieId" : "tt0120586",
+    "startDate" : "Sun Jan 18 2026 20:00:00 GMT-0400 (hora de Venezuela)",
+    "endDate" : "Thu Jan 15 2026 20:00:00 GMT-0400 (hora de Venezuela)",
+    "price" : "300",
+    "days" : "3"
+  } ]
 }, {
   "id" : "4",
   "name" : "carlos",

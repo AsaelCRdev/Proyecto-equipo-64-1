@@ -67,7 +67,7 @@ public class MovieController {
 
     System.out.println("Id de usuario");
     System.out.println(id);
-    Buyer validAuthor = this.buyerController.users.getBuyerById(userId);
+    Buyer validAuthor = this.buyerController.users.getBuyerById(userId); 
     System.out.println("validAuthor");
     System.out.println(validAuthor);
     if (validAuthor == null)
@@ -114,7 +114,7 @@ public class MovieController {
   @GetMapping("/getGenres")
   public EndpointResponse getGenres() {
     return new EndpointResponse(this.catalog.genres, false);
-  }
+  } 
 
   @GetMapping("/getMovies")
   public EndpointResponse getMovies(@RequestParam(value = "s", required = false) String search,
@@ -154,13 +154,16 @@ public class MovieController {
   @PostMapping("/updateMovie")
   public EndpointResponse updateMovie(@RequestParam String id, @RequestBody Movie movie){
     try{
-      movieService.updateMovie(id, movie);
-      return new EndpointResponse("succes", false);
+      System.err.println("BORICUA");
+      Movie updateMovie = movieService.updateMovie(id, movie);
+      return new EndpointResponse(updateMovie, false);
     }
     catch(Exception e){
       return new EndpointResponse(e.getMessage(), true);
     }
-  }
+  } 
+
+
 
   //elimina pelicula
   @DeleteMapping("/deleteMovie")
