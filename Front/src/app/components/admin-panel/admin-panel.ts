@@ -101,10 +101,10 @@ isEditing = false;
       if(!confirm('¿seguro?')) return;
       const result = await this.movieService.deleteMovie(movie.imdbID);
       if(result){
-        this.movies = this.movies.filter(m => m.imdbID !== movie.imdbID);
+        this.movies = result;
         alert('Eliminado');
       }
-  }
+  } 
 
   cancelEdit(){
     this.isEditing = false;

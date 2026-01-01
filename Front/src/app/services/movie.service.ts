@@ -86,10 +86,14 @@ export class MovieService {
   }
 
   //eliminar pelicual
-  async deleteMovie(id: String): Promise<boolean | null> {
+  async deleteMovie(id: String): Promise<Movie[] | null> {
     let uri = '/deleteMovie?id=' + id;
-    const res = await this.endpoint.getFromBackAsT<boolean>(uri, 'DELETE');
-    return typeof res === 'string' ? null: res;
-  }
+    const res = await this.endpoint.getFromBackAsT<Movie[]>(uri, 'DELETE');
+            if (typeof res === 'string') {
+          console.error('error:', res);  
+          return null;
+        }
+        return res as Movie[];
+  } 
 
 }

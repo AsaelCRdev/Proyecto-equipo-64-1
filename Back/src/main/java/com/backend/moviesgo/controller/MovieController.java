@@ -154,7 +154,6 @@ public class MovieController {
   @PostMapping("/updateMovie")
   public EndpointResponse updateMovie(@RequestParam String id, @RequestBody Movie movie){
     try{
-      System.err.println("BORICUA");
       Movie updateMovie = movieService.updateMovie(id, movie);
       return new EndpointResponse(updateMovie, false);
     }
@@ -163,14 +162,14 @@ public class MovieController {
     }
   } 
 
-
+ 
 
   //elimina pelicula
   @DeleteMapping("/deleteMovie")
   public EndpointResponse deleteMovie(@RequestParam String id){
     try{
-      movieService.deleteMovie(id);
-      return new EndpointResponse("succes", false);
+      Movie[] h = movieService.deleteMovie(id);
+      return new EndpointResponse(h, false);
     }
     catch(Exception e){
        return new EndpointResponse(e.getMessage(), true);

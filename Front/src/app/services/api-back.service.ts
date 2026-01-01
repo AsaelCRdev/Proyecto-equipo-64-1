@@ -22,7 +22,6 @@ export class ApiBackService {
     return asEnd.error ? (asEnd.value as string) : (asEnd.value as T);
   }
 
-
   async postToBack<T>(uri: String, body: any): Promise<T | string>{
       const f = await fetch(this.api + uri, {
         method: 'POST',
