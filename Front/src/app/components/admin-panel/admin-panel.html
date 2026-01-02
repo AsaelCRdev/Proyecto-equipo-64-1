@@ -93,7 +93,7 @@
                 <th>Fecha Alquiler</th>
                 <th>Fecha Devolución</th>
                 <th>Precio</th>
-                <th>Acciones</th>
+                <!-- <th>Acciones</th> -->
               </tr>
             </thead>
             <tbody>
@@ -104,14 +104,14 @@
                   <td>{{ r.startDate }}</td>
                   <td>{{ r.endDate }}</td>
                   <td>{{ r.price }}</td>
-                  <td class="actions">
-                    <button (click)="edit(r)" title="Editar" class="edit-btn">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button (click)="remove(r)" title="Eliminar" class="delete-btn">
-                      <i class="fas fa-trash-alt"></i>
-                    </button>
-                  </td>
+                  <!-- <td class="actions"> -->
+                  <!--   <button (click)="edit(r)" title="Editar" class="edit-btn"> -->
+                  <!--     <i class="fas fa-edit"></i> -->
+                  <!--   </button> -->
+                  <!--   <button (click)="remove(r)" title="Eliminar" class="delete-btn"> -->
+                  <!--     <i class="fas fa-trash-alt"></i> -->
+                  <!--   </button> -->
+                  <!-- </td> -->
                 </tr>
               }
             </tbody>
@@ -219,9 +219,9 @@
                   <td>{{ rv.message }}</td>
                   <!-- <td>{{ rv.date }}</td> -->
                   <td class="actions">
-                    <button (click)="edit(rv)" title="Editar" class="edit-btn">
-                      <i class="fas fa-edit"></i>
-                    </button>
+                    <!-- <button (click)="edit(rv)" title="Editar" class="edit-btn"> -->
+                    <!--   <i class="fas fa-edit"></i> -->
+                    <!-- </button> -->
                     <button (click)="remove(rv)" title="Eliminar" class="delete-btn">
                       <i class="fas fa-trash-alt"></i>
                     </button>

@@ -130,6 +130,33 @@ export class AdminPanel implements OnInit {
     console.log('editar', item);
   }
   remove(item: any) {
-    console.log('eliminar', item);
+    if ('email' in item) {
+      // Es un Buyer
+      console.log('Eliminar Buyer', item);
+      this.buyerService.deleteBuyer(item.id).then((ok) => {
+        if (ok) {
+          alert('Buyer eliminado');
+          this.buyerService.getBuyers().then((b) => (this.filteredBuyers = b as Buyer[]));
+        }
+      });
+    } else if ('genre' in item) {
+      // Es una Movie
+      console.log('Eliminar Movie', item);
+      this.movieService.deleteMovie(item.imdbID).then((ok) => {
+        if (ok) {
+          alert('Película eliminada');
+          this.movieService.getMovies().then((mv) => (this.filteredMovies = mv ?? []));
+        }
+      });
+    } else if ('message' in item) {
+      // Es una Review
+      console.log('Eliminar Review', item);
+      this.movieService.deleteReview(item.authorId, item.movie).then((ok) => {
+        if (ok) {
+          alert('Reseña eliminada');
+          this.movieService.getAllReviews().then((r) => (this.filteredReviews = r));
+        }
+      });
+    }
   }
 }

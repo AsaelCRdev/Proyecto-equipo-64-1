@@ -1,5 +1,9 @@
 package com.backend.moviesgo.controller;
 
+import org.springframework.web.bind.annotation.PatchMapping;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+
 import java.util.ArrayList;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -182,5 +186,73 @@ public class BuyerController {
     this.currentId++;
     return new EndpointResponse(res ? "Succes" : "Error", !res);
 
+  }
+
+  @DeleteMapping("/deleteBuyer")
+  public EndpointResponse deleteBuyer(@RequestParam(value = "id", required = true) String id) {
+    if (id == null || id.trim().isEmpty()) {
+      return new EndpointResponse("Must provide an id", true);
+    }
+
+    Buyer buyer = this.users.getBuyerById(id);
+    if (buyer == null) {
+      return new EndpointResponse("Buyer not found", true);
+    }
+
+    boolean removed = this.users.users.remove(buyer);
+    if (removed) {
+      this.users.json.guardar(new ArrayList<>(this.users.users));
+      this.users.refresh();
+      return new EndpointResponse("Succes", false);
+    }
+
+    return new EndpointResponse("Error deleting buyer", true);
+  }
+
+  @PatchMapping("/editBuyer")
+  public EndpointResponse editBuyer(
+      @RequestParam(value = "id", required = true) String id,
+      @RequestParam(value = "name", required = false) String name,
+      @RequestParam(value = "email", required = false) String email,
+      @RequestParam(value = "address", required = false) String address,
+      @RequestParam(value = "phone", required = false) String phone) {
+
+    if (id == null || id.trim().isEmpty()) {
+      return new EndpointResponse("Must provide an id", true);
+    }
+
+    Buyer buyer = this.users.getBuyerById(id);
+    if (buyer == null) {
+      return new EndpointResponse("Buyer not found", true);
+    }
+
+    boolean changed = false;
+
+    if (name != null && !name.trim().isEmpty()) {
+      buyer.name = name.trim();
+      changed = true;
+    }
+    if (email != null && !email.trim().isEmpty()) {
+      buyer.email = email.trim();
+      changed = true;
+    }
+    if (address != null && !address.trim().isEmpty()) {
+      buyer.address = address.trim();
+      changed = true;
+    }
+    if (phone != null && !phone.trim().isEmpty()) {
+      buyer.phone = phone.trim();
+      changed = true;
+    }
+
+    if (!changed) {
+      return new EndpointResponse("No valid fields provided", true);
+    }
+
+    // Persistir cambios en buyers.json
+    this.users.json.guardar(new ArrayList<>(this.users.users));
+    this.users.refresh();
+
+    return new EndpointResponse("Succes", false);
   }
 }

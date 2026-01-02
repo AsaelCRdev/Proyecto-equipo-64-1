@@ -75,4 +75,35 @@ export class MovieService {
     const res: Movie[] | string = await this.endpoint.getFromBackAsT<Movie[]>(uri);
     return typeof res === 'string' ? null : res;
   }
+  async editMovieStockPrice(id: string, stock?: string, price?: string): Promise<boolean> {
+    if (!id || id.trim() === '') return false;
+
+    let uri = `/editMovieStockPrice?id=${encodeURIComponent(id)}`;
+    if (stock && stock.trim() !== '') uri += `&stock=${encodeURIComponent(stock)}`;
+    if (price && price.trim() !== '') uri += `&price=${encodeURIComponent(price)}`;
+
+    const res = await this.endpoint.getFromBackAsT<string>(uri, 'PATCH');
+    console.log('Respuesta editMovieStockPrice:', res);
+
+    return (res as string).toLowerCase() === 'succes';
+  }
+
+  async deleteReview(buyerId: string, movieTitle: string): Promise<boolean> {
+    if (!buyerId || !movieTitle) return false;
+
+    const uri = `/deleteReview?buyerId=${encodeURIComponent(buyerId)}&movieTitle=${encodeURIComponent(movieTitle)}`;
+    const res = await this.endpoint.getFromBackAsT<string>(uri, 'DELETE');
+    console.log('Respuesta deleteReview:', res);
+
+    return (res as string).toLowerCase() === 'succes';
+  }
+  async deleteMovie(id: string): Promise<boolean> {
+    if (!id || id.trim() === '') return false;
+
+    const uri = `/deleteMovie?id=${encodeURIComponent(id)}`;
+    const res = await this.endpoint.getFromBackAsT<string>(uri, 'DELETE');
+    console.log('Respuesta deleteMovie:', res);
+
+    return (res as string).toLowerCase() === 'succes';
+  }
 }

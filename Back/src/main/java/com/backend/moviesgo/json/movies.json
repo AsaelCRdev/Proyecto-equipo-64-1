@@ -1,130 +1,110 @@
-[
-  {
-    "imdbID": "tt0120912",
-    "title": "Men in Black II",
-    "genre": ["Action", "Adventure", "Comedy"],
-    "reviews": [],
-    "rating": "6.2",
-    "released": "03 Jul 2002",
-    "poster": "https://m.media-amazon.com/images/M/MV5BMTMxNDA0NTMxMV5BMl5BanBnXkFtZTYwMDE2NzY2._V1_SX300.jpg",
-    "plot": "Agent J is sent to find Agent K and restore his memory after the re-appearance of a case from K's past.",
-    "price": "10",
-    "stock": "10"
-  },
-  {
-    "imdbID": "tt5860550",
-    "title": "Vico C: La vida del filosofo",
-    "genre": ["Biography", "Drama", "Music"],
-    "reviews": [
-      {
-        "author": "jenry",
-        "authorId": "2",
-        "message": "Me gusto muchisimo!!",
-        "rating": "5"
-      },
-      {
-        "author": "carlos",
-        "authorId": "4",
-        "message": "Mala peli",
-        "rating": "5"
-      }
-    ],
-    "rating": "7.1",
-    "released": "10 Aug 2017",
-    "poster": "https://m.media-amazon.com/images/M/MV5BNjVkNzg1NTYtMTU2ZC00YWE2LWE3ZGUtOGUwZTNmZmE1ZTcxXkEyXkFqcGdeQXVyNDcyMzkyMTQ@._V1_SX300.jpg",
-    "plot": "The film take us in an intimate journey through the life, trials and tribulation of iconic urban movement figure Vico C. From his days as a shy school boy, his self discovery, and the development of his amazing talent, his rapid rise to fame.",
-    "price": "100",
-    "stock": "10"
-  },
-  {
-    "imdbID": "tt0093058",
-    "title": "Full Metal Jacket",
-    "genre": ["Drama", "War"],
-    "reviews": [
-      {
-        "author": "carlos",
-        "authorId": "4",
-        "message": "Muy buena pelicula!!!!!",
-        "rating": "5"
-      }
-    ],
-    "rating": "8.2",
-    "released": "10 Jul 1987",
-    "poster": "https://m.media-amazon.com/images/M/MV5BYWUzNzZkNzUtNDdiYy00Nzk5LTgxMmItNTk0MjRjNjdjNDA0XkEyXkFqcGc@._V1_SX300.jpg",
-    "plot": "A pragmatic U.S. Marine observes the dehumanizing effects the Vietnam War has on his fellow recruits from their brutal boot camp training to the bloody street fighting in Hue.",
-    "price": "100",
-    "stock": "10"
-  },
-  {
-    "imdbID": "tt0144120",
-    "title": "Bride of Chucky",
-    "genre": ["Comedy", "Horror", "Thriller"],
-    "reviews": [],
-    "rating": "5.6",
-    "released": "16 Oct 1998",
-    "poster": "https://m.media-amazon.com/images/M/MV5BYTk2OGE5MjktYjcyYS00M2QxLWE4YTYtYmNjYmE0M2I3ZDMxXkEyXkFqcGc@._V1_SX300.jpg",
-    "plot": "Chucky, the doll possessed by a serial killer, discovers the perfect mate to kill and revive into the body of another doll.",
-    "price": "100",
-    "stock": "100"
-  },
-  {
-    "imdbID": "tt0093181",
-    "title": "Hero: The Official Film of the 1986 FIFA World Cup",
-    "genre": ["Documentary", "Sport"],
-    "reviews": [],
-    "rating": "8.0",
-    "released": "25 Dec 1986",
-    "poster": "https://m.media-amazon.com/images/M/MV5BN2I2MGE5ODctY2NlNi00MzI5LTljN2EtNDhmZjBiMjkzOGU5XkEyXkFqcGc@._V1_SX300.jpg",
-    "plot": "The official documentary record of the 1986 soccer World Cup, highlighting the Captain of Argentina, Diego Maradona.",
-    "price": "1",
-    "stock": "1"
-  },
-  {
-    "imdbID": "tt0120586",
-    "title": "American History X",
-    "genre": ["Crime", "Drama"],
-    "reviews": [],
-    "rating": "8.5",
-    "released": "20 Nov 1998",
-    "poster": "https://m.media-amazon.com/images/M/MV5BMzhiOTQ0NDItOTg0Zi00OGVmLWE0OGEtMTI4NDM0NWMxZWU4XkEyXkFqcGc@._V1_SX300.jpg",
-    "plot": "Living a life marked by violence, neo-Nazi Derek finally goes to prison after killing two black youths. Upon his release, Derek vows to change; he hopes to prevent his brother, Danny, who idolizes Derek, from following in his footsteps.",
-    "price": "100",
-    "stock": "10"
-  },
-  {
-    "imdbID": "tt0325950",
-    "title": "El padrino",
-    "genre": ["Action", "Crime", "Drama"],
-    "reviews": [],
-    "rating": "4.7",
-    "released": "27 Sep 2005",
-    "poster": "https://m.media-amazon.com/images/M/MV5BMTI2MjI4NTgyNF5BMl5BanBnXkFtZTcwOTM5NzQ5MQ@@._V1_SX300.jpg",
-    "plot": "In the streets of East Los Angeles, Manny is a formidable drug dealer. Impressed by his extravagant lifestyle and prowess, his young son Kilo yearns to follow in his footsteps. Kilo resolves to learn how to prosper in the drug world.",
-    "price": "100",
-    "stock": "10"
-  },
-  {
-    "imdbID": "tt0119654",
-    "title": "Men in Black",
-    "genre": ["Action", "Adventure", "Comedy"],
-    "reviews": [],
-    "rating": "7.3",
-    "released": "02 Jul 1997",
-    "poster": "https://m.media-amazon.com/images/M/MV5BZmQ0YTdhYzEtMjIxZC00MGFiLTlmNjktZmFlOWE2M2QxOTRhXkEyXkFqcGc@._V1_SX300.jpg",
-    "plot": "James, an NYC cop, is hired by Agent K of a secret government agency that monitors extraterrestrial life on Earth. Together, they must recover an item that has been stolen by an intergalactic villain.",
-    "price": "1",
-    "stock": "232"
-  },
-  {
-    "imdbID": "tt0180093",
-    "title": "Requiem for a Dream",
-    "genre": ["Drama"],
-    "reviews": [],
-    "rating": "8.3",
-    "released": "15 Dec 2000",
-    "poster": "https://m.media-amazon.com/images/M/MV5BN2ZlMjIzZjctYzA2My00ZWYyLWI4ZjctMGI2NWYyNzFiZjAwXkEyXkFqcGc@._V1_SX300.jpg",
-    "plot": "The drug-induced utopias of four Coney Island people are shattered when their addictions run deep.",
-    "price": "100",
-    "stock": "10"
-  }
-]
+[ {
+  "imdbID" : "tt0120912",
+  "title" : "Men in Black II",
+  "genre" : [ "Action", "Adventure", "Comedy" ],
+  "reviews" : [ ],
+  "rating" : "6.2",
+  "released" : "03 Jul 2002",
+  "poster" : "https://m.media-amazon.com/images/M/MV5BMTMxNDA0NTMxMV5BMl5BanBnXkFtZTYwMDE2NzY2._V1_SX300.jpg",
+  "plot" : "Agent J is sent to find Agent K and restore his memory after the re-appearance of a case from K's past.",
+  "price" : "10",
+  "stock" : "10"
+}, {
+  "imdbID" : "tt5860550",
+  "title" : "Vico C: La vida del filosofo",
+  "genre" : [ "Biography", "Drama", "Music" ],
+  "reviews" : [ {
+    "author" : "jenry",
+    "authorId" : "2",
+    "message" : "Me gusto muchisimo!!",
+    "rating" : "5"
+  }, {
+    "author" : "carlos",
+    "authorId" : "4",
+    "message" : "Mala peli",
+    "rating" : "5"
+  } ],
+  "rating" : "7.1",
+  "released" : "10 Aug 2017",
+  "poster" : "https://m.media-amazon.com/images/M/MV5BNjVkNzg1NTYtMTU2ZC00YWE2LWE3ZGUtOGUwZTNmZmE1ZTcxXkEyXkFqcGdeQXVyNDcyMzkyMTQ@._V1_SX300.jpg",
+  "plot" : "The film take us in an intimate journey through the life, trials and tribulation of iconic urban movement figure Vico C. From his days as a shy school boy, his self discovery, and the development of his amazing talent, his rapid rise to fame.",
+  "price" : "100",
+  "stock" : "10"
+}, {
+  "imdbID" : "tt0093058",
+  "title" : "Full Metal Jacket",
+  "genre" : [ "Drama", "War" ],
+  "reviews" : [ ],
+  "rating" : "8.2",
+  "released" : "10 Jul 1987",
+  "poster" : "https://m.media-amazon.com/images/M/MV5BYWUzNzZkNzUtNDdiYy00Nzk5LTgxMmItNTk0MjRjNjdjNDA0XkEyXkFqcGc@._V1_SX300.jpg",
+  "plot" : "A pragmatic U.S. Marine observes the dehumanizing effects the Vietnam War has on his fellow recruits from their brutal boot camp training to the bloody street fighting in Hue.",
+  "price" : "100",
+  "stock" : "10"
+}, {
+  "imdbID" : "tt0144120",
+  "title" : "Bride of Chucky",
+  "genre" : [ "Comedy", "Horror", "Thriller" ],
+  "reviews" : [ ],
+  "rating" : "5.6",
+  "released" : "16 Oct 1998",
+  "poster" : "https://m.media-amazon.com/images/M/MV5BYTk2OGE5MjktYjcyYS00M2QxLWE4YTYtYmNjYmE0M2I3ZDMxXkEyXkFqcGc@._V1_SX300.jpg",
+  "plot" : "Chucky, the doll possessed by a serial killer, discovers the perfect mate to kill and revive into the body of another doll.",
+  "price" : "100",
+  "stock" : "100"
+}, {
+  "imdbID" : "tt0093181",
+  "title" : "Hero: The Official Film of the 1986 FIFA World Cup",
+  "genre" : [ "Documentary", "Sport" ],
+  "reviews" : [ ],
+  "rating" : "8.0",
+  "released" : "25 Dec 1986",
+  "poster" : "https://m.media-amazon.com/images/M/MV5BN2I2MGE5ODctY2NlNi00MzI5LTljN2EtNDhmZjBiMjkzOGU5XkEyXkFqcGc@._V1_SX300.jpg",
+  "plot" : "The official documentary record of the 1986 soccer World Cup, highlighting the Captain of Argentina, Diego Maradona.",
+  "price" : "1",
+  "stock" : "1"
+}, {
+  "imdbID" : "tt0120586",
+  "title" : "American History X",
+  "genre" : [ "Crime", "Drama" ],
+  "reviews" : [ ],
+  "rating" : "8.5",
+  "released" : "20 Nov 1998",
+  "poster" : "https://m.media-amazon.com/images/M/MV5BMzhiOTQ0NDItOTg0Zi00OGVmLWE0OGEtMTI4NDM0NWMxZWU4XkEyXkFqcGc@._V1_SX300.jpg",
+  "plot" : "Living a life marked by violence, neo-Nazi Derek finally goes to prison after killing two black youths. Upon his release, Derek vows to change; he hopes to prevent his brother, Danny, who idolizes Derek, from following in his footsteps.",
+  "price" : "100",
+  "stock" : "10"
+}, {
+  "imdbID" : "tt0325950",
+  "title" : "El padrino",
+  "genre" : [ "Action", "Crime", "Drama" ],
+  "reviews" : [ ],
+  "rating" : "4.7",
+  "released" : "27 Sep 2005",
+  "poster" : "https://m.media-amazon.com/images/M/MV5BMTI2MjI4NTgyNF5BMl5BanBnXkFtZTcwOTM5NzQ5MQ@@._V1_SX300.jpg",
+  "plot" : "In the streets of East Los Angeles, Manny is a formidable drug dealer. Impressed by his extravagant lifestyle and prowess, his young son Kilo yearns to follow in his footsteps. Kilo resolves to learn how to prosper in the drug world.",
+  "price" : "100",
+  "stock" : "10"
+}, {
+  "imdbID" : "tt0119654",
+  "title" : "Men in Black",
+  "genre" : [ "Action", "Adventure", "Comedy" ],
+  "reviews" : [ ],
+  "rating" : "7.3",
+  "released" : "02 Jul 1997",
+  "poster" : "https://m.media-amazon.com/images/M/MV5BZmQ0YTdhYzEtMjIxZC00MGFiLTlmNjktZmFlOWE2M2QxOTRhXkEyXkFqcGc@._V1_SX300.jpg",
+  "plot" : "James, an NYC cop, is hired by Agent K of a secret government agency that monitors extraterrestrial life on Earth. Together, they must recover an item that has been stolen by an intergalactic villain.",
+  "price" : "1",
+  "stock" : "232"
+}, {
+  "imdbID" : "tt0180093",
+  "title" : "Requiem for a Dream",
+  "genre" : [ "Drama" ],
+  "reviews" : [ ],
+  "rating" : "8.3",
+  "released" : "15 Dec 2000",
+  "poster" : "https://m.media-amazon.com/images/M/MV5BN2ZlMjIzZjctYzA2My00ZWYyLWI4ZjctMGI2NWYyNzFiZjAwXkEyXkFqcGc@._V1_SX300.jpg",
+  "plot" : "The drug-induced utopias of four Coney Island people are shattered when their addictions run deep.",
+  "price" : "100",
+  "stock" : "10"
+} ]

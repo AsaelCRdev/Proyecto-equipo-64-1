@@ -1,5 +1,9 @@
 package com.backend.moviesgo.controller;
 
+import org.springframework.web.bind.annotation.PatchMapping;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import com.backend.moviesgo.model.OmdbSearchResponse;
 import com.backend.moviesgo.controller.ApiController;
@@ -136,4 +140,85 @@ public class MovieController {
 
   }
 
+  @DeleteMapping("/deleteMovie")
+  public EndpointResponse deleteMovie(@RequestParam(value = "id", required = true) String id) {
+    if (id == null || id.trim().isEmpty()) {
+      return new EndpointResponse("Must provide an id", true);
+    }
+
+    // Eliminar la película de todos los carritos
+    this.buyerController.users.users.forEach(b -> {
+      if (b.cart != null && b.cart.movies != null) {
+        b.cart.movies.removeIf(r -> r.movieId.equals(id));
+      }
+    });
+
+    boolean deleted = this.catalog.deleteMovieById(id);
+
+    return deleted
+        ? new EndpointResponse("Succes", false)
+        : new EndpointResponse("Movie not found", true);
+  }
+
+  @DeleteMapping("/deleteReview")
+  public EndpointResponse deleteReview(
+      @RequestParam(value = "buyerId", required = true) String buyerId,
+      @RequestParam(value = "movieTitle", required = true) String movieTitle) {
+
+    if (buyerId == null || buyerId.trim().isEmpty() ||
+        movieTitle == null || movieTitle.trim().isEmpty()) {
+      return new EndpointResponse("Must provide buyerId and movieTitle", true);
+    }
+
+    Buyer buyer = this.buyerController.users.getBuyerById(buyerId);
+    if (buyer == null) {
+      return new EndpointResponse("Buyer not found", true);
+    }
+
+    // Buscar película por título
+    Movie movie = this.catalog.getMovies().stream()
+        .filter(m -> m.title.equalsIgnoreCase(movieTitle.trim()))
+        .findFirst()
+        .orElse(null);
+
+    if (movie == null) {
+      return new EndpointResponse("Movie not found", true);
+    }
+
+    // Buscar reseña por authorId
+    Review toRemove = movie.reviews.stream()
+        .filter(r -> r.authorId.equals(buyerId))
+        .findFirst()
+        .orElse(null);
+
+    if (toRemove == null) {
+      return new EndpointResponse("Review not found", true);
+    }
+
+    boolean removed = movie.reviews.remove(toRemove);
+    if (removed) {
+      this.catalog.json.guardar(new ArrayList<Movie>(this.catalog.catalog));
+      this.catalog.refresh();
+      return new EndpointResponse("Succes", false);
+    }
+
+    return new EndpointResponse("Error deleting review", true);
+  }
+
+  @PatchMapping("/editMovieStockPrice")
+  public EndpointResponse editMovieStockPrice(
+      @RequestParam(value = "id", required = true) String id,
+      @RequestParam(value = "stock", required = false) String stock,
+      @RequestParam(value = "price", required = false) String price) {
+
+    if (id == null || id.trim().isEmpty()) {
+      return new EndpointResponse("Must provide an id", true);
+    }
+
+    boolean updated = this.catalog.editMovieStockPrice(id, stock, price);
+
+    return updated
+        ? new EndpointResponse("Succes", false)
+        : new EndpointResponse("Movie not found or no valid fields provided", true);
+  }
 }

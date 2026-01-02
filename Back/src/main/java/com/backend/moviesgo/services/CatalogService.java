@@ -111,4 +111,47 @@ public class CatalogService {
     return false;
 
   }
+
+  public boolean deleteMovieById(String id) {
+    Movie toRemove = this.getMovieById(id);
+    if (toRemove == null) {
+      return false;
+    }
+
+    boolean removed = this.catalog.remove(toRemove);
+    if (removed) {
+      this.json.guardar(new ArrayList<Movie>(this.catalog));
+      this.refresh();
+    }
+    return removed;
+  }
+
+  public boolean editMovieStockPrice(String id, String stock, String price) {
+    Movie m = this.getMovieById(id);
+    if (m == null) {
+      return false;
+    }
+
+    boolean changed = false;
+
+    if (stock != null && !stock.trim().isEmpty()) {
+      m.stock = stock.trim();
+      changed = true;
+    }
+
+    if (price != null && !price.trim().isEmpty()) {
+      m.price = price.trim();
+      changed = true;
+    }
+
+    if (!changed) {
+      return false;
+    }
+
+    // Persistir cambios
+    this.json.guardar(new ArrayList<Movie>(this.catalog));
+    this.refresh();
+
+    return true;
+  }
 }
