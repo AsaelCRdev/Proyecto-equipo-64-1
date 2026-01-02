@@ -47,4 +47,27 @@ export class BuyerService {
     console.log(res);
     return Array.isArray(res) ? res : [];
   }
-}
+
+
+  //modificacion de comprador
+
+  async updateBuyer(id: string,  buyer: Buyer): Promise<Buyer | null>{
+      const res = await this.api.postToBack<Buyer>(`/updateBuyer?id=${id}`, buyer);
+              if (typeof res === 'string') {
+                console.error('error:', res);  
+                return null;
+              }
+              return res as Buyer;
+  }   
+
+  //eliminacion de comprador
+  async deleteBuyer(id: string): Promise<Buyer[] | null>{
+      const res = await this.api.getFromBackAsT<Buyer[]>(`/deleteBuyer?id=${id}`, 'DELETE');
+      if(typeof res === 'string'){
+        console.log('error:', res);
+        return null;
+      }
+      return res as Buyer[];
+  }
+
+} 

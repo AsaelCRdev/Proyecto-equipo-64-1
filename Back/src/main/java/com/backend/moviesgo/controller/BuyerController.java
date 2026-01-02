@@ -3,19 +3,23 @@ package com.backend.moviesgo.controller;
 import java.util.ArrayList;
 
 import org.springframework.web.bind.annotation.PostMapping;
-
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.backend.moviesgo.model.EndpointResponse;
+import com.backend.moviesgo.model.Movie;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import com.backend.moviesgo.model.BuyerList;
 import com.backend.moviesgo.model.Buyer;
 import com.backend.moviesgo.model.AuthResponse;
 import com.backend.moviesgo.services.AuthService;
+import com.backend.moviesgo.services.BuyerService;
 import com.backend.moviesgo.model.MovieRental;
 import com.backend.moviesgo.services.CatalogService;
 
@@ -28,16 +32,19 @@ public class BuyerController {
   public AuthService auth;
   public CatalogService catalog;
 
+  private BuyerService buyerService; 
+
   @Autowired
   public BuyerController(
       @Value("${admin.mail}") String adminMail,
       @Value("${admin.pass}") String adminPass,
-      CatalogService catalog
+      CatalogService catalog,
+      BuyerService buyerService
 
   ) {
     this.auth = new AuthService(adminMail, adminPass);
     this.catalog = catalog;
-
+    this.buyerService = buyerService;
   }
 
   @GetMapping("/getCatalog")
@@ -182,5 +189,30 @@ public class BuyerController {
     this.currentId++;
     return new EndpointResponse(res ? "Succes" : "Error", !res);
 
+  } 
+
+  // actualizar comprador
+  @PostMapping("/updateBuyer")
+  public EndpointResponse updateBuyer(@RequestParam String id, @RequestBody Buyer buyer){
+      try{
+          Buyer updateBuyer = this.buyerService.updateBuyer(id, buyer);
+          return new EndpointResponse(updateBuyer,false);
+      }
+          catch(Exception e){
+      return new EndpointResponse(e.getMessage(), true);
+    }
   }
-}
+
+  //eliminar comprador
+  @DeleteMapping("/deleteBuyer")
+  public EndpointResponse deleteBuyer(@RequestParam String id){
+      try{
+      Buyer[] h = buyerService.deleteBuyer(id);
+      return new EndpointResponse(h, false);
+    }
+    catch(Exception e){
+       return new EndpointResponse(e.getMessage(), true);
+    }
+  }
+
+} 

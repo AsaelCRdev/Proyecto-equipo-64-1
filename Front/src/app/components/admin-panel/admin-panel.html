@@ -35,10 +35,55 @@
   <main class="content">
     <!-- Compradores -->
     @if (activeSection === 'compradores') {
+
+              <!-- para editar comprador-->
+        @if(isEditingBuyer && selectedBuyer){
+            <div class="edit-modal">
+              <div class="edit-form">
+                <h3>editar comprador</h3>
+                <form (ngSubmit)="saveBuyer()">
+
+                  <input 
+                  [value]="selectedBuyer.name" 
+                  (input)="selectedBuyer.name = $event.target.value" 
+                  name="name"
+                  placeholder="nuevo nombre" 
+                  required>
+
+                  <input 
+                    [value]="selectedBuyer.email" 
+                    (input)="selectedBuyer.email = $event.target.value"
+                    name="email" 
+                    placeholder="nuevo email" 
+                    required>
+                  
+                     <input 
+                    [value]="selectedBuyer.address" 
+                    (input)="selectedBuyer.address = $event.target.value"
+                    name="address" 
+                    placeholder="nueva direccion" 
+                    required>
+
+                      <input 
+                    [value]="selectedBuyer.phone" 
+                    (input)="selectedBuyer.phone = $event.target.value"
+                    name="phone" 
+                    placeholder="nuevo telefono" 
+                    required>
+                    
+                  <div class="form-actions">
+                    <button type="submit" class="btn-save">guardar</button>
+                    <button type="button" class="btn-cancel" (click)="cancelEditBuyer()">cancelar</button>
+                  </div>  
+                </form>
+              </div>
+            </div>        
+        }
+
+
       <section class="table-section">
         <header class="content-header">
           <h2>Gestión de Compradores</h2>
-          <button class="add-btn">+ Agregar Comprador</button>
         </header>
         <div class="table-wrap">
           <input class="search" placeholder="Buscar compradores..." />
@@ -46,7 +91,7 @@
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Nombre</th>
+                <th>Nombre</th> 
                 <th>Email</th>
                 <th>Dirección</th>
                 <th>Teléfono</th>
@@ -62,12 +107,12 @@
                   <td>{{ b.address }}</td>
                   <td>{{ b.phone }}</td>
                   <td class="actions">
-                    <!-- <button (click)="edit(b)" title="Editar" class="edit-btn">
+                     <button (click)="editBuyer(b)" title="Editar" class="edit-btn">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button (click)="remove(b)" title="Eliminar" class="delete-btn">
+                    <button (click)="removeBuyer(b)" title="Eliminar" class="delete-btn">
                       <i class="fas fa-trash-alt"></i>
-                    </button> -->
+                    </button> 
                   </td>
                 </tr>
               }
@@ -144,7 +189,7 @@
         }
 
         <!-- para editar peli-->
-        @if(isEditing && selectedMovie){
+        @if(isEditingMovie && selectedMovie){
             <div class="edit-modal">
               <div class="edit-form">
                 <h3>editar pelicula</h3>
@@ -154,19 +199,19 @@
                   [value]="selectedMovie.price" 
                   (input)="selectedMovie.price = $event.target.value" 
                   name="price"
-                  placeholder="precio" 
+                  placeholder="nuevo precio" 
                   required>
 
                   <input 
                     [value]="selectedMovie.stock" 
                     (input)="selectedMovie.stock = $event.target.value"
                     name="stock" 
-                    placeholder="stock" 
+                    placeholder="nuevo stock" 
                     required>
                     
                   <div class="form-actions">
                     <button type="submit" class="btn-save">guardar</button>
-                    <button type="button" class="btn-cancel" (click)="cancelEdit()">cancelar</button>
+                    <button type="button" class="btn-cancel" (click)="cancelEditMovie()">cancelar</button>
                   </div>  
                 </form>
               </div>
@@ -196,7 +241,7 @@
                   <td>{{ m.imdbID }}</td>
                   <td>{{ m.title }}</td>
                   <td>
-                    <span class="genre-badge">{{ m.genre }}</span>
+                    <span class="genre-badge">{{ m.genre }}</span> 
                   </td>
                   <td>{{ m.released }}</td>
                   <!-- <td>{{ m.duration }}</td> -->
@@ -206,11 +251,11 @@
                     <span class="badge stock">{{ m.stock }}</span>
                   </td>
                   <td class="actions">
-                    <button (click)="edit(m)" title="Editar" class="edit-btn">
+                    <button (click)="editMovie(m)" title="Editar" class="edit-btn">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button (click)="remove(m)" title="Eliminar" class="delete-btn">
-                      <i class="fas fa-trash-alt"></i>
+                    <button (click)="removeMovie(m)" title="Eliminar" class="delete-btn">
+                      <i class="fas fa-trash-alt"></i> 
                     </button>
                   </td>
                 </tr>
@@ -251,10 +296,7 @@
                 <td>{{ rv.message }}</td>
                 <!-- <td>{{ rv.date }}</td> -->
                 <td class="actions">
-                  <!-- <button (click)="edit(rv)"> title="Editar" class="edit-btn">
-                    <i class="fas fa-edit"></i>
-                  </button>
-                  <button (click)="remove(rv)" title="Eliminar" class="delete-btn">
+                  <!-- <button (click)="removeReview(rv)" title="Eliminar" class="delete-btn">
                     <i class="fas fa-trash-alt"></i>
                   </button> -->
                 </td>

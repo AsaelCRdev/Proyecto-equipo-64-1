@@ -23,8 +23,12 @@ public class MovieService {
         .findFirst()
         .orElseThrow(() -> new RuntimeException("pelicula no ENCONTRADA")); 
 
-        if(newData.stock!=null) existingMovie.stock  = newData.stock;
-        if(newData.price!=null) existingMovie.price  = newData.price;
+        if(newData.price == null || newData.price.trim().isEmpty() || newData.stock == null || newData.stock.trim().isEmpty()){ throw new RuntimeException("no pueden haber campos vacios");}
+        if(!newData.price.matches("\\d+")){ throw new RuntimeException("el precio debe ser numerico"); }
+        if(!newData.stock.matches("\\d+")){ throw new RuntimeException("el stock debe ser numerico"); }
+
+        existingMovie.stock  = newData.stock;
+        existingMovie.price  = newData.price;
         json.guardar(movies);
 
         return existingMovie;

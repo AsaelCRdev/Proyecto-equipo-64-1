@@ -24,15 +24,17 @@ export class AdminPanel implements OnInit {
   showSelect = false;
   showConfig = false;
   selectedMovie: Movie | undefined = undefined;
+  selectedBuyer: Buyer | undefined = undefined;
   buyerService = inject(BuyerService);
 
-  buyers: Buyer[] | undefined = undefined;
+  buyers: Buyer[] = [];
 
   movies: Movie[] = [];
   rentals: MovieRental[] = [];
   reviews: Review[] | undefined = undefined;
 
-isEditing = false;
+isEditingMovie = false;
+isEditingBuyer = false;
 
   ngOnInit(): void {
     this.buyerService.getAllRented().then((v) => {
@@ -81,24 +83,38 @@ isEditing = false;
     this.activeSection = section;
   }
 
-  edit(movie: Movie) {
+  // pelicula
+
+  editMovie(movie: Movie) {
     this.selectedMovie = { ...movie};
-    this.isEditing = true;
+    this.isEditingMovie = true;
   }
 
   async saveMovie() {
-    if(!this.selectedMovie) return;
+        if(!this.selectedMovie) return;
+
+        if(this.selectedMovie.stock.trim() === "" || this.selectedMovie.price.trim() === ""){
+            alert("no pueden haber campos vacios");
+            return;
+        }
+
+        let precio = parseFloat(this.selectedMovie.price);
+        if(isNaN(precio)) { alert("el precio debe ser numerico"); return; }
+        
+        let stock = parseFloat(this.selectedMovie.stock);
+        if(isNaN(stock)) { alert("el stock debe ser numerico"); return; }
+
         const updateMovie = await this.movieService.updateMovie(this.selectedMovie.imdbID, this.selectedMovie);
         if(updateMovie){
             this.movies = this.movies.map(m=>m.imdbID === updateMovie.imdbID ? updateMovie : m);
         }
-        this.isEditing = false;
+        this.isEditingMovie = false;
         this.selectedMovie = undefined;
         alert('Actualizado');
   } 
 
-  async remove(movie: Movie){
-      if(!confirm('¿seguro?')) return;
+  async removeMovie(movie: Movie){
+      if(!confirm('¿seguro que quiere eliminar esta pelicula?')) return;
       const result = await this.movieService.deleteMovie(movie.imdbID);
       if(result){
         this.movies = result;
@@ -106,8 +122,59 @@ isEditing = false;
       }
   } 
 
-  cancelEdit(){
-    this.isEditing = false;
+  cancelEditMovie(){
+    this.isEditingMovie = false;
     this.selectedMovie = undefined;
   }
+
+
+
+
+  // comprador
+
+  editBuyer(buyer: Buyer) {
+    this.selectedBuyer = { ...buyer};
+    this.isEditingBuyer = true;
+  }
+
+  async saveBuyer(){
+    if(!this.selectedBuyer) return;
+
+    //validacion de campos
+    if(this.selectedBuyer.name.trim() === "" || this.selectedBuyer.email.trim() === "" || this.selectedBuyer.address.trim() === "" || this.selectedBuyer.phone.trim() === ""){
+            alert("no pueden haber campos vacios");
+            return;
+        }
+      let name = parseFloat(this.selectedBuyer.name);
+      if(!isNaN(name)){ alert("nombre invalido"); return;}
+    
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.selectedBuyer.email)){ alert("el email tiene formato invalido, debe tener este formato: tudireccion@gmail.com"); return;}
+      
+      let phone = parseFloat(this.selectedBuyer.phone);
+      if(isNaN(phone)){ alert("telefono invalido"); return;}
+      
+
+      const updateBuyer = await this.buyerService.updateBuyer(this.selectedBuyer.id, this.selectedBuyer);
+        if(updateBuyer){
+            this.buyers = this.buyers.map(m=>m.id === updateBuyer.id ? updateBuyer : m);
+        }
+        this.isEditingBuyer = false;
+        this.selectedBuyer = undefined;
+        alert('Actualizado');
+  }
+
+  async removeBuyer(buyer: Buyer){
+      if(!confirm('¿seguro que quiere eliminar a este comprador?')) return;
+      const result = await this.buyerService.deleteBuyer(buyer.id);
+      if(result){
+        this.buyers = result;
+        alert('Eliminado');
+      }
+  }
+
+  cancelEditBuyer(){
+    this.isEditingBuyer = false;
+    this.selectedBuyer = undefined;
+  }
+
 }
