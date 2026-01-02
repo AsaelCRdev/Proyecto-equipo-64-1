@@ -75,6 +75,37 @@ export class CartService {
 
     return Array.isArray(res) ? res : [];
   }
+  async removeFromCart(buyerId: string, movieId: string): Promise<boolean> {
+    if (!buyerId || !movieId) return false;
+
+    const uri = `/removeFromCart?buyerId=${encodeURIComponent(buyerId)}&movieId=${encodeURIComponent(movieId)}`;
+    const res = await this.api.getFromBackAsT<string>(uri, 'DELETE');
+    console.log('Respuesta removeFromCart:', res);
+
+    return (res as string).toLowerCase() === 'película eliminada del carrito';
+  }
+
+  async editCartMovie(
+    buyerId: string,
+    movieId: string,
+    startDate: string,
+    endDate: string,
+    price: string,
+    days: string,
+  ): Promise<boolean> {
+    if (!buyerId || !movieId) return false;
+
+    let uri = `/editCartMovie?buyerId=${encodeURIComponent(buyerId)}&movieId=${encodeURIComponent(movieId)}`;
+    uri += `&startDate=${encodeURIComponent(startDate)}`;
+    uri += `&endDate=${encodeURIComponent(endDate)}`;
+    uri += `&price=${encodeURIComponent(price)}`;
+    uri += `&days=${encodeURIComponent(days)}`;
+
+    const res = await this.api.getFromBackAsT<string>(uri, 'PATCH');
+    console.log('Respuesta editCartMovie:', res);
+
+    return (res as string).toLowerCase() === 'película en carrito actualizada';
+  }
   async addToCart(
     buyerId: string,
     movieId: string,

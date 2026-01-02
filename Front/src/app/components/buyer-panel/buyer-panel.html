@@ -10,4 +10,13 @@
     <div>{{ rental.startDate }} - {{ rental.endDate }}</div>
     <div>{{ rental.price }}$</div>
   }
+  <button (click)="showEdit = true">Editar</button>
+  @if (showEdit) {
+    <app-buyer-edit-dialog
+      [buyer]="auth.buyer!"
+      (close)="onClose()"
+      (editBuyer)="onEditBuyer($event)"
+    >
+    </app-buyer-edit-dialog>
+  }
 </div>

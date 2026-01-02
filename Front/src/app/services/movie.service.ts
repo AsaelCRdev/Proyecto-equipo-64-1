@@ -106,4 +106,35 @@ export class MovieService {
 
     return (res as string).toLowerCase() === 'succes';
   }
+  async editReview(
+    buyerId: string,
+    movieId: string,
+    message: string,
+    rating: string,
+  ): Promise<boolean> {
+    if (!buyerId || !movieId) return false;
+
+    let uri = `/editReview?buyerId=${encodeURIComponent(buyerId)}&movieId=${encodeURIComponent(movieId)}`;
+    uri += `&message=${encodeURIComponent(message)}`;
+    uri += `&rating=${encodeURIComponent(rating)}`;
+
+    const res = await this.endpoint.getFromBackAsT<string>(uri, 'PATCH');
+    console.log('Respuesta editReview:', res);
+
+    return (res as string).toLowerCase().includes('success');
+  }
+  async getUserReview(buyerId: string, movieId: string): Promise<Review | null> {
+    if (!buyerId || !movieId) return null;
+
+    const uri = `/getUserReview?buyerId=${encodeURIComponent(buyerId)}&movieId=${encodeURIComponent(movieId)}`;
+    const res = await this.endpoint.getFromBackAsT<Review>(uri, 'GET');
+    console.log('Respuesta getUserReview:', res);
+
+    // Si el backend devuelve un objeto Review en JSON
+    if (res && typeof res === 'object' && 'authorId' in res) {
+      return res as Review;
+    }
+
+    return null;
+  }
 }

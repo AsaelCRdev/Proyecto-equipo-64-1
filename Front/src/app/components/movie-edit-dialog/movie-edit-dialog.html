@@ -1,0 +1,47 @@
+<div class="overlay">
+  <div class="dialog">
+    <button class="close-btn" (click)="onClose()">×</button>
+    <h3>Detalle de Película</h3>
+
+    <div class="card-info">
+      <img [src]="movie.poster" alt="{{ movie.title }}" />
+      <div class="info">
+        <div class="title">{{ movie.title }}</div>
+        <div class="meta">{{ movie.released }}</div>
+        <p class="desc">Establece stock y precio de alquiler</p>
+      </div>
+    </div>
+
+    <form [formGroup]="formControl">
+      <div class="form-row two">
+        <div>
+          <label>Stock Inicial</label>
+          <input type="number" formControlName="stockControl" min="0" />
+        </div>
+        <div>
+          <label>Precio de Alquiler ($)</label>
+          <input type="number" formControlName="priceControl" step="0.01" min="0" />
+        </div>
+      </div>
+
+      <div class="summary">
+        <p>
+          Resumen: Agregarás <strong>{{ stock }}</strong> copias de
+          <strong>{{ movie.title }}</strong> con precio de <strong>${{ price.toFixed(2) }}</strong
+          >.
+        </p>
+      </div>
+
+      <div class="actions">
+        <button class="btn" (click)="onClose()">Cancelar</button>
+        <button
+          class="btn primary submit-btn"
+          [disabled]="formControl.invalid"
+          (click)="onEditMovie()"
+        >
+          confirmar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -21,9 +21,9 @@
         <li class="review">
           <div class="meta">
             <strong>{{ r.author }}</strong>
-            <!-- @if (r.createdAt) { -->
-            <!--   <span class="date"> · {{ r.createdAt | date:'short' }}</span> -->
-            <!-- } -->
+            <!-- @if (r.createdAt) {
+              <span class="date"> · {{ r.createdAt | date:'short' }}</span>
+            } -->
           </div>
           <strong>Rating: {{ r.rating }}/5</strong>
           <p class="comment">{{ r.message }}</p>
@@ -32,24 +32,75 @@
     </ul>
   }
 
-  <div class="add-review">
-    <h4>Agregar comentario</h4>
-    <form [formGroup]="form" (ngSubmit)="submit()">
-      <label>
-        Comentario
-        <textarea formControlName="comment" rows="4" maxlength="300"></textarea>
-      </label>
-      <div class="hint">
-        @if (form.controls.comment.touched && form.controls.comment.invalid) {
-          <small>Debe tener entre 8 y 300 caracteres.</small>
-        }
-      </div>
-      <div>
-        <button type="submit" [disabled]="form.invalid">Publicar</button>
-      </div>
-    </form>
-    @if (!isLoggedIn()) {
-      <div class="hint">Debes iniciar sesión para publicar comentarios.</div>
-    }
-  </div>
+  @if (!shouldEdit) {
+    <div class="add-review">
+      <h4>Agregar comentario</h4>
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <label>
+          Comentario
+          <textarea formControlName="comment" rows="4" maxlength="300"></textarea>
+        </label>
+
+        <div class="hint">
+          @if (form.get('comment')?.touched && form.get('comment')?.invalid) {
+            <small>Debe tener entre 8 y 300 caracteres.</small>
+          }
+        </div>
+
+        <label>
+          Rating (1 a 5)
+          <input type="number" formControlName="rating" min="1" max="5" />
+        </label>
+
+        <div class="hint">
+          @if (form.get('rating')?.touched && form.get('rating')?.invalid) {
+            <small>Debe ser un número entre 1 y 5.</small>
+          }
+        </div>
+
+        <div>
+          <button type="submit" [disabled]="form.invalid">Publicar</button>
+        </div>
+      </form>
+
+      @if (!isLoggedIn()) {
+        <div class="hint">Debes iniciar sesión para publicar comentarios.</div>
+      }
+    </div>
+  } @else {
+    <div class="add-review">
+      <h4>Editar comentario</h4>
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <label>
+          Comentario
+          <textarea formControlName="comment" rows="4" maxlength="300"></textarea>
+        </label>
+
+        <div class="hint">
+          @if (form.get('comment')?.touched && form.get('comment')?.invalid) {
+            <small>Debe tener entre 8 y 300 caracteres.</small>
+          }
+        </div>
+
+        <label>
+          Rating (1 a 5)
+          <input type="number" formControlName="rating" min="1" max="5" />
+        </label>
+
+        <div class="hint">
+          @if (form.get('rating')?.touched && form.get('rating')?.invalid) {
+            <small>Debe ser un número entre 1 y 5.</small>
+          }
+        </div>
+
+        <div>
+          <button type="submit" [disabled]="form.invalid">Publicar</button>
+        </div>
+      </form>
+
+      @if (!isLoggedIn()) {
+        <div class="hint">Debes iniciar sesión para publicar comentarios.</div>
+      }
+    </div>
+  }
 </section>

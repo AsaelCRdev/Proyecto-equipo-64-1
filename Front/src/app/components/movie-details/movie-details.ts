@@ -20,9 +20,13 @@ export class MovieDetails implements OnInit {
     this.route.paramMap.subscribe(async (params) => {
       const id = params.get('id');
       if (id) {
-        this.movie.set((await this.movieService.getMovie(id)) as Movie);
-        this.status = parseInt(this.movie()!.stock) > 0 ? 'Disponible' : 'Agotado';
-        console.log(this.movie()?.reviews);
+        this.movieService.getMovie(id).then((mv) => {
+          if (mv !== null) {
+            this.movie.set(mv);
+            this.status = parseInt(this.movie()!.stock) > 0 ? 'Disponible' : 'Agotado';
+          }
+          console.log(this.movie()?.reviews);
+        });
       }
     });
   }

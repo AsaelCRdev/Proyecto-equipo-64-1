@@ -1,14 +1,17 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Movie } from '../../model/Movie';
 import { Observable, Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { CartService } from '../../services/cart-service';
 import { MovieRental } from '../../model/MovieRental';
 import { AuthService } from '../../services/auth-service';
+import { MovieService } from '../../services/movie.service';
 
+import { AlquilerDiasComponent } from '../Time-Rental/Time-Rental';
 @Component({
   selector: 'app-shopping-cart',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, AlquilerDiasComponent],
   templateUrl: './shopping-cart.html',
   styleUrls: ['./shopping-cart.css'],
 })
@@ -18,6 +21,9 @@ export class ShoppingCartComponent implements OnDestroy, OnInit {
   auth = inject(AuthService);
   private sub = new Subscription();
   cartService = inject(CartService);
+  showRentalModal = false;
+  selectedMovieForRental: Movie | undefined = undefined;
+  movieService: MovieService = inject(MovieService);
 
   ngOnInit(): void {
     this.auth.isLoggedIn$.subscribe((isLogged) => {
@@ -47,11 +53,18 @@ export class ShoppingCartComponent implements OnDestroy, OnInit {
   }
 
   eliminarItem(id: any) {
-    if (typeof (this.cartService as any).removeItem === 'function') {
-      (this.cartService as any).removeItem(id);
-    } else {
-      this.cartItems = this.cartItems.filter((i) => i.movieId !== id);
-    }
+    this.cartService.removeFromCart(this.auth.buyer?.id as string, id as string).then((ok) => {
+      if (ok) {
+        this.cartService.getCart().then((v) => {
+          this.cartItems = v;
+        });
+      }
+    });
+    // if (typeof (this.cartService as any).removeItem === 'function') {
+    //   (this.cartService as any).removeItem(id);
+    // } else {
+    //   this.cartItems = this.cartItems.filter((i) => i.movieId !== id);
+    // }
   }
 
   checkout() {
@@ -62,5 +75,18 @@ export class ShoppingCartComponent implements OnDestroy, OnInit {
         window.alert('¡Compra exitosa!');
       }
     });
+  }
+  editItem(movieId: string) {
+    this.movieService.getMovie(movieId).then((r) => {
+      this.selectedMovieForRental = r as Movie;
+      console.log(this.selectedMovieForRental);
+      this.showRentalModal = true;
+    });
+  }
+  onCloseRentalModal() {
+    this.cartService.getCart().then((v) => {
+      this.cartItems = v;
+    });
+    this.showRentalModal = false;
   }
 }
