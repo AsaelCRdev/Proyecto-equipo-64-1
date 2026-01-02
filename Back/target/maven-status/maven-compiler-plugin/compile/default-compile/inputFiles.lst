@@ -7,7 +7,6 @@
 /home/honey/Documentos/uni/sem5/software/Proyecto-equipo-64-1/Back/src/main/java/com/backend/moviesgo/model/BuyerList.java
 /home/honey/Documentos/uni/sem5/software/Proyecto-equipo-64-1/Back/src/main/java/com/backend/moviesgo/model/EndpointResponse.java
 /home/honey/Documentos/uni/sem5/software/Proyecto-equipo-64-1/Back/src/main/java/com/backend/moviesgo/model/Movie.java
-/home/honey/Documentos/uni/sem5/software/Proyecto-equipo-64-1/Back/src/main/java/com/backend/moviesgo/model/MovieCatalog.java
 /home/honey/Documentos/uni/sem5/software/Proyecto-equipo-64-1/Back/src/main/java/com/backend/moviesgo/model/MovieDetail.java
 /home/honey/Documentos/uni/sem5/software/Proyecto-equipo-64-1/Back/src/main/java/com/backend/moviesgo/model/MovieRental.java
 /home/honey/Documentos/uni/sem5/software/Proyecto-equipo-64-1/Back/src/main/java/com/backend/moviesgo/model/MovieSummary.java
@@ -18,4 +17,5 @@
 /home/honey/Documentos/uni/sem5/software/Proyecto-equipo-64-1/Back/src/main/java/com/backend/moviesgo/model/ShoppingCart.java
 /home/honey/Documentos/uni/sem5/software/Proyecto-equipo-64-1/Back/src/main/java/com/backend/moviesgo/services/ApiService.java
 /home/honey/Documentos/uni/sem5/software/Proyecto-equipo-64-1/Back/src/main/java/com/backend/moviesgo/services/AuthService.java
+/home/honey/Documentos/uni/sem5/software/Proyecto-equipo-64-1/Back/src/main/java/com/backend/moviesgo/services/CatalogService.java
 /home/honey/Documentos/uni/sem5/software/Proyecto-equipo-64-1/Back/src/main/java/com/backend/moviesgo/services/JsonService.java

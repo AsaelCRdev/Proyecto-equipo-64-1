@@ -1,5 +1,9 @@
 package com.backend.moviesgo.controller;
 
+import org.springframework.web.bind.annotation.PatchMapping;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+
 import java.util.ArrayList;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -88,6 +92,79 @@ public class BuyerController {
     } else {
       return new EndpointResponse("Rental already exists in cart", true);
     }
+  }
+
+  @DeleteMapping("/removeFromCart")
+  public EndpointResponse removeFromCart(
+      @RequestParam(value = "buyerId", required = true) String buyerId,
+      @RequestParam(value = "movieId", required = true) String movieId) {
+
+    if (buyerId == null || buyerId.trim().isEmpty() ||
+        movieId == null || movieId.trim().isEmpty()) {
+      return new EndpointResponse("Debe proveer buyerId y movieId", true);
+    }
+
+    // Buscar el buyer por id
+    Buyer buyer = this.users.getBuyerById(buyerId);
+    if (buyer == null) {
+      return new EndpointResponse("Buyer no encontrado", true);
+    }
+
+    // Validar que el carrito exista
+    if (buyer.cart == null || buyer.cart.movies == null) {
+      return new EndpointResponse("El carrito está vacío", true);
+    }
+
+    // Eliminar la película del carrito
+    boolean removed = buyer.cart.movies.removeIf(r -> r.movieId.equals(movieId));
+
+    if (removed) {
+      return new EndpointResponse("Película eliminada del carrito", false);
+    } else {
+      return new EndpointResponse("Película no encontrada en el carrito", true);
+    }
+  }
+
+  @PatchMapping("/editCartMovie")
+  public EndpointResponse editCartMovie(
+      @RequestParam(value = "buyerId", required = true) String buyerId,
+      @RequestParam(value = "movieId", required = true) String movieId,
+      @RequestParam(value = "startDate", required = true) String startDate,
+      @RequestParam(value = "endDate", required = true) String endDate,
+      @RequestParam(value = "price", required = true) String price,
+      @RequestParam(value = "days", required = true) String days) {
+
+    if (buyerId == null || buyerId.trim().isEmpty() ||
+        movieId == null || movieId.trim().isEmpty()) {
+      return new EndpointResponse("Debe proveer buyerId y movieId", true);
+    }
+
+    Buyer buyer = this.users.getBuyerById(buyerId);
+    if (buyer == null) {
+      return new EndpointResponse("Buyer no encontrado", true);
+    }
+
+    if (buyer.cart == null || buyer.cart.movies == null) {
+      return new EndpointResponse("El carrito está vacío", true);
+    }
+
+    // Buscar la película en el carrito
+    MovieRental rental = buyer.cart.movies.stream()
+        .filter(r -> r.movieId.equals(movieId))
+        .findFirst()
+        .orElse(null);
+
+    if (rental == null) {
+      return new EndpointResponse("Película no encontrada en el carrito", true);
+    }
+
+    // Actualizar los atributos
+    rental.startDate = startDate;
+    rental.endDate = endDate;
+    rental.price = price;
+    rental.days = days;
+
+    return new EndpointResponse("Película en carrito actualizada", false);
   }
 
   @GetMapping("/logIn")
@@ -182,5 +259,79 @@ public class BuyerController {
     this.currentId++;
     return new EndpointResponse(res ? "Succes" : "Error", !res);
 
+  }
+
+  @DeleteMapping("/deleteBuyer")
+  public EndpointResponse deleteBuyer(@RequestParam(value = "id", required = true) String id) {
+    if (id == null || id.trim().isEmpty()) {
+      return new EndpointResponse("Must provide an id", true);
+    }
+
+    Buyer buyer = this.users.getBuyerById(id);
+    if (buyer == null) {
+      return new EndpointResponse("Buyer not found", true);
+    }
+
+    boolean removed = this.users.users.remove(buyer);
+    if (removed) {
+      this.users.json.guardar(new ArrayList<>(this.users.users));
+      this.users.refresh();
+      return new EndpointResponse("Succes", false);
+    }
+
+    return new EndpointResponse("Error deleting buyer", true);
+  }
+
+  @PatchMapping("/editBuyer")
+  public EndpointResponse editBuyer(
+      @RequestParam(value = "id", required = true) String id,
+      @RequestParam(value = "name", required = false) String name,
+      @RequestParam(value = "email", required = false) String email,
+      @RequestParam(value = "address", required = false) String address,
+      @RequestParam(value = "phone", required = false) String phone) {
+
+    if (id == null || id.trim().isEmpty()) {
+      return new EndpointResponse("Must provide an id", true);
+    }
+
+    Buyer buyer = this.users.getBuyerById(id);
+    if (buyer == null) {
+      return new EndpointResponse("Buyer not found", true);
+    }
+
+    boolean changed = false;
+
+    if (name != null && !name.trim().isEmpty()) {
+      buyer.name = name.trim();
+      changed = true;
+    }
+    if (email != null && !email.trim().isEmpty()) {
+      if (this.auth.isAdminEmail(email)
+          || this.users.users.stream().filter(b -> b.email.equals(email.trim()) && b.id != buyer.id).findAny()
+              .orElse(null) instanceof Buyer) {
+        return new EndpointResponse("Email ya registrado a otra cuenta", true);
+
+      }
+      buyer.email = email.trim();
+      changed = true;
+    }
+    if (address != null && !address.trim().isEmpty()) {
+      buyer.address = address.trim();
+      changed = true;
+    }
+    if (phone != null && !phone.trim().isEmpty()) {
+      buyer.phone = phone.trim();
+      changed = true;
+    }
+
+    if (!changed) {
+      return new EndpointResponse("No valid fields provided", true);
+    }
+
+    // Persistir cambios en buyers.json
+    this.users.json.guardar(new ArrayList<>(this.users.users));
+    this.users.refresh();
+
+    return new EndpointResponse("Succes", false);
   }
 }

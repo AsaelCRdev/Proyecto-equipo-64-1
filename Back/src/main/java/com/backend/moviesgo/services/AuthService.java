@@ -13,6 +13,10 @@ public class AuthService {
     this.adminPass = pass;
   }
 
+  public boolean isAdminEmail(String mail) {
+    return mail.toLowerCase().equals(this.adminEmail.toLowerCase());
+  }
+
   private boolean validate(String mail1, String mail2, String pass1, String pass2) {
     return mail1.toLowerCase().equals(mail2.toLowerCase()) && pass1.equals(pass2);
   }

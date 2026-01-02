@@ -38,10 +38,10 @@
       <section class="table-section">
         <header class="content-header">
           <h2>Gestión de Compradores</h2>
-          <button class="add-btn">+ Agregar Comprador</button>
+          <!-- <button class="add-btn">+ Agregar Comprador</button> -->
         </header>
         <div class="table-wrap">
-          <input class="search" placeholder="Buscar compradores..." />
+          <input class="search" placeholder="Buscar compradores..." [formControl]="buyerControl" />
           <table class="data-table">
             <thead>
               <tr>
@@ -54,7 +54,7 @@
               </tr>
             </thead>
             <tbody>
-              @for (b of buyers; track $index) {
+              @for (b of filteredBuyers; track $index) {
                 <tr>
                   <td>{{ b.id }}</td>
                   <td>{{ b.name }}</td>
@@ -84,7 +84,7 @@
           <h2>Gestión de Alquileres</h2>
         </header>
         <div class="table-wrap">
-          <input class="search" placeholder="Buscar Alquileres..." />
+          <input class="search" placeholder="Buscar Alquileres..." [formControl]="rentControl" />
           <table class="data-table">
             <thead>
               <tr>
@@ -93,25 +93,25 @@
                 <th>Fecha Alquiler</th>
                 <th>Fecha Devolución</th>
                 <th>Precio</th>
-                <th>Acciones</th>
+                <!-- <th>Acciones</th> -->
               </tr>
             </thead>
             <tbody>
-              @for (r of rentals; track $index) {
+              @for (r of filteredRentals; track $index) {
                 <tr>
                   <td>{{ r.movieId }}</td>
                   <td>{{ r.movieTitle }}</td>
                   <td>{{ r.startDate }}</td>
                   <td>{{ r.endDate }}</td>
                   <td>{{ r.price }}</td>
-                  <td class="actions">
-                    <button (click)="edit(r)" title="Editar" class="edit-btn">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button (click)="remove(r)" title="Eliminar" class="delete-btn">
-                      <i class="fas fa-trash-alt"></i>
-                    </button>
-                  </td>
+                  <!-- <td class="actions"> -->
+                  <!--   <button (click)="edit(r)" title="Editar" class="edit-btn"> -->
+                  <!--     <i class="fas fa-edit"></i> -->
+                  <!--   </button> -->
+                  <!--   <button (click)="remove(r)" title="Eliminar" class="delete-btn"> -->
+                  <!--     <i class="fas fa-trash-alt"></i> -->
+                  <!--   </button> -->
+                  <!-- </td> -->
                 </tr>
               }
             </tbody>
@@ -144,7 +144,7 @@
         }
 
         <div class="table-wrap">
-          <input class="search" placeholder="Buscar películas..." />
+          <input [formControl]="movieControl" class="search" placeholder="Buscar películas..." />
           <table class="data-table">
             <thead>
               <tr>
@@ -159,7 +159,7 @@
               </tr>
             </thead>
             <tbody>
-              @for (m of movies; track $index) {
+              @for (m of filteredMovies; track $index) {
                 <tr>
                   <td>{{ m.imdbID }}</td>
                   <td>{{ m.title }}</td>
@@ -190,48 +190,49 @@
       <!-- Películas -->
     }
 
-    @if (activeSection === 'reseñas') {}
-    <section class="table-section">
-      <header class="content-header">
-        <h2>Gestión de Reseñas</h2>
-      </header>
-      <div class="table-wrap">
-        <input class="search" placeholder="Buscar reseñas..." />
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Usuario</th>
-              <th>Película</th>
-              <th>Rating</th>
-              <th>Reseña</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (rv of reviews; track $index) {
+    @if (activeSection === 'reseñas') {
+      <section class="table-section">
+        <header class="content-header">
+          <h2>Gestión de Reseñas</h2>
+        </header>
+        <div class="table-wrap">
+          <input [formControl]="reviewControl" class="search" placeholder="Buscar reseñas..." />
+          <table class="data-table">
+            <thead>
               <tr>
-                <td>{{ rv.authorId }}</td>
-                <td>{{ rv.author }}</td>
-                <td>{{ rv.movie }}</td>
-
-                <td>★ {{ rv.rating }}</td>
-                <td>{{ rv.message }}</td>
-                <!-- <td>{{ rv.date }}</td> -->
-                <td class="actions">
-                  <button (click)="edit(rv)" title="Editar" class="edit-btn">
-                    <i class="fas fa-edit"></i>
-                  </button>
-                  <button (click)="remove(rv)" title="Eliminar" class="delete-btn">
-                    <i class="fas fa-trash-alt"></i>
-                  </button>
-                </td>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Película</th>
+                <th>Rating</th>
+                <th>Reseña</th>
+                <th>Acciones</th>
               </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    </section>
-    <!-- Reseñas -->
+            </thead>
+            <tbody>
+              @for (rv of filteredReviews; track $index) {
+                <tr>
+                  <td>{{ rv.authorId }}</td>
+                  <td>{{ rv.author }}</td>
+                  <td>{{ rv.movie }}</td>
+
+                  <td>★ {{ rv.rating }}</td>
+                  <td>{{ rv.message }}</td>
+                  <!-- <td>{{ rv.date }}</td> -->
+                  <td class="actions">
+                    <!-- <button (click)="edit(rv)" title="Editar" class="edit-btn"> -->
+                    <!--   <i class="fas fa-edit"></i> -->
+                    <!-- </button> -->
+                    <button (click)="remove(rv)" title="Eliminar" class="delete-btn">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <!-- Reseñas -->
+    }
   </main>
 </div>

@@ -7,11 +7,12 @@ import { BuyerService } from '../../services/buyer.service';
 import { Buyer } from '../../model/Buyer';
 import { Review } from '../../model/Review';
 import { MovieRental } from '../../model/MovieRental';
+import { ReactiveFormsModule, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-admin-panel',
   templateUrl: './admin-panel.html',
-  imports: [MovieSelectDialog, MovieConfigDialog],
+  imports: [ReactiveFormsModule, MovieSelectDialog, MovieConfigDialog],
   standalone: true,
   styleUrl: './admin-panel.css',
 })
@@ -24,25 +25,73 @@ export class AdminPanel implements OnInit {
   selectedMovie: Movie | undefined = undefined;
   buyerService = inject(BuyerService);
 
+  buyerControl = new FormControl('');
+  rentControl = new FormControl('');
+  movieControl = new FormControl('');
+  reviewControl = new FormControl('');
+
   buyers: Buyer[] | undefined = undefined;
 
   movies: Movie[] = [];
   rentals: MovieRental[] = [];
   reviews: Review[] | undefined = undefined;
 
+  filteredBuyers: Buyer[] = [];
+  filteredMovies: Movie[] = [];
+  filteredRentals: MovieRental[] = [];
+  filteredReviews: Review[] = [];
   ngOnInit(): void {
     this.buyerService.getAllRented().then((v) => {
-      if (v != null) this.rentals = v;
+      if (v != null) {
+        this.rentals = v;
+        this.filteredRentals = this.rentals;
+      }
     });
     this.movieService.getMovies().then((mv) => {
-      if (mv != null) this.movies = mv;
+      if (mv != null) {
+        this.movies = mv;
+        this.filteredMovies = this.movies;
+      }
     });
     this.buyerService.getBuyers().then((b) => {
       this.buyers = b as Buyer[];
+      this.filteredBuyers = this.buyers as Buyer[];
     });
     this.movieService.getAllReviews().then((r) => {
       this.reviews = r;
+      this.filteredReviews = this.reviews as Review[];
     });
+    // Filtrar buyers por nombre
+    this.buyerControl.valueChanges.subscribe((value) => {
+      const search = (value || '').toLowerCase();
+      this.filteredBuyers = this.buyers?.filter((b) =>
+        b.name.toLowerCase().includes(search),
+      ) as Buyer[];
+    });
+
+    // Filtrar rentals por título de película
+    this.rentControl.valueChanges.subscribe((value) => {
+      const search = (value || '').toLowerCase();
+      this.filteredRentals = this.rentals.filter((r) =>
+        (r.movieTitle || '').toLowerCase().includes(search),
+      );
+    });
+
+    // Filtrar movies por título
+    this.movieControl.valueChanges.subscribe((value) => {
+      const search = (value || '').toLowerCase();
+      this.filteredMovies = this.movies.filter((m) => m.title.toLowerCase().includes(search));
+    });
+
+    // Filtrar reviews por autor
+    this.reviewControl.valueChanges.subscribe((value) => {
+      const search = (value || '').toLowerCase();
+      this.filteredReviews = this.reviews?.filter((r) =>
+        r.author.toLowerCase().includes(search),
+      ) as Review[];
+    });
+
+    // Inicializar arrays filtrados con todos los datos
   }
   // abrir selector
   openSelect() {
@@ -81,6 +130,33 @@ export class AdminPanel implements OnInit {
     console.log('editar', item);
   }
   remove(item: any) {
-    console.log('eliminar', item);
+    if ('email' in item) {
+      // Es un Buyer
+      console.log('Eliminar Buyer', item);
+      this.buyerService.deleteBuyer(item.id).then((ok) => {
+        if (ok) {
+          alert('Buyer eliminado');
+          this.buyerService.getBuyers().then((b) => (this.filteredBuyers = b as Buyer[]));
+        }
+      });
+    } else if ('genre' in item) {
+      // Es una Movie
+      console.log('Eliminar Movie', item);
+      this.movieService.deleteMovie(item.imdbID).then((ok) => {
+        if (ok) {
+          alert('Película eliminada');
+          this.movieService.getMovies().then((mv) => (this.filteredMovies = mv ?? []));
+        }
+      });
+    } else if ('message' in item) {
+      // Es una Review
+      console.log('Eliminar Review', item);
+      this.movieService.deleteReview(item.authorId, item.movie).then((ok) => {
+        if (ok) {
+          alert('Reseña eliminada');
+          this.movieService.getAllReviews().then((r) => (this.filteredReviews = r));
+        }
+      });
+    }
   }
 }
