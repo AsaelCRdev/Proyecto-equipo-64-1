@@ -1,4 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { WritableSignal } from '@angular/core';
 import { MovieConfigDialog } from '../movie-config-dialog/movie-config-dialog';
 import { MovieSelectDialog } from '../movie-select-dialog/movie-select-dialog';
 import { MovieService } from '../../services/movie.service';
@@ -8,20 +9,31 @@ import { Buyer } from '../../model/Buyer';
 import { Review } from '../../model/Review';
 import { MovieRental } from '../../model/MovieRental';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { MovieEditDialog } from '../movie-edit-dialog/movie-edit-dialog';
+import { BuyerEditDialog } from '../buyer-edit-dialog/buyer-edit-dialog';
 
 @Component({
   selector: 'app-admin-panel',
   templateUrl: './admin-panel.html',
-  imports: [ReactiveFormsModule, MovieSelectDialog, MovieConfigDialog],
+  imports: [
+    ReactiveFormsModule,
+    MovieSelectDialog,
+    MovieConfigDialog,
+    MovieEditDialog,
+    BuyerEditDialog,
+  ],
   standalone: true,
   styleUrl: './admin-panel.css',
 })
 export class AdminPanel implements OnInit {
+  buyerSignal: WritableSignal<Buyer | undefined> = signal(undefined);
+  showBuyerEdit = false;
   movieService = inject(MovieService);
   activeSection: 'compradores' | 'alquileres' | 'peliculas' | 'reseñas' = 'compradores';
 
   showSelect = false;
   showConfig = false;
+  showEdit = false;
   selectedMovie: Movie | undefined = undefined;
   buyerService = inject(BuyerService);
 
@@ -126,8 +138,57 @@ export class AdminPanel implements OnInit {
     this.activeSection = section;
   }
 
+  onEditMovie(payload: { imdbId: string; price: string; stock: string }) {
+    this.movieService
+      .editMovieStockPrice(
+        encodeURIComponent(payload.imdbId.toLowerCase()),
+        encodeURIComponent(payload.stock),
+        encodeURIComponent(payload.price),
+      )
+      .then((ok) => {
+        this.showEdit = false;
+        if (ok) {
+          alert('Película editada');
+          this.movieService.getMovies().then((mv) => (this.filteredMovies = mv ?? []));
+        } else {
+          alert('No se pudo editar la pelicula, intente de nuevo');
+        }
+      });
+  }
+  onEditBuyer(payload: {
+    id: string;
+    email?: string;
+    pass?: string;
+    name?: string;
+    address?: string;
+    phone?: string;
+  }) {
+    console.log('Editando buyer', payload);
+    this.buyerService
+      .editBuyer(payload.id, payload.name, payload.email, payload.address, payload.phone)
+      .then((ok) => {
+        if (ok) {
+          alert('Cambios realizados exitosamente');
+          this.buyerService.getBuyers().then((b) => (this.filteredBuyers = b as Buyer[]));
+        } else {
+          alert(
+            'El email ya esta registrado en otra cuenta o hubo un error en el servidor. Intente de nuevo',
+          );
+        }
+      });
+  }
   edit(item: any) {
     console.log('editar', item);
+    if ('email' in item) {
+      // Es un buyer
+      this.buyerSignal.set(item as Buyer);
+      this.showBuyerEdit = true;
+    } else {
+      // Es una movie
+      this.selectedMovie = item as Movie;
+      this.showEdit = true;
+      console.log('editando pelicula');
+    }
   }
   remove(item: any) {
     if ('email' in item) {

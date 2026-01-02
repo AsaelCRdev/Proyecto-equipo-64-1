@@ -20,6 +20,8 @@ interface Day {
 export class AlquilerDiasComponent implements OnInit {
   @Input() movie: Movie | undefined = undefined;
   @Output() close = new EventEmitter<void>();
+  @Output() edited = new EventEmitter<void>();
+  @Input() edit: boolean | undefined = undefined;
 
   private cartService = inject(CartService);
 
@@ -175,27 +177,43 @@ export class AlquilerDiasComponent implements OnInit {
     this.close.emit();
   }
 
-  onAddToCart() {
+  onAddToCart(edit?: boolean) {
     if (this.selectedDays.size === 0) {
       this.showToast('Por favor selecciona al menos un día.');
       return;
     }
     const dates = Array.from(this.selectedDays).map((dateStr) => new Date(dateStr));
     const movieId = this.movie && this.movie.imdbID ? this.movie.imdbID : null;
-    const added = this.cartService.addItem({
-      movieId: movieId ?? '',
-      price: this.priceTotal.toString(),
-      days: this.getSelectedRange().toString(),
-      startDate: new Date(Math.max(...dates.map((d) => d.getTime()))).toString(),
-      endDate: new Date(Math.min(...dates.map((d) => d.getTime()))).toString(),
-    });
+    if (!edit) {
+      const added = this.cartService.addItem({
+        movieId: movieId ?? '',
+        price: this.priceTotal.toString(),
+        days: this.getSelectedRange().toString(),
+        startDate: new Date(Math.max(...dates.map((d) => d.getTime()))).toString(),
+        endDate: new Date(Math.min(...dates.map((d) => d.getTime()))).toString(),
+      });
 
-    if (added) {
-      this.showToast(`¡${this.movie?.title ?? 'Película'} agregado al carrito!`);
-      // CartService.addItem ya llama a open(), así que el carrito se mostrará.
-      setTimeout(() => this.close.emit(), 700);
+      if (added) {
+        this.showToast(`¡${this.movie?.title ?? 'Película'} agregado al carrito!`);
+        // CartService.addItem ya llama a open(), así que el carrito se mostrará.
+        setTimeout(() => this.close.emit(), 700);
+      } else {
+        this.showToast('No se pudo agregar al carrito. Revisa los mensajes.');
+      }
     } else {
-      this.showToast('No se pudo agregar al carrito. Revisa los mensajes.');
+      this.cartService
+        .editCartMovie(
+          this.cartService.auth.buyer?.id as string,
+          movieId as string,
+          new Date(Math.max(...dates.map((d) => d.getTime()))).toString(),
+          new Date(Math.min(...dates.map((d) => d.getTime()))).toString(),
+          this.priceTotal.toString(),
+          this.getSelectedRange().toString(),
+        )
+        .then((ok) => {
+          console.log(ok);
+          if (ok) this.edited.emit();
+        });
     }
   }
 

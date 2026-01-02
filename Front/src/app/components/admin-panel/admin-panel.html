@@ -75,6 +75,13 @@
           </table>
         </div>
       </section>
+      @if (showBuyerEdit) {
+        <app-buyer-edit-dialog
+          [buyer]="buyerSignal()!"
+          (close)="showBuyerEdit = false"
+          (editBuyer)="onEditBuyer($event)"
+        ></app-buyer-edit-dialog>
+      }
     }
 
     <!-- Alquileres -->
@@ -132,6 +139,14 @@
             (close)="showSelect = false"
             (select)="onSelectMovie($event)"
           ></app-movie-select-dialog>
+        }
+        @if (showEdit) {
+          <!-- uso el selectedMovie tambien aca porque en la funcion de edit del admin panel le asigno la pelicula seleccionada -->
+          <app-movie-edit-dialog
+            [movie]="selectedMovie!"
+            (close)="showEdit = false"
+            (editMovie)="onEditMovie($event)"
+          ></app-movie-edit-dialog>
         }
 
         @if (showConfig && selectedMovie) {
