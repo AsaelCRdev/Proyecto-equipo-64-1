@@ -94,6 +94,79 @@ public class BuyerController {
     }
   }
 
+  @DeleteMapping("/removeFromCart")
+  public EndpointResponse removeFromCart(
+      @RequestParam(value = "buyerId", required = true) String buyerId,
+      @RequestParam(value = "movieId", required = true) String movieId) {
+
+    if (buyerId == null || buyerId.trim().isEmpty() ||
+        movieId == null || movieId.trim().isEmpty()) {
+      return new EndpointResponse("Debe proveer buyerId y movieId", true);
+    }
+
+    // Buscar el buyer por id
+    Buyer buyer = this.users.getBuyerById(buyerId);
+    if (buyer == null) {
+      return new EndpointResponse("Buyer no encontrado", true);
+    }
+
+    // Validar que el carrito exista
+    if (buyer.cart == null || buyer.cart.movies == null) {
+      return new EndpointResponse("El carrito está vacío", true);
+    }
+
+    // Eliminar la película del carrito
+    boolean removed = buyer.cart.movies.removeIf(r -> r.movieId.equals(movieId));
+
+    if (removed) {
+      return new EndpointResponse("Película eliminada del carrito", false);
+    } else {
+      return new EndpointResponse("Película no encontrada en el carrito", true);
+    }
+  }
+
+  @PatchMapping("/editCartMovie")
+  public EndpointResponse editCartMovie(
+      @RequestParam(value = "buyerId", required = true) String buyerId,
+      @RequestParam(value = "movieId", required = true) String movieId,
+      @RequestParam(value = "startDate", required = true) String startDate,
+      @RequestParam(value = "endDate", required = true) String endDate,
+      @RequestParam(value = "price", required = true) String price,
+      @RequestParam(value = "days", required = true) String days) {
+
+    if (buyerId == null || buyerId.trim().isEmpty() ||
+        movieId == null || movieId.trim().isEmpty()) {
+      return new EndpointResponse("Debe proveer buyerId y movieId", true);
+    }
+
+    Buyer buyer = this.users.getBuyerById(buyerId);
+    if (buyer == null) {
+      return new EndpointResponse("Buyer no encontrado", true);
+    }
+
+    if (buyer.cart == null || buyer.cart.movies == null) {
+      return new EndpointResponse("El carrito está vacío", true);
+    }
+
+    // Buscar la película en el carrito
+    MovieRental rental = buyer.cart.movies.stream()
+        .filter(r -> r.movieId.equals(movieId))
+        .findFirst()
+        .orElse(null);
+
+    if (rental == null) {
+      return new EndpointResponse("Película no encontrada en el carrito", true);
+    }
+
+    // Actualizar los atributos
+    rental.startDate = startDate;
+    rental.endDate = endDate;
+    rental.price = price;
+    rental.days = days;
+
+    return new EndpointResponse("Película en carrito actualizada", false);
+  }
+
   @GetMapping("/logIn")
   public EndpointResponse logIn(
 
@@ -233,6 +306,12 @@ public class BuyerController {
       changed = true;
     }
     if (email != null && !email.trim().isEmpty()) {
+      if (this.auth.isAdminEmail(email)
+          || this.users.users.stream().filter(b -> b.email.equals(email.trim()) && b.id != buyer.id).findAny()
+              .orElse(null) instanceof Buyer) {
+        return new EndpointResponse("Email ya registrado a otra cuenta", true);
+
+      }
       buyer.email = email.trim();
       changed = true;
     }

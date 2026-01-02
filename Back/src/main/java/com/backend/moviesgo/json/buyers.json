@@ -15,11 +15,18 @@
     "endDate" : "Wed Nov 12 2025 20:00:00 GMT-0400 (hora de Venezuela)",
     "price" : "1700",
     "days" : "17"
+  }, {
+    "movieTitle" : "Bride of Chucky",
+    "movieId" : "tt0144120",
+    "startDate" : "Fri Jan 30 2026 20:00:00 GMT-0400 (hora de Venezuela)",
+    "endDate" : "Sat Jan 03 2026 20:00:00 GMT-0400 (hora de Venezuela)",
+    "price" : "2700",
+    "days" : "27"
   } ]
 }, {
   "id" : "3",
   "name" : "martin",
-  "email" : "mail123@mail.com",
+  "email" : "mail1@mail.com",
   "password" : "123",
   "address" : "lagunita",
   "phone" : "04243534921",
