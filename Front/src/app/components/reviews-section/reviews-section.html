@@ -2,7 +2,7 @@
   <h3>Comentarios de usuarios</h3>
 
   @if (loading) {
-    <div class="loading">Cargando comentarios...</div>
+    <div>Cargando comentarios...</div>
   }
 
   @if (error) {
@@ -10,7 +10,7 @@
   }
 
   @if (reviews?.length === 0 && !loading) {
-    <div class="no-reviews">
+    <div>
       <p>No hay comentarios todavía. Sé el primero en comentar.</p>
     </div>
   }
@@ -20,61 +20,87 @@
       @for (r of reviews; track r.authorId) {
         <li class="review">
           <div class="meta">
-            <strong class="author">{{ r.author }}</strong>
-            <!-- @if (r.createdAt) { -->
-            <!--   <span class="date"> · {{ r.createdAt | date:'short' }}</span> -->
-            <!-- } -->
+            <strong>{{ r.author }}</strong>
+            <!-- @if (r.createdAt) {
+              <span class="date"> · {{ r.createdAt | date:'short' }}</span>
+            } -->
           </div>
-          <div class="rating-line">★ {{ r.rating }}/5</div>
+          <strong>Rating: {{ r.rating }}/5</strong>
           <p class="comment">{{ r.message }}</p>
         </li>
       }
     </ul>
   }
 
-  <div class="add-review">
-    <h4>Agregar reseña</h4>
-    <form [formGroup]="form" (ngSubmit)="submit()" class="review-form">
+  @if (!shouldEdit) {
+    <div class="add-review">
+      <h4>Agregar comentario</h4>
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <label>
+          Comentario
+          <textarea formControlName="comment" rows="4" maxlength="300"></textarea>
+        </label>
 
-      <label class="field">
-        <div class="field-label">Tu Calificación</div>
-        <div class="rating-stars" aria-label="Calificación">
-          <!-- radios enlazados al formControl 'rating' (form tiene control 'rating') -->
-          <input id="star5" type="radio" formControlName="rating" name="rating" value="5" />
-          <label for="star5" title="5 estrellas">★</label>
-
-          <input id="star4" type="radio" formControlName="rating" name="rating" value="4" />
-          <label for="star4" title="4 estrellas">★</label>
-
-          <input id="star3" type="radio" formControlName="rating" name="rating" value="3" />
-          <label for="star3" title="3 estrellas">★</label>
-
-          <input id="star2" type="radio" formControlName="rating" name="rating" value="2" />
-          <label for="star2" title="2 estrellas">★</label>
-
-          <input id="star1" type="radio" formControlName="rating" name="rating" value="1" />
-          <label for="star1" title="1 estrella">★</label>
+        <div class="hint">
+          @if (form.get('comment')?.touched && form.get('comment')?.invalid) {
+            <small>Debe tener entre 8 y 300 caracteres.</small>
+          }
         </div>
-      </label>
 
-      <label class="field">
-        <div class="field-label">Tu Comentario</div>
-        <textarea formControlName="comment" rows="4" class="textarea" placeholder="Comparte tu opinión sobre esta película..."></textarea>
-      </label>
+        <label>
+          Rating (1 a 5)
+          <input type="number" formControlName="rating" min="1" max="5" />
+        </label>
 
-      <div class="hint">
-        @if (form.controls.comment.touched && form.controls.comment.invalid) {
-          <small class="error-text">Debe tener entre 8 y 300 caracteres.</small>
-        }
-      </div>
+        <div class="hint">
+          @if (form.get('rating')?.touched && form.get('rating')?.invalid) {
+            <small>Debe ser un número entre 1 y 5.</small>
+          }
+        </div>
 
-      <div class="form-actions">
-        <button type="submit" [disabled]="form.invalid" class="btn-primary">Publicar Reseña</button>
-      </div>
-    </form>
+        <div>
+          <button type="submit" [disabled]="form.invalid">Publicar</button>
+        </div>
+      </form>
 
-    @if (!isLoggedIn()) {
-      <div class="hint">Debes iniciar sesión para publicar comentarios.</div>
-    }
-  </div>
+      @if (!isLoggedIn()) {
+        <div class="hint">Debes iniciar sesión para publicar comentarios.</div>
+      }
+    </div>
+  } @else {
+    <div class="add-review">
+      <h4>Editar comentario</h4>
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <label>
+          Comentario
+          <textarea formControlName="comment" rows="4" maxlength="300"></textarea>
+        </label>
+
+        <div class="hint">
+          @if (form.get('comment')?.touched && form.get('comment')?.invalid) {
+            <small>Debe tener entre 8 y 300 caracteres.</small>
+          }
+        </div>
+
+        <label>
+          Rating (1 a 5)
+          <input type="number" formControlName="rating" min="1" max="5" />
+        </label>
+
+        <div class="hint">
+          @if (form.get('rating')?.touched && form.get('rating')?.invalid) {
+            <small>Debe ser un número entre 1 y 5.</small>
+          }
+        </div>
+
+        <div>
+          <button type="submit" [disabled]="form.invalid">Publicar</button>
+        </div>
+      </form>
+
+      @if (!isLoggedIn()) {
+        <div class="hint">Debes iniciar sesión para publicar comentarios.</div>
+      }
+    </div>
+  }
 </section>

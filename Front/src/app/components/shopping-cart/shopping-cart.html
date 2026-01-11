@@ -17,6 +17,7 @@
           <li>
             {{ item.movieTitle ?? '' }} — {{ item.days }} x {{ item.price | currency }}
             <button (click)="eliminarItem(item.movieId)">Eliminar</button>
+            <button (click)="editItem(item.movieId)">cambiar</button>
           </li>
         }
       </ul>
@@ -27,3 +28,12 @@
     <button (click)="checkout()" [disabled]="!cartItems?.length">Pagar</button>
   </footer>
 </aside>
+@if (showRentalModal) {
+  <app-alquiler-dias
+    [edit]="true"
+    [movie]="selectedMovieForRental"
+    (close)="onCloseRentalModal()"
+    (edited)="onCloseRentalModal()"
+  >
+  </app-alquiler-dias>
+}

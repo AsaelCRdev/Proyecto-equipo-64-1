@@ -1,4 +1,12 @@
-import { Component, Input, OnChanges, SimpleChanges, OnDestroy, inject } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  OnInit,
+  OnDestroy,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -14,33 +22,22 @@ import { Review } from '../../model/Review';
   templateUrl: './reviews-section.html',
   styleUrls: ['./reviews-section.css'],
 })
-export class ReviewsSectionComponent implements OnChanges, OnDestroy {
+export class ReviewsSectionComponent implements OnInit {
   @Input() reviews?: Review[];
 
-  @Input() movieId?: string | number;
+  @Input() movieId!: string;
 
   private reviewsService = inject(ReviewsService);
   private auth = inject(AuthService);
   private sub = new Subscription();
   movieService = inject(MovieService);
+  shouldEdit = false;
 
   // reviews: Review[] = [];
   loading = false;
   error: string | null = null;
 
-  form = new FormGroup({
-    comment: new FormControl('', [
-      Validators.required,
-      Validators.minLength(8),
-      Validators.maxLength(300),
-    ]),
-  });
-
-  ngOnChanges(changes: SimpleChanges): void {
-    // if (changes['movieId']) {
-    //   this.subscribeReviews();
-    // }
-  }
+  form!: FormGroup;
 
   // private subscribeReviews(): void {
   //   this.sub.unsubscribe();
@@ -96,28 +93,55 @@ export class ReviewsSectionComponent implements OnChanges, OnDestroy {
 
     const comment = String(this.form.value.comment ?? '').trim();
     if (comment.length < 8 || comment.length > 300) return;
-    const rating = '5';
-
-    this.movieService
-      .addReview(
-        encodeURIComponent(id as string),
-        encodeURIComponent(this.auth?.buyer?.id as string),
-        encodeURIComponent(comment),
-        rating,
-      )
-      .then((r) => {
-        console.log(r);
-        if (r) {
-          this.movieService.getAllReviews(id as string).then((v) => (this.reviews = v));
-        } else {
-          alert('Ya agregaste una reseña');
-        }
-      });
-
+    const rating = String(this.form.value.rating ?? '5');
+    if (this.shouldEdit) {
+      this.movieService
+        .editReview(this.auth?.buyer?.id as string, id as string, comment, rating)
+        .then((r) => {
+          console.log(r);
+          if (r) {
+            this.movieService.getAllReviews(id as string).then((v) => (this.reviews = v));
+          } else {
+            alert('Ya agregaste una reseña');
+          }
+        });
+    } else {
+      this.movieService
+        .addReview(
+          encodeURIComponent(id as string),
+          encodeURIComponent(this.auth?.buyer?.id as string),
+          encodeURIComponent(comment),
+          encodeURIComponent(rating),
+        )
+        .then((r) => {
+          console.log(r);
+          if (r) {
+            this.movieService.getAllReviews(id as string).then((v) => (this.reviews = v));
+          } else {
+            alert('Hubo un error intenta de nuevo');
+          }
+        });
+    }
     this.form.reset({ comment: '' });
   }
 
-  ngOnDestroy(): void {
-    this.sub.unsubscribe();
+  ngOnInit(): void {
+    let rev: Review | null = null;
+    console.log(`id${this.auth.buyer?.id as string}, movieId:${this.movieId as string}`);
+    this.movieService
+      .getUserReview(this.auth.buyer?.id as string, this.movieId as string)
+      .then((r) => {
+        rev = r;
+        this.shouldEdit = r !== null;
+        console.log(`rev: ${rev} shouldEdit: ${this.shouldEdit}`);
+      });
+    this.form = new FormGroup({
+      comment: new FormControl('', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(300),
+      ]),
+      rating: new FormControl(5, [Validators.required, Validators.min(1), Validators.max(5)]),
+    });
   }
 }
