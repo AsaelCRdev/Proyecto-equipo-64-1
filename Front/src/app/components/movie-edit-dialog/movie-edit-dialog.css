@@ -76,3 +76,21 @@
   background: #4a4a72;
   cursor: not-allowed;
 }
+
+.dialog-container {
+  max-width: 560px;
+  padding: 1.2rem;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  background: #fff;
+}
+.dialog-row { display:flex; gap:12px; align-items:center; margin-bottom:10px; }
+.dialog-row label { width:120px; font-weight:600; }
+.dialog-row input {
+  flex:1;
+  padding:0.5rem 0.6rem;
+  border:1px solid #ddd;
+  border-radius:6px;
+}
+.dialog-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:12px; }
+.btn-primary { background:#0b1228; color:#fff; border-radius:6px; padding:8px 14px; border:none; }
