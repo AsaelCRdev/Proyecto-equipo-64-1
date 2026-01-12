@@ -5,7 +5,7 @@
   "reviews" : [ {
     "author" : "jenry",
     "authorId" : "2",
-    "message" : "No me gusto esta peli",
+    "message" : "adwwadadwdawd",
     "rating" : "5"
   } ],
   "rating" : "6.2",
@@ -35,6 +35,11 @@
   "title" : "Full Metal Jacket",
   "genre" : [ "Drama", "War" ],
   "reviews" : [ {
+    "author" : "jenry",
+    "authorId" : "2",
+    "message" : "sdsdzsdzsdzs",
+    "rating" : "5"
+  }, {
     "author" : "carlos",
     "authorId" : "4",
     "message" : "Prefiero ver los videos de maduro preso que esta pelicula",
@@ -72,7 +77,12 @@
   "imdbID" : "tt0120586",
   "title" : "American History X",
   "genre" : [ "Crime", "Drama" ],
-  "reviews" : [ ],
+  "reviews" : [ {
+    "author" : "jenry",
+    "authorId" : "2",
+    "message" : "adwwdawdwdwdwada",
+    "rating" : "5"
+  } ],
   "rating" : "8.5",
   "released" : "20 Nov 1998",
   "poster" : "https://m.media-amazon.com/images/M/MV5BMzhiOTQ0NDItOTg0Zi00OGVmLWE0OGEtMTI4NDM0NWMxZWU4XkEyXkFqcGc@._V1_SX300.jpg",
@@ -83,7 +93,12 @@
   "imdbID" : "tt0325950",
   "title" : "El padrino",
   "genre" : [ "Action", "Crime", "Drama" ],
-  "reviews" : [ ],
+  "reviews" : [ {
+    "author" : "jenry",
+    "authorId" : "2",
+    "message" : "aw eawe aweae w",
+    "rating" : "5"
+  } ],
   "rating" : "4.7",
   "released" : "27 Sep 2005",
   "poster" : "https://m.media-amazon.com/images/M/MV5BMTI2MjI4NTgyNF5BMl5BanBnXkFtZTcwOTM5NzQ5MQ@@._V1_SX300.jpg",
