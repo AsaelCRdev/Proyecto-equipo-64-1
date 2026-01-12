@@ -2,8 +2,8 @@
   "id" : "2",
   "name" : "jenry",
   "email" : "mail12@mail.com",
-  "password" : "123",
-  "address" : "lagunita hola",
+  "password" : "lagunita",
+  "address" : "lagunita",
   "phone" : "3232",
   "cart" : {
     "movies" : [ ]
@@ -18,12 +18,12 @@
     "days" : "12"
   } ]
 }, {
-  "id" : "3",
-  "name" : "martin",
-  "email" : "mail1@mail.com",
-  "password" : "123",
-  "address" : "lagunita",
-  "phone" : "04243534921",
+  "id" : "5",
+  "name" : "nombre",
+  "email" : "mail@mail",
+  "password" : "contra",
+  "address" : "dir",
+  "phone" : "0",
   "cart" : {
     "movies" : [ ]
   },
