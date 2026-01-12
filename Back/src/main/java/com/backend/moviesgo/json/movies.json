@@ -5,7 +5,7 @@
   "reviews" : [ {
     "author" : "jenry",
     "authorId" : "2",
-    "message" : "wqewaeawe",
+    "message" : "No me gusto esta peli",
     "rating" : "5"
   } ],
   "rating" : "6.2",
@@ -13,7 +13,7 @@
   "poster" : "https://m.media-amazon.com/images/M/MV5BMTMxNDA0NTMxMV5BMl5BanBnXkFtZTYwMDE2NzY2._V1_SX300.jpg",
   "plot" : "Agent J is sent to find Agent K and restore his memory after the re-appearance of a case from K's past.",
   "price" : "12",
-  "stock" : "123"
+  "stock" : "1231"
 }, {
   "imdbID" : "tt5860550",
   "title" : "Vico C: La vida del filosofo",
@@ -21,12 +21,7 @@
   "reviews" : [ {
     "author" : "jenry",
     "authorId" : "2",
-    "message" : "Me gusto muchisimo!!",
-    "rating" : "5"
-  }, {
-    "author" : "carlos",
-    "authorId" : "4",
-    "message" : "Mala peli",
+    "message" : "rwgwtrewrewr",
     "rating" : "5"
   } ],
   "rating" : "7.1",
@@ -34,12 +29,17 @@
   "poster" : "https://m.media-amazon.com/images/M/MV5BNjVkNzg1NTYtMTU2ZC00YWE2LWE3ZGUtOGUwZTNmZmE1ZTcxXkEyXkFqcGdeQXVyNDcyMzkyMTQ@._V1_SX300.jpg",
   "plot" : "The film take us in an intimate journey through the life, trials and tribulation of iconic urban movement figure Vico C. From his days as a shy school boy, his self discovery, and the development of his amazing talent, his rapid rise to fame.",
   "price" : "100",
-  "stock" : "10"
+  "stock" : "101"
 }, {
   "imdbID" : "tt0093058",
   "title" : "Full Metal Jacket",
   "genre" : [ "Drama", "War" ],
-  "reviews" : [ ],
+  "reviews" : [ {
+    "author" : "carlos",
+    "authorId" : "4",
+    "message" : "Prefiero ver los videos de maduro preso que esta pelicula",
+    "rating" : "5"
+  } ],
   "rating" : "8.2",
   "released" : "10 Jul 1987",
   "poster" : "https://m.media-amazon.com/images/M/MV5BYWUzNzZkNzUtNDdiYy00Nzk5LTgxMmItNTk0MjRjNjdjNDA0XkEyXkFqcGc@._V1_SX300.jpg",
@@ -50,18 +50,13 @@
   "imdbID" : "tt0144120",
   "title" : "Bride of Chucky",
   "genre" : [ "Comedy", "Horror", "Thriller" ],
-  "reviews" : [ {
-    "author" : "jenry",
-    "authorId" : "2",
-    "message" : "waaao mne eencantoo",
-    "rating" : "5"
-  } ],
+  "reviews" : [ ],
   "rating" : "5.6",
   "released" : "16 Oct 1998",
   "poster" : "https://m.media-amazon.com/images/M/MV5BYTk2OGE5MjktYjcyYS00M2QxLWE4YTYtYmNjYmE0M2I3ZDMxXkEyXkFqcGc@._V1_SX300.jpg",
   "plot" : "Chucky, the doll possessed by a serial killer, discovers the perfect mate to kill and revive into the body of another doll.",
   "price" : "100",
-  "stock" : "100"
+  "stock" : "1001"
 }, {
   "imdbID" : "tt0093181",
   "title" : "Hero: The Official Film of the 1986 FIFA World Cup",
@@ -83,7 +78,7 @@
   "poster" : "https://m.media-amazon.com/images/M/MV5BMzhiOTQ0NDItOTg0Zi00OGVmLWE0OGEtMTI4NDM0NWMxZWU4XkEyXkFqcGc@._V1_SX300.jpg",
   "plot" : "Living a life marked by violence, neo-Nazi Derek finally goes to prison after killing two black youths. Upon his release, Derek vows to change; he hopes to prevent his brother, Danny, who idolizes Derek, from following in his footsteps.",
   "price" : "100",
-  "stock" : "10"
+  "stock" : "101"
 }, {
   "imdbID" : "tt0325950",
   "title" : "El padrino",
@@ -110,7 +105,12 @@
   "imdbID" : "tt0180093",
   "title" : "Requiem for a Dream",
   "genre" : [ "Drama" ],
-  "reviews" : [ ],
+  "reviews" : [ {
+    "author" : "jenry",
+    "authorId" : "2",
+    "message" : "Holaaaaa",
+    "rating" : "5"
+  } ],
   "rating" : "8.3",
   "released" : "15 Dec 2000",
   "poster" : "https://m.media-amazon.com/images/M/MV5BN2ZlMjIzZjctYzA2My00ZWYyLWI4ZjctMGI2NWYyNzFiZjAwXkEyXkFqcGc@._V1_SX300.jpg",

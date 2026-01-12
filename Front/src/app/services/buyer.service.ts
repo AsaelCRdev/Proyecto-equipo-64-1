@@ -47,6 +47,14 @@ export class BuyerService {
     console.log(res);
     return Array.isArray(res) ? res : [];
   }
+  async returnMovie(userId: string, movieId: string) {
+    if (!userId || userId.trim() === '' || !movieId || movieId.trim() === '') return false;
+    const uri = `/returnMovie?buyerId=${encodeURIComponent(userId)}&movieId=${encodeURIComponent(movieId)}`;
+    const res = await this.api.getFromBackAsT<string>(uri, 'POST');
+    console.log('Respuesta returnMovie:', res);
+
+    return (res as string).toLowerCase() === 'succes';
+  }
   async deleteBuyer(id: string): Promise<boolean> {
     if (!id || id.trim() === '') return false;
 
@@ -58,6 +66,7 @@ export class BuyerService {
   }
   async editBuyer(
     id: string,
+    password?: string,
     name?: string,
     email?: string,
     address?: string,
@@ -67,6 +76,7 @@ export class BuyerService {
 
     let uri = `/editBuyer?id=${encodeURIComponent(id)}`;
     if (name && name.trim() !== '') uri += `&name=${encodeURIComponent(name)}`;
+    if (password && password.trim() !== '') uri += `&password=${encodeURIComponent(password)}`;
     if (email && email.trim() !== '') uri += `&email=${encodeURIComponent(email)}`;
     if (address && address.trim() !== '') uri += `&address=${encodeURIComponent(address)}`;
     if (phone && phone.trim() !== '') uri += `&phone=${encodeURIComponent(phone)}`;

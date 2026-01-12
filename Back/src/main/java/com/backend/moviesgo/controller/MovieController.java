@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.backend.moviesgo.model.OmdbSearchResponse;
 import com.backend.moviesgo.controller.ApiController;
 import com.backend.moviesgo.model.MovieDetail;
+import com.backend.moviesgo.model.MovieRental;
 import com.backend.moviesgo.model.MovieSummary;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -146,10 +147,14 @@ public class MovieController {
       return new EndpointResponse("Must provide an id", true);
     }
 
-    // Eliminar la película de todos los carritos
+    // Eliminar la película de todos los carritos y rents
     this.buyerController.users.users.forEach(b -> {
       if (b.cart != null && b.cart.movies != null) {
         b.cart.movies.removeIf(r -> r.movieId.equals(id));
+
+      }
+      if (b.rentedMovies != null) {
+        b.rentedMovies.removeIf(r -> r.movieId.equals(id));
       }
     });
 
@@ -266,13 +271,8 @@ public class MovieController {
       return new EndpointResponse("Must provide buyerId and movieTitle", true);
     }
 
-    Buyer buyer = this.buyerController.users.getBuyerById(buyerId);
-    if (buyer == null) {
-      return new EndpointResponse("Buyer not found", true);
-    }
-
     // Buscar película por título
-    Movie movie = this.catalog.getMovies().stream()
+    Movie movie = this.catalog.catalog.stream()
         .filter(m -> m.title.equalsIgnoreCase(movieTitle.trim()))
         .findFirst()
         .orElse(null);
@@ -317,4 +317,47 @@ public class MovieController {
         ? new EndpointResponse("Succes", false)
         : new EndpointResponse("Movie not found or no valid fields provided", true);
   }
+
+  @PostMapping("/returnMovie")
+  public EndpointResponse returnMovie(
+      @RequestParam(value = "buyerId", required = true) String buyerId,
+      @RequestParam(value = "movieId", required = true) String movieId) {
+
+    if (buyerId == null || buyerId.trim().isEmpty() ||
+        movieId == null || movieId.trim().isEmpty()) {
+      return new EndpointResponse("Must provide buyerId and movieId", true);
+    }
+
+    Movie movie = this.catalog.catalog.stream()
+        .filter(m -> m.imdbID.equalsIgnoreCase(movieId.trim()))
+        .findFirst()
+        .orElse(null);
+
+    // Buscar reseña por authorId
+    Buyer buyer = this.buyerController.users.users.stream().filter(b -> b.id.equals(buyerId)).findFirst().orElse(null);
+
+    if (buyer == null) {
+      return new EndpointResponse("user not found", true);
+    }
+
+    boolean removed = false;
+    for (MovieRental m : buyer.rentedMovies) {
+      if (m.movieId.equalsIgnoreCase(movieId)) {
+        removed = buyer.rentedMovies.remove(m);
+        if (removed) {
+          this.buyerController.users.json.guardar(new ArrayList<>(this.buyerController.users.users));
+          this.buyerController.users.refresh();
+
+          movie.stock += 1;
+          this.catalog.json.guardar(new ArrayList<Movie>(this.catalog.catalog));
+          this.catalog.refresh();
+          return new EndpointResponse("Succes", false);
+        }
+      }
+
+    }
+
+    return new EndpointResponse("Error deleting review", true);
+  }
+
 }

@@ -19,9 +19,11 @@ interface Day {
 })
 export class AlquilerDiasComponent implements OnInit {
   @Input() movie: Movie | undefined = undefined;
+  @Input() buyerId: string | undefined = undefined;
   @Output() close = new EventEmitter<void>();
   @Output() edited = new EventEmitter<void>();
   @Input() edit: boolean | undefined = undefined;
+  @Input() editRental: boolean | undefined = undefined;
 
   private cartService = inject(CartService);
 
@@ -55,10 +57,15 @@ export class AlquilerDiasComponent implements OnInit {
   toastTimeout: any = null;
 
   // Guardar mes/año actual del sistema para comparación
-  readonly systemYear: number = new Date().getFullYear();
-  readonly systemMonthIndex: number = new Date().getMonth();
+  systemYear: number = new Date().getFullYear();
+  systemMonthIndex: number = new Date().getMonth();
+  systemDay = 0;
 
   ngOnInit(): void {
+    const today = this.createDateWithoutTime();
+    this.systemYear = today.getFullYear();
+    this.systemMonthIndex = today.getMonth();
+    this.systemDay = today.getDate();
     if (this.movie) {
       console.log('Película recibida:', this.movie.title);
       console.log('Precio:', parseFloat(this.movie.price ?? '0'));
@@ -182,15 +189,52 @@ export class AlquilerDiasComponent implements OnInit {
       this.showToast('Por favor selecciona al menos un día.');
       return;
     }
-    const dates = Array.from(this.selectedDays).map((dateStr) => new Date(dateStr));
+    const dates = Array.from(this.selectedDays)
+      .sort((a, b) => a.localeCompare(b))
+      .map((dateStr) => {
+        const [year, month, day] = dateStr.split('-').map(Number);
+        return new Date(year, month - 1, day, 0, 0, 0, 0); // Medianoche
+      });
+
     const movieId = this.movie && this.movie.imdbID ? this.movie.imdbID : null;
-    if (!edit) {
+    if (edit) {
+      this.cartService
+        .editCartMovie(
+          this.cartService.auth.buyer?.id as string,
+          movieId as string,
+          // También puedes formatear las fechas para que no muestren hora:
+          dates[0].toDateString(), // Esto muestra sin hora: "Fri Jan 31 2026"
+          dates[1].toDateString(), // Igual aquí
+          this.priceTotal.toString(),
+          this.getSelectedRange().toString(),
+        )
+        .then((ok) => {
+          console.log(ok);
+          if (ok) this.edited.emit();
+        });
+    } else if (this.editRental) {
+      this.cartService
+        .editRent(
+          this.buyerId!,
+          movieId as string,
+          // También puedes formatear las fechas para que no muestren hora:
+          dates[0].toDateString(), // Esto muestra sin hora: "Fri Jan 31 2026"
+          this.priceTotal.toString(),
+          this.getSelectedRange().toString(),
+          dates[1].toDateString(), // Igual aquí
+        )
+        .then((ok) => {
+          console.log(ok);
+          if (ok) this.edited.emit();
+        });
+    } else {
       const added = this.cartService.addItem({
         movieId: movieId ?? '',
         price: this.priceTotal.toString(),
         days: this.getSelectedRange().toString(),
-        startDate: new Date(Math.max(...dates.map((d) => d.getTime()))).toString(),
-        endDate: new Date(Math.min(...dates.map((d) => d.getTime()))).toString(),
+        // También puedes formatear las fechas para que no muestren hora:
+        startDate: dates[0].toDateString(), // Esto muestra sin hora: "Fri Jan 31 2026"
+        endDate: dates[1].toDateString(), // Igual aquí
       });
 
       if (added) {
@@ -200,20 +244,6 @@ export class AlquilerDiasComponent implements OnInit {
       } else {
         this.showToast('No se pudo agregar al carrito. Revisa los mensajes.');
       }
-    } else {
-      this.cartService
-        .editCartMovie(
-          this.cartService.auth.buyer?.id as string,
-          movieId as string,
-          new Date(Math.max(...dates.map((d) => d.getTime()))).toString(),
-          new Date(Math.min(...dates.map((d) => d.getTime()))).toString(),
-          this.priceTotal.toString(),
-          this.getSelectedRange().toString(),
-        )
-        .then((ok) => {
-          console.log(ok);
-          if (ok) this.edited.emit();
-        });
     }
   }
 
@@ -234,10 +264,9 @@ export class AlquilerDiasComponent implements OnInit {
 
   // Devuelve true si la fecha (año/mes/ día) es anterior al día de hoy
   isPastDate(day: number): boolean {
-    const today = new Date();
-    const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    const check = new Date(this.currentYear, this.currentMonthIndex, day);
-    return check < todayOnly;
+    const check = new Date(this.currentYear, this.currentMonthIndex, day, 0, 0, 0, 0); // ← Agrega ,0,0,0,0
+    const today = new Date(this.systemYear, this.systemMonthIndex, this.systemDay, 0, 0, 0, 0); // ← Agrega ,0,0,0,0
+    return check < today;
   }
 
   // Días en un mes
@@ -285,5 +314,13 @@ export class AlquilerDiasComponent implements OnInit {
     }
 
     return weeks;
+  }
+  // Crear tiempo en UTC
+  private createDateWithoutTime(year?: number, month?: number, day?: number): Date {
+    if (year !== undefined && month !== undefined && day !== undefined) {
+      return new Date(year, month, day, 0, 0, 0, 0); // Medianoche hora local
+    }
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
   }
 }

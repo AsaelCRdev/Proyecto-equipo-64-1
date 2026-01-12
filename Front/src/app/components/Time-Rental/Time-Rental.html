@@ -100,12 +100,21 @@
           >
             Cancelar
           </button>
-          <button
-            class="btn-cart"
-            (click)="onAddToCart(edit); $event.stopPropagation(); $event.preventDefault()"
-          >
-            Agregar al Carrito ({{ getSelectedRange() }} días - ${{ priceTotal.toFixed(2) }})
-          </button>
+          @if (edit) {
+            <button
+              class="btn-cart"
+              (click)="onAddToCart(edit); $event.stopPropagation(); $event.preventDefault()"
+            >
+              Editar ({{ getSelectedRange() }} días - ${{ priceTotal.toFixed(2) }})
+            </button>
+          } @else {
+            <button
+              class="btn-cart"
+              (click)="onAddToCart(edit); $event.stopPropagation(); $event.preventDefault()"
+            >
+              Agregar al Carrito ({{ getSelectedRange() }} días - ${{ priceTotal.toFixed(2) }})
+            </button>
+          }
         </div>
       </div>
     </div>

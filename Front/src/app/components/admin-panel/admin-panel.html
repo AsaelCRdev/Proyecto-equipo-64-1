@@ -100,7 +100,7 @@
                 <th>Fecha Alquiler</th>
                 <th>Fecha Devolución</th>
                 <th>Precio</th>
-                <!-- <th>Acciones</th> -->
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -111,6 +111,11 @@
                   <td>{{ r.startDate }}</td>
                   <td>{{ r.endDate }}</td>
                   <td>{{ r.price }}</td>
+                  <td class="actions">
+                    <button (click)="edit(r)" title="Editar" class="edit-btn">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </td>
                   <!-- <td class="actions"> -->
                   <!--   <button (click)="edit(r)" title="Editar" class="edit-btn"> -->
                   <!--     <i class="fas fa-edit"></i> -->
@@ -250,4 +255,14 @@
       <!-- Reseñas -->
     }
   </main>
+  @if (showEditRental) {
+    <app-alquiler-dias
+      [editRental]="true"
+      [buyerId]="buyerIdForRent"
+      [movie]="selectedMovieForRental"
+      (close)="onCloseRentalModal()"
+      (edited)="onCloseRentalModal()"
+    >
+    </app-alquiler-dias>
+  }
 </div>

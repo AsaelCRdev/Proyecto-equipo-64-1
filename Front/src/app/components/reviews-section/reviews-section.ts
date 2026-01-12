@@ -86,8 +86,12 @@ export class ReviewsSectionComponent implements OnInit {
       alert('Inicia sesión para agregar una reseña.');
       return;
     }
-    if (this.form.invalid) return;
 
+    if (this.form.invalid) return;
+    if (this.auth?.buyer?.rentedMovies.filter((r) => r.movieId === this.movieId)) {
+      alert('Debes tener la pelicula rentada para poder publicar una reseña');
+      return;
+    }
     const id = this.movieId;
     if (id == null) return;
 

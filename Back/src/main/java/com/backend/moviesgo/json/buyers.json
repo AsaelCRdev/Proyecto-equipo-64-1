@@ -3,25 +3,19 @@
   "name" : "jenry",
   "email" : "mail12@mail.com",
   "password" : "123",
-  "address" : "lagunita",
-  "phone" : "04243534921",
+  "address" : "lagunita hola",
+  "phone" : "3232",
   "cart" : {
     "movies" : [ ]
   },
   "rentedMovies" : [ {
-    "movieTitle" : "Vico C: La vida del filosofo",
-    "movieId" : "tt5860550",
-    "startDate" : "Sat Nov 29 2025 20:00:00 GMT-0400 (hora de Venezuela)",
-    "endDate" : "Wed Nov 12 2025 20:00:00 GMT-0400 (hora de Venezuela)",
-    "price" : "1700",
-    "days" : "17"
-  }, {
-    "movieTitle" : "Bride of Chucky",
-    "movieId" : "tt0144120",
-    "startDate" : "Fri Jan 30 2026 20:00:00 GMT-0400 (hora de Venezuela)",
-    "endDate" : "Sat Jan 03 2026 20:00:00 GMT-0400 (hora de Venezuela)",
-    "price" : "2700",
-    "days" : "27"
+    "buyerId" : "2",
+    "movieTitle" : "Men in Black II",
+    "movieId" : "tt0120912",
+    "startDate" : "Mon Jan 12 2026",
+    "endDate" : "Sat Jan 31 2026",
+    "price" : "228",
+    "days" : "19"
   } ]
 }, {
   "id" : "3",
@@ -30,17 +24,6 @@
   "password" : "123",
   "address" : "lagunita",
   "phone" : "04243534921",
-  "cart" : {
-    "movies" : [ ]
-  },
-  "rentedMovies" : [ ]
-}, {
-  "id" : "4",
-  "name" : "carlos",
-  "email" : "mailprueba@mail.com",
-  "password" : "123",
-  "address" : "junquito",
-  "phone" : "0424555555",
   "cart" : {
     "movies" : [ ]
   },

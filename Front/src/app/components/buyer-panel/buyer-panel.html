@@ -1,16 +1,51 @@
-<h2>Mi perfil</h2>
-<div>Nombre: {{ buyer.name }}</div>
-<div>email: {{ buyer.email }}</div>
-<div>Telefono: {{ buyer.phone }}</div>
-<div>Direccion: {{ buyer.address }}</div>
-<div>
-  <span>Alquileres</span>
-  @for (rental of buyer.rentedMovies; track $index) {
-    <div>{{ rental.movieTitle }}</div>
-    <div>{{ rental.startDate }} - {{ rental.endDate }}</div>
-    <div>{{ rental.price }}$</div>
-  }
-  <button (click)="showEdit = true">Editar</button>
+<div class="buyer-panel">
+  <h2>Mi perfil</h2>
+
+  <!-- Avatar como un elemento separado -->
+  <div class="avatar-card">
+    <div class="avatar">
+      {{ buyer.name.substring(0, 1).toUpperCase() }}
+    </div>
+
+    <!-- Tarjeta con información básica del perfil -->
+    <div class="profile-card">
+      <div class="section-title">
+        <h2>Información del Perfil</h2>
+      </div>
+      <div class="basic-info">
+        <p><strong>Nombre:</strong> {{ buyer.name }}</p>
+        <p><strong>Email:</strong> {{ buyer.email }}</p>
+        <p><strong>Teléfono:</strong> {{ buyer.phone }}</p>
+        <p><strong>Dirección:</strong> {{ buyer.address }}</p>
+        <button (click)="showEdit = true" class="edit-btn">Editar</button>
+      </div>
+    </div>
+
+    <!-- Tarjeta con la tabla de alquileres -->
+    <div class="profile-card"></div>
+    <div class="section-title"><h2>Mis Alquileres</h2></div>
+    <table class="info-table">
+      <thead>
+        <tr>
+          <th>Películas</th>
+          <th>Periodo</th>
+          <th>Precio</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (rental of buyer.rentedMovies; track $index) {
+          <tr (click)="returnMovie(rental)">
+            <td>{{ rental.movieTitle }}</td>
+            <td>{{ rental.startDate }} - {{ rental.endDate }}</td>
+            <td>
+              <span class="price">{{ rental.price }}$</span>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
   @if (showEdit) {
     <app-buyer-edit-dialog
       [buyer]="auth.buyer!"

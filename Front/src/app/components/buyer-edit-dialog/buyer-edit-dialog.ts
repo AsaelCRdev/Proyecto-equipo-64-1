@@ -53,6 +53,11 @@ export class BuyerEditDialog implements OnInit {
       direction: [this.buyer.address, Validators.required],
       phone: [this.buyer.phone, Validators.required],
     });
+    this.email = this.buyer.email;
+    this.pass = this.buyer.address;
+    this.name = this.buyer.name;
+    this.address = this.buyer.address;
+    this.phone = this.buyer.phone;
     this.authForm.get('email')?.valueChanges.subscribe((value) => {
       if (value != null) this.email = value;
     });
@@ -82,18 +87,24 @@ export class BuyerEditDialog implements OnInit {
       phone?: string;
     } = { id: this.buyer.id };
 
+    console.log(this.buyer);
+    console.log(this.buyer.email, this.email, this.buyer.email !== this.email);
     if (this.buyer.email !== this.email) {
       payload.email = this.email;
     }
+    console.log(this.buyer.password, this.pass, this.buyer.password !== this.pass);
     if (this.buyer.password !== this.pass) {
       payload.pass = this.pass;
     }
+    console.log(this.buyer.name, this.name, this.buyer.name !== this.name);
     if (this.buyer.name !== this.name) {
       payload.name = this.name;
     }
+    console.log(this.buyer.address, this.address, this.buyer.address !== this.address);
     if (this.buyer.address !== this.address) {
       payload.address = this.address;
     }
+    console.log(this.buyer.phone, this.phone, this.buyer.phone !== this.phone);
     if (this.buyer.phone !== this.phone) {
       payload.phone = this.phone;
     }

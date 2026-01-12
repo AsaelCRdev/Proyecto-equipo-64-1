@@ -3,6 +3,7 @@ package com.backend.moviesgo.model;
 import java.util.Objects;
 
 public class MovieRental {
+  public String buyerId;
   public String movieTitle;
   public String movieId;
   public String startDate;
@@ -17,11 +18,12 @@ public class MovieRental {
     if (o == null || getClass() != o.getClass())
       return false;
     MovieRental r = (MovieRental) o;
-    return Objects.equals(this.movieId, r.movieId);
+    return Objects.equals(this.movieId, r.movieId) &&
+        Objects.equals(this.buyerId, r.buyerId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.movieId);
+    return Objects.hash(this.movieId + this.buyerId);
   }
 }

@@ -29,7 +29,14 @@ export class BuyerPanel {
   }) {
     console.log('Editando buyer', payload);
     this.buyerService
-      .editBuyer(payload.id, payload.name, payload.email, payload.address, payload.phone)
+      .editBuyer(
+        payload.id,
+        payload.pass,
+        payload.name,
+        payload.email,
+        payload.address,
+        payload.phone,
+      )
       .then((ok) => {
         if (ok) {
           alert('Cambios realizados exitosamente');
@@ -45,5 +52,23 @@ export class BuyerPanel {
           );
         }
       });
+  }
+  returnMovie(mv: MovieRental) {
+    const confirm = window.confirm('Quieres devolver esta pelicula?');
+    if (!confirm) return;
+
+    const foo = this.buyerService.returnMovie(this.buyer.id, mv.movieId);
+    foo.then((ok) => {
+      if(ok){
+
+        this.buyerService.getBuyers(this.buyer.id).then((b) => {
+          if (b) {
+            this.buyer = b as Buyer;
+            this.auth.buyer = this.buyer;
+          }
+        });
+      }
+
+    });
   }
 }
