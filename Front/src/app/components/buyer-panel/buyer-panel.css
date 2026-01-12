@@ -1,26 +1,33 @@
-:root{
+:root {
   --bg: #0f1724;
-  --card-bg: rgba(15,18,28,0.55);
-  --card-border: rgba(255,255,255,0.06);
+  --card-bg: rgba(15, 18, 28, 0.55);
+  --card-border: rgba(255, 255, 255, 0.06);
   --muted: #cbd5e1;
   --accent: #4f46e5;
   --accent-2: #06b6d4;
-  --row-alt: rgba(255,255,255,0.02);
-  --shadow: 0 8px 30px rgba(2,6,23,0.6);
+  --row-alt: rgba(255, 255, 255, 0.02);
+  --shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
 }
 
-.buyer-panel{
+.buyer-panel {
   max-width: 1100px;
   margin: 28px auto;
   padding: 24px;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial;
   color: #333;
 }
 
-.buyer-panel .title{
+.buyer-panel .title {
   margin-bottom: 18px;
 }
-.buyer-panel .title h1{
+.buyer-panel .title h1 {
   font-size: 28px;
   color: #000;
   margin: 0 0 12px;
@@ -30,12 +37,12 @@
   margin-bottom: 24px;
 }
 
-.avatar{
+.avatar {
   width: 200px;
   height: 200px;
   margin: 0 auto;
   border-radius: 50px;
-  background: linear-gradient(135deg, rgba(79,70,229,0.12), rgba(6,182,212,0.08));
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.12), rgba(6, 182, 212, 0.08));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -46,7 +53,7 @@
   font-size: 28px;
 }
 
-.profile-card{
+.profile-card {
   background: var(--card-bg);
   border-radius: 12px;
   padding: 18px;
@@ -64,14 +71,14 @@
   padding: 18px;
   font-size: 14px;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(79,70,229,0.12), rgba(6,182,212,0.08));
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.12), rgba(6, 182, 212, 0.08));
   color: #333;
 }
-.basic-info p{
+.basic-info p {
   margin: 8px 0;
 }
 
-.section-title{
+.section-title {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -81,40 +88,40 @@
   font-size: 16px;
 }
 
-.info-table{
+.info-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
   color: #333;
   border: 1px solid #000;
 }
-.info-table td, .info-table th{
+.info-table td,
+.info-table th {
   padding: 10px 12px;
   vertical-align: top;
   border: 1px solid #000;
 }
 
-
 .info-table tbody tr {
   transition: background-color 0.3s ease-in-out;
 }
 
-.info-table tbody tr:nth-child(even){
+.info-table tbody tr:nth-child(even) {
   background-color: rgba(94, 82, 82, 0.02);
 }
 .info-table tbody tr:hover {
   background-color: rgba(122, 121, 148, 0.15);
   cursor: pointer;
 }
-.info-table th{
+.info-table th {
   text-align: left;
   width: 160px;
   color: #000;
   font-weight: 600;
-  background: linear-gradient(135deg, rgba(79,70,229,0.12), rgba(6,182,212,0.08));
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.12), rgba(6, 182, 212, 0.08));
 }
 
-.price{
+.price {
   color: #000000;
   background: linear-gradient(90deg, var(--accent), var(--accent-2));
   padding: 8px 12px;

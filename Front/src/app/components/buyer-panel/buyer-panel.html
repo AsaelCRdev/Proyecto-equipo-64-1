@@ -30,15 +30,24 @@
           <th>Películas</th>
           <th>Periodo</th>
           <th>Precio</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
         @for (rental of buyer.rentedMovies; track $index) {
-          <tr (click)="returnMovie(rental)">
+          <tr>
             <td>{{ rental.movieTitle }}</td>
             <td>{{ rental.startDate }} - {{ rental.endDate }}</td>
             <td>
               <span class="price">{{ rental.price }}$</span>
+            </td>
+            <td class="actions">
+              <button (click)="edit(rental)" title="Editar" class="edit-btn">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button (click)="returnMovie(rental)" title="Devolver" class="edit-btn">
+                <i class="fas fa-arrow-circle-left"></i>
+              </button>
             </td>
           </tr>
         }
@@ -53,5 +62,15 @@
       (editBuyer)="onEditBuyer($event)"
     >
     </app-buyer-edit-dialog>
+  }
+  @if (showEditRental) {
+    <app-alquiler-dias
+      [editRental]="true"
+      [buyerId]="this.buyer.id"
+      [movie]="selectedMovieForRental"
+      (close)="onCloseRentalModal()"
+      (edited)="onCloseRentalModal()"
+    >
+    </app-alquiler-dias>
   }
 </div>

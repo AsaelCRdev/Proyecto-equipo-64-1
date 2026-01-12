@@ -219,7 +219,6 @@ export class AlquilerDiasComponent implements OnInit {
           movieId as string,
           // También puedes formatear las fechas para que no muestren hora:
           dates[0].toDateString(), // Esto muestra sin hora: "Fri Jan 31 2026"
-          this.priceTotal.toString(),
           this.getSelectedRange().toString(),
           dates[1].toDateString(), // Igual aquí
         )

@@ -55,10 +55,6 @@ export class AdminPanel implements OnInit {
   filteredRentals: MovieRental[] = [];
   filteredReviews: Review[] = [];
 
-  buyerIdForRent = '';
-  selectedMovieForRental: Movie | undefined;
-  showEditRental = false;
-
   ngOnInit(): void {
     this.buyerService.getAllRented().then((v) => {
       if (v != null) {
@@ -198,12 +194,6 @@ export class AdminPanel implements OnInit {
       console.log(item);
       this.buyerSignal.set(item as Buyer);
       this.showBuyerEdit = true;
-    } else if ('movieId' in item && 'buyerId') {
-      this.buyerIdForRent = item.buyerId;
-      this.selectedMovieForRental = this.filteredMovies.find(
-        (m) => m.imdbID.toLowerCase() === item.movieId.toLowerCase(),
-      );
-      this.showEditRental = true;
     } else {
       // Es una movie
       this.selectedMovie = item as Movie;
@@ -252,14 +242,5 @@ export class AdminPanel implements OnInit {
         }
       });
     }
-  }
-  onCloseRentalModal() {
-    this.buyerService.getAllRented().then((v) => {
-      if (v != null) {
-        this.rentals = v;
-        this.filteredRentals = this.rentals;
-      }
-    });
-    this.showEditRental = false;
   }
 }
