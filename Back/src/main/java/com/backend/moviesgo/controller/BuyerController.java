@@ -28,7 +28,7 @@ import com.backend.moviesgo.services.CatalogService;
 @RestController
 public class BuyerController {
   public BuyerList users = new BuyerList();
-  public int currentId = this.users.getMaxId();
+  public int currentId = this.users.getMaxId() + 1;
   public AuthService auth;
   public CatalogService catalog;
 
