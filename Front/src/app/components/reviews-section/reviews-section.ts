@@ -88,7 +88,10 @@ export class ReviewsSectionComponent implements OnInit {
     }
 
     if (this.form.invalid) return;
-    if (this.auth?.buyer?.rentedMovies.filter((r) => r.movieId === this.movieId)) {
+    if (
+      this.auth?.buyer?.rentedMovies.find((r) => r.movieId === this.movieId) === undefined &&
+      this.reviews?.find((r) => r.authorId === this.auth?.buyer?.id) === undefined
+    ) {
       alert('Debes tener la pelicula rentada para poder publicar una reseña');
       return;
     }
@@ -120,6 +123,7 @@ export class ReviewsSectionComponent implements OnInit {
         .then((r) => {
           console.log(r);
           if (r) {
+            this.shouldEdit = true;
             this.movieService.getAllReviews(id as string).then((v) => (this.reviews = v));
           } else {
             alert('Hubo un error intenta de nuevo');
@@ -131,7 +135,7 @@ export class ReviewsSectionComponent implements OnInit {
 
   ngOnInit(): void {
     let rev: Review | null = null;
-    console.log(`id${this.auth.buyer?.id as string}, movieId:${this.movieId as string}`);
+    console.log(`id: ${this.auth.buyer?.id as string}, movieId:${this.movieId as string}`);
     this.movieService
       .getUserReview(this.auth.buyer?.id as string, this.movieId as string)
       .then((r) => {
