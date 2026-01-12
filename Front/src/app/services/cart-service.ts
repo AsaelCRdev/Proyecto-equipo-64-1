@@ -199,4 +199,24 @@ export class CartService {
   toggle() {
     this.isOpenSubject.next(!this.isOpenSubject.value);
   }
+  async editRent(
+    id: string,
+    movieId: string,
+    startDate: string,
+    price: string,
+    days: string,
+    endDate: string,
+  ) {
+    const uriBuilder =
+      `/editRent?id=${encodeURIComponent(id)}` +
+      `&movieId=${encodeURIComponent(movieId)}` +
+      `&startDate=${encodeURIComponent(startDate)}` +
+      `&endDate=${encodeURIComponent(endDate)}` +
+      `&price=${encodeURIComponent(price)}` +
+      `&days=${encodeURIComponent(days)}`;
+
+    const res = await this.api.getFromBackAsT<string>(uriBuilder, 'PATCH');
+    console.log('Respuesta editRent:', res);
+    return !res;
+  }
 }

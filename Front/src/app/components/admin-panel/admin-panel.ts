@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { AlquilerDiasComponent } from '../Time-Rental/Time-Rental';
 import { WritableSignal } from '@angular/core';
 import { MovieConfigDialog } from '../movie-config-dialog/movie-config-dialog';
 import { MovieSelectDialog } from '../movie-select-dialog/movie-select-dialog';
@@ -21,6 +22,7 @@ import { BuyerEditDialog } from '../buyer-edit-dialog/buyer-edit-dialog';
     MovieConfigDialog,
     MovieEditDialog,
     BuyerEditDialog,
+    AlquilerDiasComponent,
   ],
   standalone: true,
   styleUrl: './admin-panel.css',
@@ -52,6 +54,11 @@ export class AdminPanel implements OnInit {
   filteredMovies: Movie[] = [];
   filteredRentals: MovieRental[] = [];
   filteredReviews: Review[] = [];
+
+  buyerIdForRent = '';
+  selectedMovieForRental: Movie | undefined;
+  showEditRental = false;
+
   ngOnInit(): void {
     this.buyerService.getAllRented().then((v) => {
       if (v != null) {
@@ -165,7 +172,14 @@ export class AdminPanel implements OnInit {
   }) {
     console.log('Editando buyer', payload);
     this.buyerService
-      .editBuyer(payload.id, payload.name, payload.email, payload.address, payload.phone)
+      .editBuyer(
+        payload.id,
+        payload.pass,
+        payload.name,
+        payload.email,
+        payload.address,
+        payload.phone,
+      )
       .then((ok) => {
         if (ok) {
           alert('Cambios realizados exitosamente');
@@ -181,8 +195,15 @@ export class AdminPanel implements OnInit {
     console.log('editar', item);
     if ('email' in item) {
       // Es un buyer
+      console.log(item);
       this.buyerSignal.set(item as Buyer);
       this.showBuyerEdit = true;
+    } else if ('movieId' in item && 'buyerId') {
+      this.buyerIdForRent = item.buyerId;
+      this.selectedMovieForRental = this.filteredMovies.find(
+        (m) => m.imdbID.toLowerCase() === item.movieId.toLowerCase(),
+      );
+      this.showEditRental = true;
     } else {
       // Es una movie
       this.selectedMovie = item as Movie;
@@ -198,6 +219,12 @@ export class AdminPanel implements OnInit {
         if (ok) {
           alert('Buyer eliminado');
           this.buyerService.getBuyers().then((b) => (this.filteredBuyers = b as Buyer[]));
+          this.buyerService.getAllRented().then((v) => {
+            if (v != null) {
+              this.rentals = v;
+              this.filteredRentals = this.rentals;
+            }
+          });
         }
       });
     } else if ('genre' in item) {
@@ -207,6 +234,12 @@ export class AdminPanel implements OnInit {
         if (ok) {
           alert('Película eliminada');
           this.movieService.getMovies().then((mv) => (this.filteredMovies = mv ?? []));
+          this.buyerService.getAllRented().then((v) => {
+            if (v != null) {
+              this.rentals = v;
+              this.filteredRentals = this.rentals;
+            }
+          });
         }
       });
     } else if ('message' in item) {
@@ -219,5 +252,14 @@ export class AdminPanel implements OnInit {
         }
       });
     }
+  }
+  onCloseRentalModal() {
+    this.buyerService.getAllRented().then((v) => {
+      if (v != null) {
+        this.rentals = v;
+        this.filteredRentals = this.rentals;
+      }
+    });
+    this.showEditRental = false;
   }
 }

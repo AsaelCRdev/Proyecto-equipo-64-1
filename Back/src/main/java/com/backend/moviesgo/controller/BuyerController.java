@@ -78,6 +78,7 @@ public class BuyerController {
     }
 
     MovieRental rental = new MovieRental();
+    rental.buyerId = buyerId;
     rental.movieTitle = this.catalog.getMovieById(movieId).title;
     rental.movieId = movieId;
     rental.startDate = startDate;
@@ -286,6 +287,7 @@ public class BuyerController {
   public EndpointResponse editBuyer(
       @RequestParam(value = "id", required = true) String id,
       @RequestParam(value = "name", required = false) String name,
+      @RequestParam(value = "password", required = false) String password,
       @RequestParam(value = "email", required = false) String email,
       @RequestParam(value = "address", required = false) String address,
       @RequestParam(value = "phone", required = false) String phone) {
@@ -303,6 +305,10 @@ public class BuyerController {
 
     if (name != null && !name.trim().isEmpty()) {
       buyer.name = name.trim();
+      changed = true;
+    }
+    if (password != null && !password.trim().isEmpty()) {
+      buyer.password = password.trim();
       changed = true;
     }
     if (email != null && !email.trim().isEmpty()) {
@@ -333,5 +339,29 @@ public class BuyerController {
     this.users.refresh();
 
     return new EndpointResponse("Succes", false);
+  }
+
+  @PatchMapping("/editRent")
+  public EndpointResponse editRent(
+
+      @RequestParam(value = "id", required = true) String id,
+      @RequestParam(value = "movieId", required = true) String movieId,
+      @RequestParam(value = "startDate", required = true) String startDate,
+      @RequestParam(value = "price", required = true) String price,
+      @RequestParam(value = "days", required = true) String days,
+      @RequestParam(value = "endDate", required = true) String endDate) {
+
+    Buyer buyer = this.users.getBuyerById(id);
+    if (buyer == null) {
+      return new EndpointResponse("Buyer not found", true);
+    }
+    MovieRental r = buyer.rentedMovies.stream().filter(m -> m.movieId.equalsIgnoreCase(movieId)).findFirst()
+        .orElse(null);
+    r.days = days;
+    r.endDate = endDate;
+    r.startDate = startDate;
+    r.price = price;
+    return new EndpointResponse(r, false);
+
   }
 }

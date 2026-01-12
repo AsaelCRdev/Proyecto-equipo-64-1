@@ -1,8 +1,7 @@
 <div class="buyer-panel">
-
   <h2>Mi perfil</h2>
 
-    <!-- Avatar como un elemento separado -->
+  <!-- Avatar como un elemento separado -->
   <div class="avatar-card">
     <div class="avatar">
       {{ buyer.name.substring(0, 1).toUpperCase() }}
@@ -24,35 +23,35 @@
 
     <!-- Tarjeta con la tabla de alquileres -->
     <div class="profile-card"></div>
-      <div class="section-title"><h2>Mis Alquileres</h2></div>
-      <table class="info-table">
-        <thead>
-          <tr>
-            <th>Películas</th>
-            <th>Periodo</th>
-            <th>Precio</th>
+    <div class="section-title"><h2>Mis Alquileres</h2></div>
+    <table class="info-table">
+      <thead>
+        <tr>
+          <th>Películas</th>
+          <th>Periodo</th>
+          <th>Precio</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (rental of buyer.rentedMovies; track $index) {
+          <tr (click)="returnMovie(rental)">
+            <td>{{ rental.movieTitle }}</td>
+            <td>{{ rental.startDate }} - {{ rental.endDate }}</td>
+            <td>
+              <span class="price">{{ rental.price }}$</span>
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          @for (rental of buyer.rentedMovies; track $index) {
-            <tr>
-              <td>{{ rental.movieTitle }}</td>
-              <td>{{ rental.startDate }} - {{ rental.endDate }}</td>
-              <td>
-                <span class="price">{{ rental.price }}$</span>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </div>
+        }
+      </tbody>
+    </table>
+  </div>
 
-    @if (showEdit) {
-      <app-buyer-edit-dialog
-        [buyer]="auth.buyer!"
-        (close)="onClose()"
-        (editBuyer)="onEditBuyer($event)"
-      >
-      </app-buyer-edit-dialog>
-    }
+  @if (showEdit) {
+    <app-buyer-edit-dialog
+      [buyer]="auth.buyer!"
+      (close)="onClose()"
+      (editBuyer)="onEditBuyer($event)"
+    >
+    </app-buyer-edit-dialog>
+  }
 </div>
