@@ -347,7 +347,6 @@ public class BuyerController {
       @RequestParam(value = "id", required = true) String id,
       @RequestParam(value = "movieId", required = true) String movieId,
       @RequestParam(value = "startDate", required = true) String startDate,
-      @RequestParam(value = "price", required = true) String price,
       @RequestParam(value = "days", required = true) String days,
       @RequestParam(value = "endDate", required = true) String endDate) {
 
@@ -360,7 +359,6 @@ public class BuyerController {
     r.days = days;
     r.endDate = endDate;
     r.startDate = startDate;
-    r.price = price;
     return new EndpointResponse(r, false);
 
   }

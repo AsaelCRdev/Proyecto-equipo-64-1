@@ -100,12 +100,12 @@
           >
             Cancelar
           </button>
-          @if (edit) {
+          @if (edit || editRental) {
             <button
               class="btn-cart"
               (click)="onAddToCart(edit); $event.stopPropagation(); $event.preventDefault()"
             >
-              Editar ({{ getSelectedRange() }} días - ${{ priceTotal.toFixed(2) }})
+              Editar
             </button>
           } @else {
             <button

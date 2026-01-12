@@ -4,18 +4,24 @@ import { AuthService } from '../../services/auth-service';
 import { MovieRental } from '../../model/MovieRental';
 import { BuyerEditDialog } from '../buyer-edit-dialog/buyer-edit-dialog';
 import { BuyerService } from '../../services/buyer.service';
+import { Movie } from '../../model/Movie';
+import { AlquilerDiasComponent } from '../Time-Rental/Time-Rental';
+import { MovieService } from '../../services/movie.service';
 
 @Component({
   selector: 'app-buyer-panel',
-  imports: [BuyerEditDialog],
+  imports: [BuyerEditDialog, AlquilerDiasComponent],
   templateUrl: './buyer-panel.html',
   styleUrl: './buyer-panel.css',
 })
 export class BuyerPanel {
   auth = inject(AuthService);
+  movieService = inject(MovieService);
   buyer: Buyer = this.auth.buyer!;
   showEdit = false;
   buyerService = inject(BuyerService);
+  selectedMovieForRental: Movie | undefined;
+  showEditRental = false;
   onClose() {
     this.showEdit = false;
   }
@@ -59,8 +65,7 @@ export class BuyerPanel {
 
     const foo = this.buyerService.returnMovie(this.buyer.id, mv.movieId);
     foo.then((ok) => {
-      if(ok){
-
+      if (ok) {
         this.buyerService.getBuyers(this.buyer.id).then((b) => {
           if (b) {
             this.buyer = b as Buyer;
@@ -68,7 +73,23 @@ export class BuyerPanel {
           }
         });
       }
-
     });
+  }
+  edit(item: MovieRental) {
+    this.movieService.getMovie(item.movieId).then((r) => {
+      if (r) {
+        this.selectedMovieForRental = r;
+      }
+    });
+    this.showEditRental = true;
+  }
+  onCloseRentalModal() {
+    this.buyerService.getBuyers(this.buyer.id).then((v) => {
+      if (v != null) {
+        this.buyer = v as Buyer;
+        this.auth.buyer = this.buyer;
+      }
+    });
+    this.showEditRental = false;
   }
 }
