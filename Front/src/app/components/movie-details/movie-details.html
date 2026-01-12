@@ -1,17 +1,39 @@
-<article>
-  <img [src]="movie()?.poster" />
-  <h2>{{ movie()?.title }}</h2>
-  <span> {{ movie()?.genre }}</span>
-  <span>Rating: {{ movie()?.rating }}</span>
-  <br />
-  <span>Release date: {{ movie()?.released }}</span>
-  <br />
-  <br />
-  <span>{{ movie()?.price }}$</span>
-  <h4>Plot</h4>
-  <span>{{ movie()?.plot }}</span>
-  <br />
-  <span>Status: {{ status }}</span>
+<article class="movie-modal">
+  <header class="movie-header">
+    <div>
+      <h2 class="movie-title">{{ movie()?.title }}</h2>
+      <div class="movie-sub">{{ movie()?.genre }}</div>
+    </div>
+    <button class="close-btn" aria-label="Cerrar"> <a routerLink="/">✕</a> </button>
+  </header>
+
+  <section class="movie-main">
+    <div class="left">
+      <img class="poster" [src]="movie()?.poster" />
+    </div>
+
+    <div class="right">
+      <div class="meta-row">
+        <span class="badge">{{ movie()?.genre }}</span>
+        <span class="year">Fecha de estreno: {{ movie()?.released }}</span>
+      </div>
+
+      <div class="rating-row">
+        <span class="stars">★ {{ movie()?.rating ?? '-' }}</span>
+      </div>
+
+      <div class="price-box">
+        <div>Precio de alquiler</div>
+        <div class="price">{{ movie()?.price ? ('$' + movie()?.price) : '-' }}</div>
+      </div>
+
+      <h4>Sinopsis</h4>
+      <p class="description">{{ movie()?.plot }}</p>
+
+      <div class="status-row">Estado: <span class="status">{{ status }}</span></div>
+    </div>
+  </section>
+
   @if (movie()) {
     <app-reviews-section
       [movieId]="movie()!.imdbID"
