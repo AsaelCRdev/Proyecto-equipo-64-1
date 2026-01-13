@@ -40,7 +40,6 @@ public class MovieController {
   public MovieController(@Value("${omdb.endpoint}") String endpointUrl, @Value("${omdb.api-key}") String apiKey,
       BuyerController buyerController, CatalogService catalog) {
     this.api = new ApiController(endpointUrl, apiKey);
-    this.catalog = new CatalogService();
     this.buyerController = buyerController;
     this.catalog = catalog;
   }
@@ -359,5 +358,69 @@ public class MovieController {
 
     return new EndpointResponse("Error deleting review", true);
   }
+
+
+  @PatchMapping("/decrementMovieStock")
+public EndpointResponse decrementMovieStock(
+    @RequestParam(value = "id", required = true) String id,
+    @RequestParam(value = "quantity", defaultValue = "1") int quantity) {
+
+  System.out.println("=== DECREMENT MOVIE STOCK ===");
+  System.out.println("ID: " + id + ", Quantity: " + quantity);
+
+  if (id == null || id.trim().isEmpty()) {
+    return new EndpointResponse("Must provide an id", true);
+  }
+
+  if (quantity <= 0) {
+    return new EndpointResponse("Quantity must be greater than 0", true);
+  }
+
+  // Obtener la película
+  Movie movie = this.catalog.getMovieById(id);
+  if (movie == null) {
+    return new EndpointResponse("Movie not found", true);
+  }
+
+  // Mostrar info antes
+  System.out.println("Movie: " + movie.title);
+  System.out.println("Current stock: " + movie.stock);
+
+  try {
+    // Validar stock suficiente
+    int currentStock = Integer.parseInt(movie.stock);
+    if (currentStock < quantity) {
+      return new EndpointResponse("Insufficient stock. Available: " + currentStock, true);
+    }
+
+    // Decrementar stock
+    int newStock = currentStock - quantity;
+    String newStockStr = String.valueOf(newStock);
+    
+    System.out.println("New stock: " + newStockStr);
+
+    // Usar el método existente para actualizar
+    boolean updated = this.catalog.editMovieStockPrice(id, newStockStr, null);
+    
+    if (updated) {
+      // Verificar el cambio
+      Movie updatedMovie = this.catalog.getMovieById(id);
+      System.out.println("Verification - Updated stock: " + updatedMovie.stock);
+      
+      return new EndpointResponse(
+          "Stock decremented successfully. New stock: " + newStock, 
+          false
+      );
+    } else {
+      return new EndpointResponse("Failed to update stock", true);
+    }
+
+  } catch (NumberFormatException e) {
+    return new EndpointResponse("Invalid stock format", true);
+  } catch (Exception e) {
+    System.err.println("Error: " + e.getMessage());
+    return new EndpointResponse("Internal server error: " + e.getMessage(), true);
+  }
+}
 
 }

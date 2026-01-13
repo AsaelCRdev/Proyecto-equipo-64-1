@@ -73,8 +73,8 @@ public class Movie {
     this.released = mv.Released;
     this.poster = mv.Poster;
     this.plot = mv.Plot;
-    this.price = stock;
-    this.stock = price;
+    this.price = price;
+    this.stock = stock;
 
   }
 
