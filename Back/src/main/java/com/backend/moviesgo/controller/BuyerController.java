@@ -1,27 +1,28 @@
 package com.backend.moviesgo.controller;
 
-import org.springframework.web.bind.annotation.PatchMapping;
-
-import org.springframework.web.bind.annotation.DeleteMapping;
-
 import java.util.ArrayList;
 
-import org.springframework.web.bind.annotation.PostMapping;
-
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import com.backend.moviesgo.model.EndpointResponse;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import com.backend.moviesgo.model.BuyerList;
-import com.backend.moviesgo.model.Buyer;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
 import com.backend.moviesgo.model.AuthResponse;
-import com.backend.moviesgo.services.AuthService;
+import com.backend.moviesgo.model.Buyer;
+import com.backend.moviesgo.model.BuyerList;
+import com.backend.moviesgo.model.EndpointResponse;
+import com.backend.moviesgo.model.Movie;
 import com.backend.moviesgo.model.MovieRental;
+import com.backend.moviesgo.services.AuthService;
 import com.backend.moviesgo.services.CatalogService;
+
 
 @CrossOrigin(origins = "*")
 
@@ -31,16 +32,21 @@ public class BuyerController {
   public int currentId = this.users.getMaxId() + 1;
   public AuthService auth;
   public CatalogService catalog;
+  private RestTemplate restTemplate;
+
 
   @Autowired
   public BuyerController(
       @Value("${admin.mail}") String adminMail,
       @Value("${admin.pass}") String adminPass,
-      CatalogService catalog
+      CatalogService catalog,
+       RestTemplateBuilder restTemplateBuilder
 
   ) {
     this.auth = new AuthService(adminMail, adminPass);
     this.catalog = catalog;
+        this.restTemplate = restTemplateBuilder.build();
+
 
   }
 
@@ -206,11 +212,33 @@ public class BuyerController {
       return new EndpointResponse("Carrito vacío", true);
     }
 
-    // Mover items del carrito a rentedMovies
+  // Validar disponibilidad
+for (MovieRental item : buyer.cart.movies) {
+    Movie movie = this.catalog.getMovieById(item.movieId);
+    if (movie == null || Integer.parseInt(movie.stock) <= 0) {
+        return new EndpointResponse("Una o más películas del carrito no están disponibles", true);
+    }
+}
+for (MovieRental item : buyer.cart.movies) {
+    // Llamar al endpoint de decremento
+    String url = "http://localhost:8080/decrementMovieStock?id={id}&quantity={quantity}";
+    
+    EndpointResponse response = restTemplate.patchForObject(
+        url,
+        null,
+        EndpointResponse.class,
+        item.movieId,  // {id} parameter
+        1              // {quantity} parameter
+    );
+    
+
+}
+ // Mover items del carrito a rentedMovies
     buyer.rentedMovies.addAll(buyer.cart.movies);
 
     // Vaciar carrito
     buyer.cart.movies.clear();
+
 
     // Guardar cambios en buyers.json
     this.users.json.guardar(new ArrayList<>(this.users.users));
@@ -359,6 +387,8 @@ public class BuyerController {
     r.days = days;
     r.endDate = endDate;
     r.startDate = startDate;
+    this.users.json.guardar(new ArrayList<>(this.users.users));
+    this.users.refresh();
     return new EndpointResponse(r, false);
 
   }
