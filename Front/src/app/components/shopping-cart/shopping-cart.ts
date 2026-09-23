@@ -73,6 +73,8 @@ export class ShoppingCartComponent implements OnDestroy, OnInit {
         this.cartService.clear?.();
         this.cartService.close?.();
         window.alert('¡Compra exitosa!');
+      } else {
+        window.alert('No se pudo realizar la compra uno o mas productos no disponibles');
       }
     });
   }
